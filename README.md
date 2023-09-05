@@ -23,7 +23,7 @@
 | BE  | 김지호 |#   |
 | BE  | 임승혁 | [#](https://github.com/Yim119) https://github.com/Yim119  |
 | BE  | 오강석 | #  |
-| BE  | 최성민 | #   |
+| BE  | 최성민 | [#](https://github.com/seongmin1117) https://github.com/seongmin1117   |
 
 
 
