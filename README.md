@@ -11,7 +11,7 @@
 5. ERD
 6. 기술스택
 7. 노션[팀 노션 ](https://www.notion.so/4d2c1199613740e0a7d14cdbfa913dc5)
-
+8. 커뮤니케이션 규칙
 
 
 ## 팀원 소개
@@ -85,5 +85,15 @@
 ## ERD
 
 ![Copy of Inven](https://github.com/kimjongha99/Inventory-Manager/assets/95283879/85dc0dbb-0056-4343-9507-dda662de2bc7)
+
+
+
+## 커뮤니케이션 규칙
+1. 기술을 새롭게 적용 할때, 팀원들이 납득할수있는 타당한 이유와 근거를 제시함며 논리적으로 설득
+2. 팀원은  commit진행시 develop브런치로 pull request 남김
+3. 의견 충돌 발생시 공격적인 어조를 사용하지않는다.
+4.  반드시 아이디, 존댓말을 쓰며 회의한다.
+5.  반드시 커밋- 컨밴션을 지킨다.
+6.  문서화를 한다
 
 
