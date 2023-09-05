@@ -21,6 +21,9 @@
 
 | 스택  | 이름   | 깃허브 주소                 |
 |-----| ------ | --------------------------- |
-| BE  | 신경연 | https://github.com/bestfarmer94   |
-| BE  | 나도관 | https://github.com/DOGWANNA   |
-| BE  | 김유영 | https://github.com/yykim1010   |
+| BE  | 김종하 |#  |
+| BE  | 최무영 |#  |
+| BE  | 김지호 |#   |
+| BE  | 임승혁 | #   |
+| BE  | 오강석 | #  |
+| BE  | 최성민 | #   |
