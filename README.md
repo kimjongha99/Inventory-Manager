@@ -22,7 +22,7 @@
 | BE  | 최무영 |#  |
 | BE  | 김지호 |[#](https://github.com/Jihoyakim) https://github.com/Jihoyakim |
 | BE  | 임승혁 | [#](https://github.com/Yim119) https://github.com/Yim119  |
-| BE  | 오강석 | #  |
+| BE  | 오강석 | [#](https://github.com/SUPERK98) https://github.com/SUPERK98 |
 | BE  | 최성민 | [#](https://github.com/seongmin1117) https://github.com/seongmin1117   |
 
 
