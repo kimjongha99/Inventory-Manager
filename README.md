@@ -59,7 +59,7 @@
 
 ## Java 11
 - **버전**: 11.0.12
-- **설명**: Java 프로그래밍 언어의 최신 버전
+- **설명**: Java 프로그래밍 언어의  버전
 
 ## Spring Boot 2.7.15
 - **버전**: 2.7.15
@@ -67,11 +67,11 @@
 
 ## JPA
 - **버전**: 3.2.22
-- **설명**: Java Persistence API의 최신 버전
+- **설명**: Java Persistence API의  버전
 
 ## JSP
 - **버전**: 3.0
-- **설명**: Java Server Pages의 최신 버전
+- **설명**: Java Server Pages의  버전
 
 ## Gradle
 - **버전**: 6.8.3
