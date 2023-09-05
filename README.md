@@ -18,7 +18,7 @@
 
 | 스택  | 이름   | 깃허브 주소                 |
 |-----| ------ | --------------------------- |
-| BE  | 김종하 |#  |
+| BE  | 김종하 |[#](https://github.com/kimjongha99) https://github.com/kimjongha99 |
 | BE  | 최무영 |#  |
 | BE  | 김지호 |#   |
 | BE  | 임승혁 | [#](https://github.com/Yim119) https://github.com/Yim119  |
