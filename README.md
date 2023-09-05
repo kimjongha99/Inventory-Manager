@@ -81,5 +81,6 @@
 
 ## ERD
 
+![Copy of Inven](https://github.com/kimjongha99/Inventory-Manager/assets/95283879/85dc0dbb-0056-4343-9507-dda662de2bc7)
 
 
