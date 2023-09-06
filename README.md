@@ -1,7 +1,7 @@
 # 프로젝트명 - 인벤토리 매니저(Inventory Manager)
 
 
-# 조명 - 인벤토
+# 조명 - 인벤토리
 
 ## 목차
 1. 팀원 소개
@@ -83,7 +83,7 @@
 
 ## ERD
 
-![Copy of Inven](https://github.com/kimjongha99/Inventory-Manager/assets/95283879/85dc0dbb-0056-4343-9507-dda662de2bc7)
+![Copy of Inventory](https://github.com/kimjongha99/Inventory-Manager/assets/95283879/598c3c09-7888-4839-9131-e9e54bffc7c3)
 
 
 
