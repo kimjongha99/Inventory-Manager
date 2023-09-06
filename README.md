@@ -19,7 +19,7 @@
 | 스택  | 이름   | 깃허브 주소                 |
 |-----| ------ | --------------------------- |
 | BE  | 김종하 |[#](https://github.com/kimjongha99) https://github.com/kimjongha99 |
-| BE  | 최무영 |[#]|(https://github.com/JinDalgi) https://github.com/JinDalgi  |
+| BE  | 최무영 |[#](https://github.com/JinDalgi) https://github.com/JinDalgi  |
 | BE  | 김지호 |[#](https://github.com/Jihoyakim) https://github.com/Jihoyakim |
 | BE  | 임승혁 | [#](https://github.com/Yim119) https://github.com/Yim119  |
 | BE  | 오강석 | [#](https://github.com/SUPERK98) https://github.com/SUPERK98 |
