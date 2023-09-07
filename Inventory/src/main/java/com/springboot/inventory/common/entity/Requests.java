@@ -48,6 +48,10 @@ public class Requests {
     @JoinColumn(name = "supplyId")
     private Supply supply;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", nullable = false)
+    private User user;
+
     // 비품 요청의 경우 category를 받음
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoryId")
