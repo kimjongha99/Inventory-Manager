@@ -1,10 +1,12 @@
-package com.springboot.common.dto;
+package com.springboot.inventory.common.dto;
 
-import com.springboot.common.entity.Group;
-import com.springboot.common.enums.UserRoleEnum;
+import com.springboot.inventory.common.entity.Group;
+import com.springboot.inventory.common.enums.UserRoleEnum;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class UserDto {
     private Long user_id;
     private String username;

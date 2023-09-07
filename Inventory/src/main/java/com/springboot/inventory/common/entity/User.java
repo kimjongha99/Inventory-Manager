@@ -1,13 +1,12 @@
-package com.springboot.common.entity;
+package com.springboot.inventory.common.entity;
 
-import com.springboot.common.enums.UserRoleEnum;
+import com.springboot.inventory.common.enums.UserRoleEnum;
 import lombok.*;
 
 import javax.persistence.*;
 
 @Entity(name="user") // User Entity 이름
 @Getter
-@Setter
 @NoArgsConstructor
 public class User extends Timestamped { // TimeStamped를 상속
 
