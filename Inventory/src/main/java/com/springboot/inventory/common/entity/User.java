@@ -1,44 +1,70 @@
 package com.springboot.inventory.common.entity;
 
+
+import com.springboot.inventory.common.enums.UserRoleEnum;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 import javax.persistence.*;
 
-@Entity(name = "users")
+@Entity
 @NoArgsConstructor
 @Getter
-public class User {
-
+public class User extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, unique = true)
-    private String googleId;
+    private Long user_id;
 
     // 아이디
     @Column(nullable = false, unique = true)
-    private String username;
+    private String email;
 
     private String password;
 
     // 이름
-    private String empName;
-
-    private String phone;
-
-    private String image;
-
-    // 구글 액세스 토큰
     @Column(nullable = false)
-    private String accessToken;
+    private String name;
 
-    // SMS 알림 ON/OFF
-    @Column(nullable = false)
-    private Boolean alarm
+    private String tel;
+
+//    private String image;
+
+    @Enumerated(value = EnumType.STRING)
+    private UserRoleEnum role;
 
     @Column(nullable = false)
-    private Boolean deleted;
+    private boolean alarm;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    private Group group;
+
+    @Column(nullable = false)
+    private Boolean delete;
+
+    @Builder
+    public User(String email, String password, String name, String tel,
+                UserRoleEnum role, Boolean alarm, Group group, Boolean delete) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.tel = tel;
+        this.role = role;
+        this.alarm = alarm;
+        this.group = group;
+        this.delete = delete;
+    }
+
+
+    public void update(String name, Group group, String tel, Boolean alarm, String password) {
+        this.name = name;
+        this.group = group;
+        this.tel = tel;
+        this.alarm = alarm;
+        this.password = password;
+    }
+
+
+
 }
