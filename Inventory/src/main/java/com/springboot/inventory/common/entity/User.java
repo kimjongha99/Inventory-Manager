@@ -23,11 +23,12 @@ public class User  extends TimeStamped{
     private String username;  //아이디,이메일
 
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String password;
-
+    @Column(nullable = false)
     private String  name; // 유저이름
 
+    @Column(nullable = false)
     private String phone;
 
     private String image;
