@@ -47,4 +47,5 @@ public class User extends Timestamped{
         this.deleted = deleted;
         this.group = group;
     }
+
 }
