@@ -26,6 +26,7 @@ public class User extends Timestamped {
     private String name;
     private String tel;
 
+
     // 토큰
 //    @Column(nullable = false)
 //    private String accessToken;
