@@ -57,5 +57,51 @@ public class Requests {
     @JoinColumn(name = "categoryId")
     private Category category;
 
+    // 비품 요청/반납 시 부서 저장
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "groupId")
+    private Group group;
     
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "adminId")
+    private User admin;
+
+    public Requests(RequestType requestType, String content, AcceptResult acceptResult, RequestStatus requestStatus, List<Image> imageList, Supply supply, User user, Category category, Group group, User admin) {
+        this.requestType = requestType;
+        this.content = content;
+        this.acceptResult = acceptResult;
+        this.requestStatus = requestStatus;
+        this.imageList = imageList;
+        this.supply = supply;
+        this.user = user;
+        this.category = category;
+        this.group = group;
+        this.admin = admin;
+    }
+
+    // 요청 처리
+    public void processingRequest(AcceptResult acceptResult, String comment, Supply supply, User admin) {
+        // 처리중 상태 처리
+        if (this.requestType.equals(RequestType.REPAIR) && acceptResult.equals(AcceptResult.ACCEPT)
+        && this.requestStatus.equals(RequestStatus.UNPROCESSED)) {
+            this.requestStatus = RequestStatus.PROCESSING;
+            this.admin = admin;
+            return;
+        }
+
+        // 비품 요청 시의 supply 기록
+        if(this.requestType.equals(RequestType.SUPPLY) && acceptResult.equals(AcceptResult.ACCEPT)) {
+            this.supply = supply;
+        }
+
+        this.acceptResult = acceptResult;
+        this.requestStatus = RequestStatus.PROCESSED;
+        this.comment = comment;
+        this.admin = admin;
+    }
+
+    public void update(Requests requests) {
+        this.content = requests.getContent();
+    }
+
 }
