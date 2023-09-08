@@ -3,14 +3,20 @@ package com.springboot.inventory.common.entity;
 import com.springboot.inventory.common.enums.UserRoleEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity(name = "users")
 @NoArgsConstructor
 @Getter
 //@SQLDelete(sql = "UPDATE users SET deleted = true, ")
-public class User extends Timestamped {
+public class User extends Timestamped implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,5 +79,34 @@ public class User extends Timestamped {
     public void changeRole(UserRoleEnum role) {
         // 부여하는 권한을 가지고 있는 경우, 권한을 취소할 수 있음
         this.role = this.role == role ? UserRoleEnum.USER : role;
+    }
+
+    // 해당 유저의 권한을 리턴
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        // role을 GrantedAuthority로 변환하여 추가
+        authorities.add(new SimpleGrantedAuthority(role.getAuthority()));
+        return authorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;    // 계정 만료 체크
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;    // 계정이 잠겨있는지 체크
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;    // 비밀번호 만료 체크
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;    // 계정이 활성화 되어있는지 체크
     }
 }
