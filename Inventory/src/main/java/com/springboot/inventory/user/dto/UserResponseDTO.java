@@ -1,29 +1,19 @@
 package com.springboot.inventory.user.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.springboot.inventory.common.entity.User;
+import lombok.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 @Builder
 public class UserResponseDTO {
 
     private  String email;
 
-    private String password;
-
-
     private String name;
 
-    private String tel;
 
+    public static UserResponseDTO of (User user) {
+        return UserResponseDTO.builder().email(user.getEmail()).name(user.getName()).build();
+    }
 
-    private Integer role;
-
-    private Boolean alarm;
-
-    private Boolean deleted;
 }
