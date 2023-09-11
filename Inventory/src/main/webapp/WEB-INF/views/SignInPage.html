@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign In Page</title>
+</head>
+<body>
+<h1>로그인</h1>
+
+
+<form th:action="@{/signin}" th:object="${signInRequestDTO}"  method="post">
+
+    <!-- 이메일 입력 -->
+    <div>
+        <label for="email">이메일:</label>
+        <input type="email" id="email" name="email" th:field="*{email}" required>
+    </div>
+
+    <!-- 비밀번호 입력 -->
+    <div>
+        <label for="password">비밀번호:</label>
+        <input type="password" id="password" name="password"
+               th:field="*{password}" required>
+    </div>
+
+    <!-- 회원 가입 버튼 -->
+    <div>
+        <button type="submit">로그인</button>
+    </div>
+</form>
+<!-- 회원 가입 폼 끝 -->
+</body>
+</html>
