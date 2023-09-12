@@ -9,19 +9,14 @@ import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
+@Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-@Getter
-public class TimeStamped {
+public class BaseTimeEntity {
+
     @CreatedDate
-    private LocalDateTime createdAt;
+    private LocalDateTime createDate;
 
     @LastModifiedDate
-    private LocalDateTime modifiedAt;
-
-
-    // 비품 등록일을 저장하고 싶은 경우도 있다.
-    public void insertCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+    private LocalDateTime modifiedDate;
 }
