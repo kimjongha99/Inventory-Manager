@@ -1,4 +1,4 @@
-package com.springboot.inventory.common.jwt;
+package com.springboot.inventory.global.jwt;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = jwtAuthenticationProvider.resolveToken(request);
 
         if (token != null && jwtAuthenticationProvider.validateToken(token)) {
+
             Authentication authentication = jwtAuthenticationProvider.getAuthentication(token);
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
