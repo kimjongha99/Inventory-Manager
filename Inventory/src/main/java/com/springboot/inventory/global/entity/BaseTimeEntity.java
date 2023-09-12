@@ -1,4 +1,4 @@
-package com.springboot.inventory.common.entity;
+package com.springboot.inventory.global.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class BaseTimeEntity {
 
     @CreatedDate
-    private LocalDateTime createDate;
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
     private LocalDateTime modifiedDate;
