@@ -1,10 +1,10 @@
 package com.springboot.inventory.user.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import com.springboot.inventory.user.dto.SignInResultDto;
+import com.springboot.inventory.user.dto.SignUpResultDto;
 
-@Service
-@RequiredArgsConstructor
-public class UserService {
+public interface UserService {
 
+    SignUpResultDto signUp(String email, String password, String name, String tel);
+    SignInResultDto signIn(String email, String password) throws RuntimeException;
 }
