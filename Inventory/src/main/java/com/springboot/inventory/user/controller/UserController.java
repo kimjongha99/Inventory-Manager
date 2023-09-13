@@ -11,6 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 @Controller
 @RequestMapping("/sign-api")
 public class UserController {
@@ -46,16 +49,26 @@ public class UserController {
     }
 
     @PostMapping("/sign-in")
-    public String signIn(@ModelAttribute ("signInExDto")SignInExDto sign, Model model)
+    public String signIn(@ModelAttribute ("signInExDto")SignInExDto sign, HttpServletResponse response)
     {
         String email = sign.getEmail();
         String password = sign.getPassword();
 
         SignInResultDto result = userService.signIn(email, password);
 
-        model.addAttribute("token", result.getToken());
+        if (result != null) {
+            Cookie cookies = new Cookie("Authorization", result.getToken());
 
-        return "LandingPage";
+            cookies.setPath("/");
+            cookies.setHttpOnly(true);
+            cookies.setMaxAge(300);
+
+            response.addCookie(cookies);
+
+            return "LandingPage";
+        }
+
+        return "redirect:/sign-api/sign-in";
     }
 
     @GetMapping("/exception")
