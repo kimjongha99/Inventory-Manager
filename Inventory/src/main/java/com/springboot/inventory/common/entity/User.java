@@ -35,6 +35,4 @@ public class User extends TimeStamp {
 
     private Boolean deleted;
 
-
-
 }
