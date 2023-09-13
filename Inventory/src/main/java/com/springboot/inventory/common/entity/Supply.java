@@ -1,6 +1,6 @@
-package com.springboot.common.entity;
+package com.springboot.inventory.common.entity;
 
-import com.springboot.common.enums.SupplyStatusEnum;
+import com.springboot.inventory.common.enums.SupplyStatusEnum;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

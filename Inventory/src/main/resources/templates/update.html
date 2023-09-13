@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>update</title>
+</head>
+<body>
+<form action="/user/update" method="post">
+  <input type="hidden" th:value="${updateUser.id}" name="id"><br>
+  이메일: <input type="text" th:value="${updateUser.username}" name="username" readonly> <br> <!-- name은 dto field랑 일치해야함-->
+  비밀번호: <input type="text" th:value="${updateUser.password}" name="password"> <br>
+  이름: <input type="text" th:value="${updateUser.nickname}" name="nickname"> <br>
+  전화번호: <input type="text" th:value="${updateUser.tel}" name="tel"> <br>
+  클래스: <input type="text" th:value="${updateUser.team}" name="team"> <br>
+  <input type="submit" value="정보수정">
+</form>
+</body>
+</html>
