@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<script>
+    function loginValidation() {
+        /*비정상적 접근 거부*/
+
+        let memberName = document.getElementById("memberName").value;
+        let password = document.getElementById("password").value;
+
+        //공백만 입력된 경우
+        var blank_pattern = /^\s+|\s+$/g;
+        if(
+            memberName.replace(blank_pattern, '' ) == "" ||
+            password.replace(blank_pattern, '' ) == ""
+        ){
+            alert('공백만 입력되었습니다.');
+            return false; /*폼 전송하지 않음*/
+        }
+
+        //문자열에 공백이 있는 경우
+        var blank_pattern = /[\s]/g;
+        if(
+            blank_pattern.test(memberName) == true ||
+            blank_pattern.test(password) == true
+        ){
+            alert('공백이 입력되었습니다.');
+            return false;
+        }
+
+        //특수문자가 있는 경우
+        var special_pattern = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
+        if(special_pattern.test(memberName) == true){
+            alert('특수문자가 입력되었습니다.');
+            return false;
+        }
+
+        //공백 혹은 특수문자가 있는 경우
+        if(memberName.search(/\W|\s/g) > -1){
+            alert( '특수문자 또는 공백이 입력되었습니다.');
+            return false;
+        }
+
+        return true;/*폼 전송*/
+    }
+
+</script>
+
+<body>
+<div>
+    <div>Login</div>
+    <form method="POST" action="/api/login" onsubmit="return loginValidation()">
+        <div>MemberName</div>
+        <input type="text" id="memberName" name="memberName" placeholder="아이디">
+
+        <button type="button" onclick="location.href='/signup'">회원가입</button>
+
+        <div>Password</div>
+        <input type="password" id="password" name="password">
+
+        <input type="submit" name="submit" value="로그인">
+    </form>
+</div>
+</body>
+</html>
