@@ -3,6 +3,7 @@ package com.springboot.inventory.user.service;
 import com.springboot.inventory.common.dto.ResponseDTO;
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.UserRoleEnum;
+import com.springboot.inventory.common.jwt.JwtTokenProvider;
 import com.springboot.inventory.user.dto.SignInRequestDTO;
 import com.springboot.inventory.user.dto.SignInResponseDTO;
 import com.springboot.inventory.user.dto.UserDTO;
@@ -22,12 +23,15 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper,
+                           PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
@@ -43,15 +47,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseDTO<SignInResponseDTO> loginUser(SignInRequestDTO signInRequestDTO) {
-        
-        System.out.println("로그인 진행");
-
-        System.out.println("유저 검색");
+    public ResponseDTO<String> loginUser(SignInRequestDTO signInRequestDTO) {
 
         Optional<User> searchedUser = userRepository.findByEmail(signInRequestDTO.getEmail());
-
-        System.out.println("유저 검색 완료");
 
         if(searchedUser.isEmpty()) {
             System.out.println("등록되지 않은 이메일입니다.");
@@ -61,7 +59,13 @@ public class UserServiceImpl implements UserService {
         User user = searchedUser.get();
 
         if (passwordEncoder.matches(signInRequestDTO.getPassword(), user.getPassword())) {
-            return new ResponseDTO<>(true, SignInResponseDTO.of(user));
+
+            String role = user.getRole().toString();
+            String email = user.getEmail();
+
+            String token = jwtTokenProvider.genToken(email, role);
+
+            return new ResponseDTO<>(true, token);
         }
 
         System.out.println("비밀번호가 일치하지 않습니다.");

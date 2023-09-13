@@ -13,6 +13,6 @@ public interface UserService {
 
     ResponseDTO<UserResponseDTO> registerUser(UserDTO userDTO);
 
-    ResponseDTO<SignInResponseDTO> loginUser(SignInRequestDTO signInRequestDTO);
+    ResponseDTO<String> loginUser(SignInRequestDTO signInRequestDTO);
 
 }
