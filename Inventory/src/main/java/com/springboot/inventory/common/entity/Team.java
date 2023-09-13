@@ -1,4 +1,4 @@
-package com.springboot.common.entity;
+package com.springboot.inventory.common.entity;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,20 +9,20 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Group extends Timestamped {
+public class Team extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long groupId;
+    private Long teamId;
 
     @Column(nullable = false, unique = true)
-    private String groupName;
+    private String teamName;
 
-    private Boolean deleted;
+    private boolean deleted;
 
     @Builder
-    public Group(String groupName) {
-        this.groupName = groupName;
+    public Team(String teamName) {
+        this.teamName = teamName;
         this.deleted = false;
 
     }

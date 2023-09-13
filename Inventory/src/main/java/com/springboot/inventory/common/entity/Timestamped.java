@@ -1,4 +1,4 @@
-package com.springboot.common.entity;
+package com.springboot.inventory.common.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

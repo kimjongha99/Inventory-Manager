@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<h2>list.html</h2>
+<table>
+  <tr>
+    <!-- dto에 있는 필드 -->
+    <th>id</th>
+    <th>username</th>
+    <th>password</th>
+    <th>nickname</th>
+    <th>tel</th>
+    <th>team</th>
+    <th>상세조회</th>
+    <th>삭제</th>
+  </tr>
+  <!-- 반복문-->
+  <tr th:each="user: ${userList}">
+    <td th:text="${user.id}"></td>
+    <td th:text="${user.username}"></td>
+    <td th:text="${user.password}"></td>
+    <td th:text="${user.nickname}"></td>
+    <td th:text="${user.tel}"></td>
+    <td th:text="${user.team}"></td>
+    <td>
+      <!-- query string /member?id=1
+          rest api /member/1 -->
+      <a th:href="@{|/user/${user.id}|}">조회</a>
+    </td>
+    <td>
+      <a th:href="@{|/user/delete/${user.id}|}">삭제</a>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
