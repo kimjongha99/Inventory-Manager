@@ -87,7 +87,6 @@ public class JwtTokenProvider {
         UserDetails userDetails =
                 userDetailsService.loadUserByUsername(getUserInfoByToken(token).get("email"));
 
-
         // 사용자 객체, 인증 정보, 사용자 권한을 포함한 UsernamePasswordAuthenticationToken 반환
         return new UsernamePasswordAuthenticationToken(userDetails, "",
                 userDetails.getAuthorities());

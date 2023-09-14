@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>요청 페이지</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script  type="text/javascript" th:src="@{/js/RequestPage.js}"></script>
+</head>
+<body>
+    <form id="request_form">
+        <label for="request_type">요청 종류</label>
+        <select id="request_type">
+            <option value="수리">수리</option>
+            <option value="대여">대여</option>
+            <option value="반납">반납</option>
+            <option value="구매">구매</option>
+        </select>
+
+        <label for="supply">대상 품목</label><input id="supply" type="text">
+
+        <label for="content">요청 내용</label><textarea id="content" ></textarea>
+        <button>제출</button>
+    </form>
+
+<script th:inline="javascript">
+    // 요청
+    $("#request_form").submit(function(event) {
+        event.preventDefault();
+
+        const data = {
+            type : $("#request_type").val(),
+            supply : $("#supply").val(),
+            content : $("#content").val()
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "request-api/request",
+            data: JSON.stringify(data),
+            dataType: 'text',
+            contentType: 'application/json',
+        }).done((res, status, xhr) => {
+            alert(res);
+        }).fail((res, status, xhr) => {
+            alert("요청 실패");
+        })
+    })
+</script>
+</body>
+</html>

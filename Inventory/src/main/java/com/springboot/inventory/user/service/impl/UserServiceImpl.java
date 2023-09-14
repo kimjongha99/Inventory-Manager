@@ -1,15 +1,14 @@
-package com.springboot.inventory.user.service;
+package com.springboot.inventory.user.service.impl;
 
 import com.springboot.inventory.common.dto.ResponseDTO;
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.UserRoleEnum;
 import com.springboot.inventory.common.jwt.JwtTokenProvider;
 import com.springboot.inventory.user.dto.SignInRequestDTO;
-import com.springboot.inventory.user.dto.SignInResponseDTO;
 import com.springboot.inventory.user.dto.UserDTO;
 import com.springboot.inventory.user.dto.UserResponseDTO;
 import com.springboot.inventory.user.repository.UserRepository;
-import com.springboot.inventory.user.service.impl.UserService;
+import com.springboot.inventory.user.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

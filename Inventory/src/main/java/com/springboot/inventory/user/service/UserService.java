@@ -1,10 +1,9 @@
-package com.springboot.inventory.user.service.impl;
+package com.springboot.inventory.user.service;
 
 
 import com.springboot.inventory.common.dto.ResponseDTO;
 import com.springboot.inventory.user.dto.SignInRequestDTO;
 
-import com.springboot.inventory.user.dto.SignInResponseDTO;
 import com.springboot.inventory.user.dto.UserDTO;
 import com.springboot.inventory.user.dto.UserResponseDTO;
 
