@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User List</title>
+</head>
+<body>
+<h1>User List</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>UserID</th>
+        <th>Username</th>
+        <th>password</th>
+        <th>Name</th>
+        <th>Telephone</th>
+        <th>Role</th>
+        <th>Alarm</th>
+        <th>Group</th>
+        <th>Deleted</th>
+        <th>Created_At</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- 여기에 유저 정보를 반복적으로 출력하는 코드를 추가할 수 있습니다. -->
+    <!-- Thymeleaf 문법을 사용하여 유저 목록 정보를 가져와 출력합니다. -->
+    <tr>
+        <td th:text="${finduser.user_id}"></td>
+        <td th:text="${finduser.username}"></td>
+        <td th:text="${finduser.password}"></td>
+        <td th:text="${finduser.name}"></td>
+        <td th:text="${finduser.tel}"></td>
+        <td th:text="${finduser.role}"></td>
+        <td th:text="${finduser.alarm}"></td>
+        <td th:text="${finduser.group.group_name}"></td>
+        <td th:text="${finduser.deleted}"></td>
+        <td th:text="${finduser.created_at}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<!--메세지띄우기1-->
+<script th:inline="javascript">
+    var message = [[${message}]];
+    alert(message);
+    location.replace([[${searchUrl}]]);
+</script>
+
+<body>
+
+</body>
+</html>

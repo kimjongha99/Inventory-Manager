@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원 정보 업데이트</title>
+</head>
+<body>
+<h2>회원 정보 업데이트</h2>
+<form action="/user/update" method="POST">
+    <!-- 사용자 정보를 미리 채워놓기 위해 th:object를 사용 -->
+    <input type="hidden" th:object="${updateuser}" />
+
+    <!-- 아이디는 변경하지 않으므로 readonly 속성을 추가 -->
+    <label for="username">이메일:</label>
+    <input type="text" id="username" name="username" th:value="${updateuser.username}" readonly><br><br>
+
+    <label for="name">이름:</label>
+    <input type="text" id="name" name="name" th:value="${updateuser.name}" required><br><br>
+
+    <label for="tel">전화번호:</label>
+    <input type="tel" id="tel" name="tel" th:value="${updateuser.tel}"><br><br>
+
+    <label for="alarm">알림 수신 동의:</label>
+    <input type="checkbox" id="alarm" name="alarm" th:checked="${updateuser.alarm}">
+    <input type="hidden" name="alarm" value="false"> <!-- 체크하지 않았을 때 "false" 전송 -->
+    <br><br>
+
+    <label for="group">그룹 번호:</label>
+    <select id="group" name="group" th:value="${updateuser.group}">
+        <option value="1">1반</option>
+        <option value="2">2반</option>
+        <option value="3">3반</option>
+    </select><br><br>
+
+    <input type="submit" value="업데이트">
+</form>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User List</title>
+</head>
+<body>
+<h1>User List</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>Name</th>
+        <th>Telephone</th>
+        <th>Group</th>
+        <th>상세조회</th>
+        <th>삭제</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- 여기에 유저 정보를 반복적으로 출력하는 코드를 추가할 수 있습니다. -->
+    <!-- Thymeleaf 문법을 사용하여 유저 목록 정보를 가져와 출력합니다. -->
+    <tr th:each="user : ${userlist}">
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.tel}"></td>
+        <td th:text="${user.group.group_name}"></td>
+        <td>
+            <a th:href="@{'/user/' + ${user.username}}">조회</a>
+        </td>
+        <td>
+            <a th:href="@{'/user/delete/' + ${user.username}}">삭제</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
