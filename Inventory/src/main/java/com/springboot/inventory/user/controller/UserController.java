@@ -70,6 +70,11 @@ public class UserController {
         return "redirect:/user/userlist";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession httpSession){
+        httpSession.invalidate();
+        return "redirect:/";
+    }
     // POST 방식
     @PostMapping("/signup") // 회원가입 및 데이터베이스에 저장
     public String signup(@ModelAttribute UserDto userDto){
