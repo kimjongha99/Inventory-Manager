@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Bootstrap Example</title>
     <meta charset="utf-8">
@@ -41,6 +42,13 @@
             로그아웃
         </a>
     </div>
+
+    <p th:text="${#authentication.name}"></p>
+    <p th:text="${#authentication.authorities}"></p>
+    <p th:text="${#authentication.authenticated}"></p>
+
+
+
 
 </div>
 </body>

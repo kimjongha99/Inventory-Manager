@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserDto {
+public class    UserDto {
     private String nickname;
     private String password;
     private boolean admin = false;
