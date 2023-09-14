@@ -11,7 +11,6 @@ public class UserResponseDTO {
 
     private String name;
 
-
     public static UserResponseDTO of (User user) {
         return UserResponseDTO.builder().email(user.getEmail()).name(user.getName()).build();
     }

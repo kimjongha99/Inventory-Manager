@@ -3,11 +3,10 @@ package com.springboot.inventory.user.controller;
 import com.springboot.inventory.common.dto.ResponseDTO;
 import com.springboot.inventory.user.dto.SignInRequestDTO;
 import com.springboot.inventory.user.dto.UserDTO;
-import com.springboot.inventory.user.service.impl.UserService;
+import com.springboot.inventory.user.service.UserService;
 
 //
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 //
@@ -32,12 +31,12 @@ public class UserController {
 
     @GetMapping(value = "/")
     public ModelAndView indexView() {
-        return createModelAndView("LandingPage");
+        return createModelAndView("users/LandingPage");
     }
 
     @GetMapping(value = "/signup")
     public ModelAndView signUpPage() {
-        ModelAndView mv = createModelAndView("SignUpPage");
+        ModelAndView mv = createModelAndView("users/SignUpPage");
         mv.addObject("userDTO", new UserDTO());
         return mv;
     }
@@ -50,7 +49,7 @@ public class UserController {
 
     @GetMapping(value = "/signin")
     public ModelAndView signInPage() {
-        ModelAndView mv = createModelAndView("SignInPage");
+        ModelAndView mv = createModelAndView("users/SignInPage");
         mv.addObject("signInRequestDTO", new SignInRequestDTO());
         return mv;
     }
@@ -82,17 +81,17 @@ public class UserController {
 
     @GetMapping("/master")
     public ModelAndView confidentialPage1() {
-        return createModelAndView("TestingMaseterPage");
+        return createModelAndView("users/TestingMaseterPage");
     }
 
     @GetMapping("/admin")
     public ModelAndView confidentialPage2() {
-        return createModelAndView("TestingAdminPage");
+        return createModelAndView("users/TestingAdminPage");
     }
 
     @GetMapping("/user")
     public ModelAndView confidentialPage3() {
-        return createModelAndView("TestingUserPage");
+        return createModelAndView("users/TestingUserPage");
     }
 
 }

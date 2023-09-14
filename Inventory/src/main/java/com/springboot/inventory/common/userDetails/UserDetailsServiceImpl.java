@@ -20,6 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
         Optional<User> searched = userRepository.findByEmail(email);
 
         if(searched.isEmpty()) {
@@ -29,9 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user = searched.get();
 
         return new CustomUserDetails(
-                user.getEmail(),
-                user.getPassword(),
-                user.getRole()
+                user, user.getEmail()
         );
     }
 }

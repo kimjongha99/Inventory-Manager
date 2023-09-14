@@ -50,7 +50,7 @@ public class SecurityConfig {
                 .permitAll()
                 .antMatchers("/master/**").hasAuthority("MASTER")
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
-                .antMatchers("/user/**").hasAuthority("USER")
+                .antMatchers("/user/**", "/request/**", "request-api/**").hasAuthority("USER")
                 .anyRequest().authenticated());
 
         // JWT 토큰 필터를 Spring Security 필터 체인에 추가

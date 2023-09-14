@@ -1,5 +1,6 @@
 package com.springboot.inventory.user.dto;
 
+import com.springboot.inventory.common.enums.UserRoleEnum;
 import lombok.*;
 
 
@@ -23,7 +24,7 @@ public class UserDTO {
     private String tel;
 
     //
-    private Integer role;
+    private UserRoleEnum role;
 
     private Boolean alarm;
 

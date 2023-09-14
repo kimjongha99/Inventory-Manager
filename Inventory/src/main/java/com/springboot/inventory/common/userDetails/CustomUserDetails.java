@@ -2,6 +2,7 @@ package com.springboot.inventory.common.userDetails;
 
 
 //
+import com.springboot.inventory.common.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,24 +22,27 @@ public class CustomUserDetails implements UserDetails, Serializable {
     private static final long serialVersionUID = 174726374856727L;
 
 
-
+    private User user;
     private String email;
-    private String password;
-    private UserRoleEnum role;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+
+        UserRoleEnum role = user.getRole();
 
         authorities.add(new SimpleGrantedAuthority(role.name()));
 
         return authorities;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     @Override
     public String getPassword() {
-        return password;
+        return null;
     }
 
     @Override
