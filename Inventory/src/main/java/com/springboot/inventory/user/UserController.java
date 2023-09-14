@@ -1,4 +1,4 @@
-package com.springboot.inventory.user.controller;
+package com.springboot.inventory.user;
 
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.user.dto.UserDto;
