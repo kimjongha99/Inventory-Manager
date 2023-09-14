@@ -1,6 +1,3 @@
-server:
-  port: 8081
-
 # database 연동 설정
 spring:
   datasource:
