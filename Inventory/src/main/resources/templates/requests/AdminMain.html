@@ -8,13 +8,15 @@
 </head>
 <body>
 
+<h1>관리자 - 메인 화면</h1>
+
     <div>
         <span>수리 요청</span>
         <a th:href="@{/admin-requestlist(pageType='repair')}"><span th:text="${repair}">0</span></a>
     </div>
     <div>
         <span>대여 요청</span>
-        <a th:href="@{/admin-requestlist(pageType='lent')}"><span th:text="${lent}">0</span></a>
+        <a th:href="@{/admin-requestlist(pageType='rental')}"><span th:text="${rental}">0</span></a>
     </div>
     <div>
         <span>반납 요청</span>

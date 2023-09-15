@@ -7,7 +7,7 @@ import lombok.Data;
 public class RequestDTO {
 
     private String type;
-    private String supply;
+    private String category;
     private String content;
     private User user;
 

@@ -25,6 +25,10 @@ public class Request extends TimeStamp implements Serializable {
     private RequestTypeEnum requestType;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoryId", referencedColumnName = "categoryId")
+    private Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supplyId", referencedColumnName = "supplyId")
     private Supply supply;
 
