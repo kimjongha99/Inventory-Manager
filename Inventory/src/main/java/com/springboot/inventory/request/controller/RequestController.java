@@ -11,7 +11,7 @@ public class RequestController {
         return new ModelAndView(view);
     }
 
-    @GetMapping(value = "/request")
+    @GetMapping(value = "/user-request")
     public ModelAndView requestPage() {
         return createModelAndView("requests/RequestPage");
     }

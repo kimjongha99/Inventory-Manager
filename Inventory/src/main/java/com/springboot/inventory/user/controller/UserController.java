@@ -69,13 +69,6 @@ public class UserController {
             return "redirect:/";
         }
 
-        /*
-        따라서 클라이언트 웹 브라우저에 토큰이 저장되는 것은 서버에서 쿠키를 생성되
-        고 응답을 클라이언트에게 보내면서 이루어지며, 직접적으로
-        HttpServletResponse를 반환하는 코드가 없어도 Spring MVC가 내부적으
-        로 처리합니다.
-        */
-
         return "redirect:/signin";
     }
 

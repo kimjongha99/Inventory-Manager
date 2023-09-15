@@ -21,7 +21,7 @@ public class RequestRestController {
         this.requestService = registerRequest;
     }
 
-    @PostMapping(value = "/request")
+    @PostMapping(value = "/user-request")
     @ResponseBody
     public ResponseEntity<?> request(@RequestBody RequestDTO requestDTO,
                                               @AuthenticationPrincipal CustomUserDetails userDetails) {

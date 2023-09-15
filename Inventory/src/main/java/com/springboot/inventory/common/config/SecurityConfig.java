@@ -34,26 +34,15 @@ public class SecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        /*
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        
-        세션 사용 X, 브라우저 종료 시 쿠키 초기화,
-        토큰이 삭제되면, 접근 권한 사라짐
-        
-        활성화 시 토큰을 삭제해도, 1회 인증된 유저는 세션에 접근 권한이 유지
-        */
-
-
         http.authorizeRequests(authReq -> authReq
                 .antMatchers("/", "/signup", "/signin")
                 .permitAll()
                 .antMatchers("/master/**").hasAuthority("MASTER")
-                .antMatchers("/admin/**").hasAuthority("ADMIN")
-                .antMatchers("/user/**", "/request/**", "request-api/**").hasAuthority("USER")
+                .antMatchers("/admin/**", "/admin-requestlist/**").hasAuthority("ADMIN")
+                .antMatchers("/user/**", "/user-request/**", "/request-api/user-request/**").hasAuthority(
+                        "USER")
                 .anyRequest().authenticated());
 
-        // JWT 토큰 필터를 Spring Security 필터 체인에 추가
         http.addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
