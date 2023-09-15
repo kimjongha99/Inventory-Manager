@@ -36,5 +36,10 @@ out/
 ### VS Code ###
 .vscode/
 
-## aplication properties
-Inventory/src/main/resources/application.properties
+### overview.txt
+overview.txt
+
+### applcation.properties
+**/application.properties
+
+
