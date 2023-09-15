@@ -1,7 +1,6 @@
-package com.springboot.inventory.common.entity;
+package com.springboot.inventory.supply.domain.entity;
 
-import com.springboot.inventory.common.enums.UserRole;
-import com.springboot.inventory.user.dto.UserDTO;
+import com.springboot.inventory.supply.domain.enums.UserRole;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,6 +20,7 @@ public class User extends Timestamped{
     @Column(nullable = false , unique = true) // 유니크 제약조건 추가 , 낫널
     private String username; // 아이디
 
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
 

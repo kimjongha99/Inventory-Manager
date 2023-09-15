@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>시리얼번호</th>
+                <th>모델설명</th>
+                <th>count</th>
+                <th>이미지링크</th>
+                <th>이름</th>
+                <th>삭제여부</th>
+                <th>상태</th>
+                <th>유저</th>
+                <th>카테고리</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="supply : ${supply}">
+                <td th:text="${supply.id}"></td>
+                <td th:text="${supply.serialNum}"></td>
+                <td th:text="${supply.modelContent}"></td>
+                <td th:text="${supply.amount}"></td>
+                <td th:text="${supply.image}"></td>
+                <td th:text="${supply.modelName}"></td>
+                <td th:text="${supply.deleted}"></td>
+                <td th:text="${supply.status}"></td>
+                <td th:text="${supply.user}"></td>
+                <td th:text="${supply.category}"></td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+</body>
+</html>
