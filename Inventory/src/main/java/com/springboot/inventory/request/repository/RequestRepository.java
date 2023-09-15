@@ -5,6 +5,7 @@ import com.springboot.inventory.common.enums.RequestTypeEnum;
 import com.springboot.inventory.request.dto.RequestDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public interface RequestRepository extends JpaRepository<Request, Long> {
@@ -13,10 +14,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     Optional<RequestDTO> findAllByUser(String email);
 
     // 미처리 요청 (수리, 대여, 반납, 구매)
-    Optional<RequestDTO> findAllByAcceptAndRequestType(Boolean accept, RequestTypeEnum type);
-
-
-
+    Optional<ArrayList<?>> findAllByAcceptAndRequestType(Boolean accept, RequestTypeEnum type);
 
 
 }

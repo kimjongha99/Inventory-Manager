@@ -7,11 +7,13 @@ import com.springboot.inventory.user.dto.SignInRequestDTO;
 import com.springboot.inventory.user.dto.UserDTO;
 import com.springboot.inventory.user.dto.UserResponseDTO;
 
+import java.util.Map;
+
 
 public interface UserService {
 
     ResponseDTO<UserResponseDTO> registerUser(UserDTO userDTO);
 
-    ResponseDTO<String> loginUser(SignInRequestDTO signInRequestDTO);
+    ResponseDTO<Map<String, String>> loginUser(SignInRequestDTO signInRequestDTO);
 
 }

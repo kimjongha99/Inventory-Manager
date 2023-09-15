@@ -11,24 +11,35 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("/request-api")
 public class RequestRestController {
 
     private final RequestService requestService;
 
-    public RequestRestController(RequestService registerRequest) {
-        this.requestService = registerRequest;
+    public RequestRestController(RequestService requestService) {
+        this.requestService = requestService;
     }
 
     @PostMapping(value = "/user-request")
     @ResponseBody
-    public ResponseEntity<?> request(@RequestBody RequestDTO requestDTO,
+    public ResponseEntity<?> sendRequest(@RequestBody RequestDTO requestDTO,
                                               @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         User user = userDetails.getUser();
         requestService.registerRequest(requestDTO, user);
 
         return ResponseEntity.ok("요청 완료");
+    }
+
+    @GetMapping(value = "/admin-request/count")
+    @ResponseBody
+    public ResponseEntity<?> getRequestList(@RequestBody String type) {
+
+        ArrayList<?> requestList = requestService.getRequestUnhandled(type).getData();
+
+        return ResponseEntity.ok(requestList);
     }
 }

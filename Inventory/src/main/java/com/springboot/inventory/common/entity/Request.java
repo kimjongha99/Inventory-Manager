@@ -8,12 +8,13 @@ import lombok.Setter;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "request")
 @Getter
 @Setter
-public class Request extends TimeStamp {
+public class Request extends TimeStamp implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +25,7 @@ public class Request extends TimeStamp {
     private RequestTypeEnum requestType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "supplyId")
+    @JoinColumn(name = "supplyId", referencedColumnName = "supplyId")
     private Supply supply;
 
     private String content;
@@ -36,7 +37,7 @@ public class Request extends TimeStamp {
     private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "email", nullable = false)
+    @JoinColumn(name = "email", referencedColumnName = "email", nullable = false)
     private User user;
 
 

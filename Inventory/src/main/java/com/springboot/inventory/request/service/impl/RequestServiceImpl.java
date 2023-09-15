@@ -13,13 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class RequestServiceImpl implements RequestService {
 
     private final RequestRepository requestRepository;
     private final UserRepository userRepository;
-
     private final ModelMapper modelMapper;
 
     @Autowired
@@ -48,11 +48,13 @@ public class RequestServiceImpl implements RequestService {
         return new ResponseDTO<>(true, null);
     }
 
-    public ResponseDTO<ArrayList<RequestDTO>> getRequestUnhandled() {
+    public ResponseDTO<ArrayList<?>> getRequestUnhandled(String type) {
 
-        requestRepository.findAllByAcceptAndRequestType(null, RequestTypeEnum.REPAIR);
+        RequestTypeEnum requestType = RequestTypeEnum.fromString(type);
 
-        return new ResponseDTO<>(true, null);
+        ArrayList<?> requestList = requestRepository.findAllByAcceptAndRequestType(null,
+                requestType).orElse(new ArrayList<>());
+
+        return new ResponseDTO<>(true, requestList);
     }
-
 }

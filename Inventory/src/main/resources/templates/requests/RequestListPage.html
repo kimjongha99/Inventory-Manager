@@ -2,11 +2,46 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>요청 목록</title>
+    <title>요청 상세</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 </head>
+
 <body>
-    
+ <h1>요청 정보</h1>
+
+    <table>
+
+       <thead>
+            <tr>
+                <th>요청 ID</th>
+                <th>요청 타입</th>
+                <th>요청 품목</th>
+                <th>내용</th>
+                <th>처리</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="info : ${requestList}">
+            <td th:text="${info.requestId}">Request ID</td>
+
+            <td th:text="${info.requestType}">Request Type</td>
+
+            <td th:text="${info.supply}">Supply</td>
+
+            <td th:text="${info.content}">Content</td>
+
+            <td>
+                <button onclick="">승인</button>
+                <button onclick="">거절</button>
+            </td>
+
+        </tr>
+        </tbody>
+
+    </table>
+
 </body>
+
 </html>
