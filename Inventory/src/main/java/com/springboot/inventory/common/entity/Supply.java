@@ -16,6 +16,10 @@ public class Supply extends TimeStamp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long supplyId;
 
+    @ManyToOne
+    @JoinColumn(name = "category", referencedColumnName = "categoryId")
+    private Category category;
+
     @Column(nullable = false)
     private Integer amount;
 
@@ -24,5 +28,9 @@ public class Supply extends TimeStamp {
 
     @Enumerated(value = EnumType.STRING)
     private RequestTypeEnum state;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "email", referencedColumnName = "email")
+    private User user;
 
 }

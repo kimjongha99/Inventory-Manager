@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>요청 목록</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+</head>
+<body>
+
+    <div>
+        <span>수리 요청</span>
+        <a th:href="@{/admin-requestlist(pageType='repair')}"><span th:text="${repair}">0</span></a>
+    </div>
+    <div>
+        <span>대여 요청</span>
+        <a th:href="@{/admin-requestlist(pageType='lent')}"><span th:text="${lent}">0</span></a>
+    </div>
+    <div>
+        <span>반납 요청</span>
+        <a th:href="@{/admin-requestlist(pageType='return')}"> <span th:text="${return}">0</span></a>
+    </div>
+    <div>
+        <span>구매 요청</span>
+        <a th:href="@{/admin-requestlist(pageType='purchase')}"><span th:text="${purchase}">0</span></a>
+    </div>
+
+
+</body>
+</html>

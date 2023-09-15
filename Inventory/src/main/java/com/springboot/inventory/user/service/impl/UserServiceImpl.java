@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -46,7 +48,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseDTO<String> loginUser(SignInRequestDTO signInRequestDTO) {
+    public ResponseDTO<Map<String, String>> loginUser(SignInRequestDTO signInRequestDTO) {
 
         Optional<User> searchedUser = userRepository.findByEmail(signInRequestDTO.getEmail());
 
@@ -64,7 +66,14 @@ public class UserServiceImpl implements UserService {
 
             String token = jwtTokenProvider.genToken(email, role);
 
-            return new ResponseDTO<>(true, token);
+            Map<String, String> body = new HashMap<>();
+            body.put("token", token);
+            body.put("role", role);
+
+            System.out.println(role);
+            System.out.println(UserRoleEnum.USER.getRole());
+
+            return new ResponseDTO<>(true, body);
         }
 
         System.out.println("비밀번호가 일치하지 않습니다.");

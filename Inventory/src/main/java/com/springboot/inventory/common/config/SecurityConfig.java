@@ -38,7 +38,9 @@ public class SecurityConfig {
                 .antMatchers("/", "/signup", "/signin")
                 .permitAll()
                 .antMatchers("/master/**").hasAuthority("MASTER")
-                .antMatchers("/admin/**", "/admin-requestlist/**").hasAuthority("ADMIN")
+                .antMatchers("/admin/**", "/admin-main", "/admin-requestlist/**", "/register" +
+                        "-supply/**").hasAuthority(
+                        "ADMIN")
                 .antMatchers("/user/**", "/user-request/**", "/request-api/user-request/**").hasAuthority(
                         "USER")
                 .anyRequest().authenticated());

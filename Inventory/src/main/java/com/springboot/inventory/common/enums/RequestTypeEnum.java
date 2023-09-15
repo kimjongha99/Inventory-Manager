@@ -5,10 +5,10 @@ import lombok.Getter;
 @Getter
 public enum RequestTypeEnum {
 
-    REPAIR("수리"),
-    RENT("대여"),
-    RETURN("반납"),
-    PURCHASE("구매");
+    REPAIR("repair"),
+    LENT("lent"),
+    RETURN("return"),
+    PURCHASE("purchase");
 
     private final String type;
 

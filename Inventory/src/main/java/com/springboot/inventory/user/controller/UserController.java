@@ -1,6 +1,7 @@
 package com.springboot.inventory.user.controller;
 
 import com.springboot.inventory.common.dto.ResponseDTO;
+import com.springboot.inventory.common.enums.UserRoleEnum;
 import com.springboot.inventory.user.dto.SignInRequestDTO;
 import com.springboot.inventory.user.dto.UserDTO;
 import com.springboot.inventory.user.service.UserService;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 @Controller
 public class UserController {
@@ -57,16 +59,23 @@ public class UserController {
     @PostMapping(value = "/signin")
     public String signIn(@ModelAttribute("signInRequestDTO") SignInRequestDTO signInRequestDTO,
                          HttpServletResponse res) {
-        ResponseDTO<String> response = userService.loginUser(signInRequestDTO);
+
+        ResponseDTO<Map<String, String>> response = userService.loginUser(signInRequestDTO);
 
         if (response.getResult()) {
-            Cookie cookie = new Cookie("Authentication", response.getData());
+            Cookie cookie = new Cookie("Authentication", response.getData().get("token"));
 
             cookie.setPath("/");
             cookie.setHttpOnly(true);
 
             res.addCookie(cookie);
-            return "redirect:/";
+
+
+            return response.getData().get("role").equals("USER")  ?
+                    "redirect:/" :
+                    "redirect" +
+                    ":/admin" +
+                    "-main" ;
         }
 
         return "redirect:/signin";
