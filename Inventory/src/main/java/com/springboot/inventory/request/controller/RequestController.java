@@ -30,14 +30,14 @@ public class RequestController {
 
         int repairCount = requestService.getRequestUnhandled("repair").getData().size();
 
-        int lentCount = requestService.getRequestUnhandled("lent").getData().size();
+        int rentalCount = requestService.getRequestUnhandled("rental").getData().size();
 
         int returnCount = requestService.getRequestUnhandled("return").getData().size();
 
         int purchaseCount = requestService.getRequestUnhandled("purchase").getData().size();
 
         model.addAttribute("repair", repairCount);
-        model.addAttribute("lent", lentCount);
+        model.addAttribute("rental", rentalCount);
         model.addAttribute("return", returnCount);
         model.addAttribute("purchase", purchaseCount);
 

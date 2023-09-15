@@ -10,14 +10,11 @@ import javax.persistence.*;
 @Data
 public class SupplyRegisterDTO {
 
-    private Category category;
+    private String category;
 
     private Integer amount;
 
     private String modelName;
-
-    @Enumerated(value = EnumType.STRING)
-    private RequestTypeEnum state;
 
     private User user;
 

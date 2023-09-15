@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script  type="text/javascript" th:src="@{/js/request.js}"></script>
 </head>
 <body>
-    <form id="request_form" onsubmit="onSubmit(event);">
-        <label for="request_type">요청 종류</label>
-        <select id="request_type">
-            <option value="repair">수리</option>
-            <option value="lent">대여</option>
-            <option value="return">반납</option>
-            <option value="purchase">구매</option>
-        </select>
+    <h1>관리자 - 제품 등록 화면</h1>
 
-        <label for="supply">대상 품목</label><input id="supply" type="text">
+    <form id="supply-regiseter_form" onsubmit="onSubmitSupply(event);">
 
-        <label for="content">요청 내용</label><textarea id="content" ></textarea>
+        <label for="category">분류</label>
+        <select id="category"></select>
+
+        <label for="amount" >수량</label>
+        <input id="amount" type="number" required>
+
+        <label for="modelName">품명</label>
+        <input id="modelName" type="text">
+
         <button>제출</button>
     </form>
 </body>

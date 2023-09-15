@@ -1,6 +1,8 @@
 package com.springboot.inventory.request.service.impl;
 
+import com.springboot.inventory.category.repository.CategoryRepository;
 import com.springboot.inventory.common.dto.ResponseDTO;
+import com.springboot.inventory.common.entity.Category;
 import com.springboot.inventory.common.entity.Request;
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.RequestTypeEnum;
@@ -19,15 +21,15 @@ import java.util.Optional;
 public class RequestServiceImpl implements RequestService {
 
     private final RequestRepository requestRepository;
-    private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public RequestServiceImpl(RequestRepository requestRepository, UserRepository userRepository,
+    public RequestServiceImpl(RequestRepository requestRepository, CategoryRepository categoryRepository,
                               ModelMapper modelMapper) {
 
         this.requestRepository = requestRepository;
-        this.userRepository = userRepository;
+        this.categoryRepository = categoryRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -37,9 +39,12 @@ public class RequestServiceImpl implements RequestService {
         
         // 요청 종류 불러오기
         RequestTypeEnum requestType = RequestTypeEnum.fromString(requestDTO.getType());
+        Category category =
+                categoryRepository.findByCategoryName(requestDTO.getCategory()).orElse(null);
 
         // 추가 매핑
         request.setRequestType(requestType);
+        request.setCategory(category);
         request.setUser(user);
 
         // 저장

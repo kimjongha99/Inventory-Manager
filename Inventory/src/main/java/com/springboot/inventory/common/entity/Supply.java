@@ -20,7 +20,6 @@ public class Supply extends TimeStamp {
     @JoinColumn(name = "category", referencedColumnName = "categoryId")
     private Category category;
 
-    @Column(nullable = false)
     private Integer amount;
 
     @Column(nullable = false)

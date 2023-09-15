@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum RequestTypeEnum {
 
     REPAIR("repair"),
-    LENT("lent"),
+    RENTAL("rental"),
     RETURN("return"),
     PURCHASE("purchase");
 

@@ -8,19 +8,24 @@
     <script  type="text/javascript" th:src="@{/js/request.js}"></script>
 </head>
 <body>
-    <form id="request_form" onsubmit="onSubmit(event);">
+
+    <h1>유저 - 비품 요청 페이지</h1>
+
+    <form id="request_form" onsubmit="onSubmitRequest(event);">
         <label for="request_type">요청 종류</label>
         <select id="request_type">
             <option value="repair">수리</option>
-            <option value="lent">대여</option>
+            <option value="rental">대여</option>
             <option value="return">반납</option>
             <option value="purchase">구매</option>
         </select>
 
-        <label for="supply">대상 품목</label><input id="supply" type="text">
+        <label for="category">대상 품목</label>
+        <select id="category"></select>
 
         <label for="content">요청 내용</label><textarea id="content" ></textarea>
         <button>제출</button>
     </form>
+
 </body>
 </html>
