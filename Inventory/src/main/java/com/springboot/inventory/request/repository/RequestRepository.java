@@ -1,6 +1,7 @@
 package com.springboot.inventory.request.repository;
 
 import com.springboot.inventory.common.entity.Request;
+import com.springboot.inventory.common.entity.Supply;
 import com.springboot.inventory.common.enums.RequestTypeEnum;
 import com.springboot.inventory.request.dto.RequestDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,6 +16,8 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     // 미처리 요청 (수리, 대여, 반납, 구매)
     Optional<ArrayList<?>> findAllByAcceptAndRequestType(Boolean accept, RequestTypeEnum type);
+
+    Optional<Request> findByRequestId(Long requestId);
 
 
 }
