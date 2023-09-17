@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @Controller
 public class RequestController {
@@ -48,11 +49,23 @@ public class RequestController {
     public String requestInfoPage (@RequestParam(name = "pageType", defaultValue = "/") String pageType,
                                    Model model) {
 
-        ArrayList<?> requestlist = requestService.getRequestUnhandled(pageType).getData();
+        ArrayList<?> requestList = requestService.getRequestUnhandled(pageType).getData();
 
-        model.addAttribute("requestList", requestlist);
+        model.addAttribute("requestList", requestList);
 
         return "/requests/RequestListPage";
+    }
+
+    @GetMapping(value = "/admin-request-accept/rental")
+    public String rentalRequestAcceptPage(@RequestParam(name = "requestId", defaultValue = "") String requestId
+            , Model model) {
+
+        Map<String, ?> response =  requestService.getRentalRequestInfo(requestId).getData();
+
+        model.addAttribute("requestId", response.get("requestId"));
+        model.addAttribute("supplyList", response.get("supplyList"));
+
+        return "/requests/RentalAcceptPage";
     }
 
 

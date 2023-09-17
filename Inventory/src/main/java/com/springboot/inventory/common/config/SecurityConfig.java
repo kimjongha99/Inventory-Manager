@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .permitAll()
                 .antMatchers("/master/**").hasAuthority("MASTER")
                 .antMatchers("/admin/**", "/admin-main", "/admin-requestlist/**", "/register" +
-                        "-supply/**").hasAuthority(
+                        "-supply/**", "/admin-request/rental-request-accept/**").hasAuthority(
                         "ADMIN")
                 .antMatchers("/user/**", "/user-request/**", "/request-api/user-request/**").hasAuthority(
                         "USER")

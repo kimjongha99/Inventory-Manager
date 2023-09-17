@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/accept.js}"></script>
+</head>
+<body>
+<h1>관리자 - 대여 품목 선택</h1>
+
+<div id="requestId" th:text="${requestId}">Request Id</div>
+
+<table>
+
+    <thead>
+    <tr>
+        <th>비품 ID</th>
+        <th>카테고리</th>
+        <th>모델명</th>
+        <th>처리</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="info : ${supplyList}">
+
+        <td class="supplyId" th:text="${info.supplyId}">Supply ID</td>
+
+        <td th:text="${info.category.categoryName}">Category</td>
+
+        <td th:text="${info.modelName}">Model name</td>
+
+        <td>
+            <button onclick="acceptRentalHandler(event);">승인</button>
+            <button>거절</button>
+        </td>
+
+    </tr>
+    </tbody>
+
+</table>
+</body>
+</html>
