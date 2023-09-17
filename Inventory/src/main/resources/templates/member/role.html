@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<div layout:fragment="content">
+
+  <!--마스터 역할을 갖는다면 이 글이 보임-->
+  <div sec:authorize="hasRole('ROLE_MASTER')">
+    마스터 <span style="color:green;" sec:authentication="principal.username"></span>님 안녕하세요.
+  </div>
+
+  <!--ADMIN 역할을 갖는다면 이 글이 보임-->
+  <div sec:authorize="hasRole('ROLE_ADMIN')">
+    비품관리자 <span style="color:green;" sec:authentication="name"></span>님 안녕하세요.
+  </div>
+
+  <div sec:authorize="hasRole('ROLE_MEMBER')">
+    맴버 <span style="color:green;" sec:authentication="name"></span>님 안녕하세요.
+  </div>
+
+
+  <div>
+    소유한 권한들 : <span sec:authentication="principal.authorities"></span>
+  </div>
+
+  <!--어떤 역할이건 상관없이 인증이 되었다면 이 글이 보임-->
+  <h3 sec:authorize="isAuthenticated()">인증된 사람만 이 글을 볼 수 있습니다.</h3>
+
+  <div>
+    name : <span sec:authentication="name"></span>
+  </div>
+
+
+  <div>
+    principal.username : <span sec:authentication="principal.username"></span>
+  </div>
+
+  <div>
+    principal.password : <span sec:authentication="principal.password"></span>
+  </div>
+
+  <div>
+    principal.enabled : <span sec:authentication="principal.enabled"></span>
+  </div>
+
+  <div>
+    principal.accountNonLocked : <span sec:authentication="principal.accountNonLocked"></span>
+  </div>
+
+  <div>
+    principal.accountNonExpired : <span sec:authentication="principal.accountNonExpired"></span>
+  </div>
+
+  <div>
+    principal.credentialsNonExpired : <span sec:authentication="principal.credentialsNonExpired"></span>
+  </div>
+
+
+
+
+
+
+
+</div>
+</body>
+</html>
