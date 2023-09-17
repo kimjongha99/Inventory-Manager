@@ -1,10 +1,12 @@
 package com.springboot.inventory.supply.dto;
 
-import com.springboot.inventory.supply.domain.entity.Category;
+import com.springboot.inventory.supply.domain.entity.Supply;
 import com.springboot.inventory.supply.domain.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
@@ -13,12 +15,29 @@ public class SupplyResponseDto {
 
     private Long supplyId;
     private String serialNum;
-    private String modelContent;
     private int amount;
     private String modelName;
-    private boolean deleted;
-    private User user; //사용자
-    private Category category; // 분류
+    private String status;
+    private String username; //사용자
+    private String categoryName; // 분류
+    private LocalDateTime createdAt;
+
+    public SupplyResponseDto(Supply supply){
+        User user = supply.getUser();
+
+        this.supplyId = supply.getSupplyId();
+        this.modelName = supply.getModelName();
+        this.serialNum = supply.getSerialNum();
+        this.createdAt = supply.getCreatedAt();
+        this.status = supply.getStatus().getKorean();
+        if (supply.getUser() != null) {
+            this.username = supply.getUser().getUsername();
+        }
+        if (supply.getCategory() != null) {
+            this.categoryName = supply.getCategory().getCategoryName();
+        }
+
+    }
 
 
 }
