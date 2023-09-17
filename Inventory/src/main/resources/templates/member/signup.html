@@ -1,0 +1,31 @@
+
+
+<!DOCTYPE html>
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/basic.html}"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<div layout:fragment="content">
+
+<div>SignUp</div>
+
+<form method="POST" action="/api/signup" onsubmit="return passwordValidation()">
+  <div>MemberName</div>
+  <input type="text" id="memberName" name="memberName" placeholder="아이디">
+
+  <div>Password</div>
+  <input type="password" id="password" name="password">
+
+  <input type="radio" name="role" value="MEMBER" checked>멤버
+  <input type="radio" name="role" value="ADMIN">비품 총괄 관리자
+  <input type="radio" name="role" value="MASTER">마스터
+
+  <input type="submit" name="submit" value="회원 가입">
+</form>
+
+
+
+</div>
+</body>
+</html>
