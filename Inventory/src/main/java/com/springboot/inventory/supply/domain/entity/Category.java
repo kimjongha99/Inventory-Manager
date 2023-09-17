@@ -1,6 +1,7 @@
 package com.springboot.inventory.supply.domain.entity;
 
 import com.springboot.inventory.supply.domain.enums.LargeCategory;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -23,4 +24,11 @@ public class Category {
     private LargeCategory largeCategory;
 
     private Boolean deleted;
+    @Builder
+    public Category(String categoryName, LargeCategory largeCategory, Boolean deleted) {
+        this.categoryName = categoryName;
+        this.largeCategory = largeCategory;
+        this.deleted = deleted;
+    }
+
 }

@@ -1,30 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>게시판 조회</title>
+    <meta charset="UTF-8">
+    <title>Supply List</title>
 </head>
 <body>
+<h1>Supply List</h1>
 <table>
+    <thead>
     <tr>
         <th>Supply ID</th>
         <th>Serial Number</th>
-        <th>Model Content</th>
         <th>Amount</th>
         <th>Model Name</th>
-        <th>Deleted</th>
-        <th>User</th>
-        <th>Category</th>
+        <th>Status</th>
+        <th>Username</th>
+        <th>Category Name</th>
+        <th>Created At</th>
     </tr>
-    <tr th:each="supply : ${supplies}">
-        <td th:text="${supply.supplyId}"></td>
-        <td th:text="${supply.serialNum}"></td>
-        <td th:text="${supply.modelContent}"></td>
-        <td th:text="${supply.amount}"></td>
-        <td th:text="${supply.modelName}"></td>
-        <td th:text="${supply.deleted}"></td>
-        <td th:if="${supply.user != null}" th:text="${supply.user}"></td>
-        <td th:text="${supply.category}"></td>
+    </thead>
+    <tbody>
+    <tr th:each="dto : ${supplyResponseDtos}">
+        <td th:text="${dto.supplyId}"></td>
+        <td th:text="${dto.serialNum}"></td>
+        <td th:text="${dto.amount}"></td>
+        <td th:text="${dto.modelName}"></td>
+        <td th:text="${dto.status}"></td>
+        <td th:text="${dto.username}"></td> <!-- username 출력 -->
+        <td th:text="${dto.categoryName}"></td> <!-- categoryName 출력 -->
+        <td th:text="${dto.createdAt}"></td>
     </tr>
+    </tbody>
 </table>
 </body>
 </html>
