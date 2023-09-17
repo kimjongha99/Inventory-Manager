@@ -1,16 +1,14 @@
 package com.springboot.inventory.supply.dto;
 
 import com.springboot.inventory.supply.domain.entity.Category;
-import com.springboot.inventory.supply.domain.entity.Supply;
 import com.springboot.inventory.supply.domain.entity.User;
-import com.springboot.inventory.supply.domain.enums.SupplyStatusEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
+import lombok.Setter;
 
 @NoArgsConstructor
 @Getter
+@Setter
 public class SupplyResponseDto {
 
     private Long supplyId;
