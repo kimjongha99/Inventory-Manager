@@ -125,9 +125,6 @@ public class SupplyService {
         supplyDTO.setImage(imageName);
         supplyDTO.setImagePath("/image/" +imageName);
 
-        String image = supplyDTO.getImage();
-        String imagePath = supplyDTO.getImagePath();
-
         Supply supply = supplyOptional.get(); //supply 엔티티 추출
 
         supply.setSerialNum(supplyDTO.getSerialNum());
@@ -148,8 +145,6 @@ public class SupplyService {
             supply.getCategory().setCategoryName(categoryName);
         }
 
-
-        // 4. 변경사항 저장
        return  supplyRepository.save(supply);
     }
 
