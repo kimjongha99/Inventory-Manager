@@ -17,9 +17,9 @@ public class AllPageController {
     }
 
 
-    @GetMapping("/request-detail")   // 전체요청내역
+    @GetMapping("/user-main")   // 전체요청내역
     public  String RequestDetail() {
-        return "dashboard/requestinformation/RequestDetails";
+        return "requests/UserMainPage";
     }
 
     @GetMapping("/buy-request")   // 구매요청
