@@ -20,6 +20,7 @@ public class User extends Timestamped{
     @Column(nullable = false , unique = true) // 유니크 제약조건 추가 , 낫널
     private String username; // 아이디
 
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
 
