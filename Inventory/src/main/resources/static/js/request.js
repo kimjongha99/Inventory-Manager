@@ -61,7 +61,7 @@ const onSubmitSupply = (event) => {
     })
 }
 
-//
+// 카테고리 옵션 렌더링
 function renderCategoryList(categoryList) {
     const categorySelect = document.getElementById("category");
 

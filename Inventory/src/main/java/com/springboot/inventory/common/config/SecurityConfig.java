@@ -1,6 +1,5 @@
 package com.springboot.inventory.common.config;
 
-//import com.springboot.inventory.common.jwt.JwtTokenFilter;
 import com.springboot.inventory.common.jwt.JwtTokenFilter;
 import com.springboot.inventory.common.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,7 @@ public class SecurityConfig {
                 .permitAll()
                 .antMatchers("/master/**").hasAuthority("MASTER")
                 .antMatchers("/admin/**", "/admin-main", "/admin-requestlist/**", "/register" +
-                        "-supply/**", "/admin-request/rental-request-accept/**").hasAuthority(
+                        "-supply/**", "/admin-request/rental-request-approve/**").hasAuthority(
                         "ADMIN")
                 .antMatchers("/user/**", "/user-request/**", "/request-api/user-request/**").hasAuthority(
                         "USER")
@@ -54,10 +53,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-//
-//    @Bean
-//    public JwtTokenFilter jwtTokenFilter() {
-//        return new JwtTokenFilter();
-//    }
 
 }

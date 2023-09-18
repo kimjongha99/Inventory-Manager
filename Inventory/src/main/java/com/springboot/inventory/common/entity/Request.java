@@ -1,11 +1,8 @@
 package com.springboot.inventory.common.entity;
 
 import com.springboot.inventory.common.enums.RequestTypeEnum;
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.io.Serializable;

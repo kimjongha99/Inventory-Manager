@@ -7,11 +7,11 @@ import com.springboot.inventory.common.entity.Request;
 import com.springboot.inventory.common.entity.Supply;
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.RequestTypeEnum;
+import com.springboot.inventory.request.dto.RentalRejectDTO;
 import com.springboot.inventory.request.dto.RequestDTO;
 import com.springboot.inventory.request.repository.RequestRepository;
 import com.springboot.inventory.request.service.RequestService;
 import com.springboot.inventory.supply.repository.SupplyRepository;
-import com.springboot.inventory.user.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,7 +83,7 @@ public class RequestServiceImpl implements RequestService {
         return new ResponseDTO<>(true, data);
     }
 
-    public ResponseDTO<?> updateSupplyState(String reqId, String supId, String requestType) {
+    public ResponseDTO<?> approveRequest(String reqId, String supId, String requestType) {
 
         Long requestId = Long.parseLong(reqId);
         Long supplyId = Long.parseLong(supId);
@@ -101,6 +101,37 @@ public class RequestServiceImpl implements RequestService {
         supplyRepository.save(supply);
 
         return new ResponseDTO<>(true, null);
+    }
+
+    public ResponseDTO<?> rejectRequest(RentalRejectDTO rentalRejectDTO) {
+
+        String reqId = rentalRejectDTO.getRequestId();
+        String comment  = rentalRejectDTO.getComment();
+
+        Long requestId = Long.parseLong(reqId);
+
+        Request request = requestRepository.findByRequestId(requestId).orElse(null);
+
+        request.setAccept(false);
+        request.setComment(comment);
+
+        requestRepository.save(request);
+
+
+
+        return new ResponseDTO<>(true, null);
+    }
+
+    public ResponseDTO<List<Request>> getUserRequestHistory(User user) {
+
+        System.out.println("=====================서비스 진입====================");
+
+        List<Request> requestHistory = requestRepository.findAllByUser(user);
+
+        System.out.println(user.getEmail());
+        System.out.println(requestHistory.get(1));
+
+        return new ResponseDTO<>(true, requestHistory);
     }
 
 }

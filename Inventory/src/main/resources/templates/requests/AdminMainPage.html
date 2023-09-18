@@ -10,6 +10,8 @@
 
 <h1>관리자 - 메인 화면</h1>
 
+<h2>안녕하세요!</h2>
+
     <div>
         <span>수리 요청</span>
         <a th:href="@{/admin-requestlist(pageType='repair')}"><span th:text="${repair}">0</span></a>
@@ -27,6 +29,10 @@
         <a th:href="@{/admin-requestlist(pageType='purchase')}"><span th:text="${purchase}">0</span></a>
     </div>
 
+    <div>
+        <a th:href="@{/register-supply}" ><button>비품 등록</button></a>
+        <a th:href="@{/}" ><button>메인 페이지</button></a>
+    </div>
 
 </body>
 </html>

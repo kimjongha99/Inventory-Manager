@@ -3,7 +3,8 @@ package com.springboot.inventory.request.controller;
 //
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.userDetails.CustomUserDetails;
-import com.springboot.inventory.request.dto.RentalRequestDTO;
+import com.springboot.inventory.request.dto.RentalRejectDTO;
+import com.springboot.inventory.request.dto.RentalApproveDTO;
 import com.springboot.inventory.request.dto.RequestDTO;
 import com.springboot.inventory.request.service.RequestService;
 
@@ -44,15 +45,25 @@ public class RequestRestController {
         return ResponseEntity.ok(requestList);
     }
 
-    @PostMapping(value = "/admin-request/rental-request-accept")
+    @PostMapping(value = "/admin-request/rental-request-approve")
     @ResponseBody
-    public ResponseEntity<?> approveRentalRequest(@RequestBody RentalRequestDTO rentalRequestDTO) {
+    public ResponseEntity<?> approveRentalRequest(@RequestBody RentalApproveDTO rentalApproveDTO) {
 
-        String reqId = rentalRequestDTO.getRequestId();
-        String supId = rentalRequestDTO.getSupplyId();
+        String reqId = rentalApproveDTO.getRequestId();
+        String supId = rentalApproveDTO.getSupplyId();
 
-        requestService.updateSupplyState(reqId, supId, "rental");
+        requestService.approveRequest(reqId, supId, "rental");
 
         return ResponseEntity.ok("승인되었습니다.");
     }
+
+    @PostMapping(value = "/admin-request/rental-request-reject")
+    @ResponseBody
+    public ResponseEntity<?> rejectRentalRequest(@RequestBody RentalRejectDTO rentalRejectDTO) {
+
+        requestService.rejectRequest(rentalRejectDTO);
+        
+        return ResponseEntity.ok("승인 거부되었습니다.");
+    }
+
 }

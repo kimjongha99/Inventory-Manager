@@ -18,32 +18,37 @@
                 <th>요청 타입</th>
                 <th>요청 품목</th>
                 <th>내용</th>
-                <th>처리</th>
+                <th>상세</th>
             </tr>
         </thead>
 
         <tbody>
-        <tr th:each="info : ${requestList}">
+            <tr th:each="info : ${requestList}">
 
-            <td th:text="${info.requestId}">Request ID</td>
+                <td th:text="${info.requestId}">Request ID</td>
 
-            <td th:text="${info.requestType}">Request Type</td>
+                <td th:text="${info.requestType}">Request Type</td>
 
-            <td th:text="${info.category.categoryName}">Cupply</td>
+                <td th:text="${info.category.categoryName}">Cupply</td>
 
-            <td th:text="${info.content}">Content</td>
+                <td th:text="${info.content}">Content</td>
 
-            <td>
-                <a
-                        th:href="@{/admin-request-accept/rental(requestId=${info.requestId})}"><button>승인
-                </button></a>
-                <a><button>거절</button></a>
-            </td>
+                <td>
+                    <a
+                            th:href="@{/admin-request-accept/rental(requestId=${info.requestId})}"><button>상세
+                    </button></a>`
+                </td>
 
-        </tr>
+            </tr>
         </tbody>
 
     </table>
+
+
+     <div>
+         <a th:href="@{/admin-main}"><button>메인 페이지</button></a>
+     </div>
+
 </body>
 
 </html>

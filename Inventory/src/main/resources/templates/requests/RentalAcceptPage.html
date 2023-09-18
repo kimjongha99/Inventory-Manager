@@ -6,40 +6,66 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script type="text/javascript" th:src="@{/js/accept.js}"></script>
+    <link rel="stylesheet"  th:href="@{/css/modal-window.css}" />
 </head>
 <body>
-<h1>관리자 - 대여 품목 선택</h1>
+    <h1>관리자 - 대여 품목 선택</h1>
 
-<div id="requestId" th:text="${requestId}">Request Id</div>
+    <span id="requestId" th:text="${requestId}">Request Id</span>
+    <button onclick="onRejectBtnClickHandler();">거절</button>
 
-<table>
+    <div class="modal-overlay">
+        <div class="modal-window">
 
-    <thead>
-    <tr>
-        <th>비품 ID</th>
-        <th>카테고리</th>
-        <th>모델명</th>
-        <th>처리</th>
-    </tr>
-    </thead>
+            <div class="modal-window_header">
+                <button onclick="onCloseBtnClickHandler();" class="modal-window_btn-close">X
+                </button>
+            </div>
 
-    <tbody>
-    <tr th:each="info : ${supplyList}">
+            <form class="modal-window_body">
+                <label for="comment">거절 사유</label>
+                <textarea id="comment"></textarea>
+                <button onclick="onRejectRentalHandler(event);" class="modal-window_btn-submit">전송
+                </button>
+            </form>
 
-        <td class="supplyId" th:text="${info.supplyId}">Supply ID</td>
+        </div>
+    </div>
 
-        <td th:text="${info.category.categoryName}">Category</td>
 
-        <td th:text="${info.modelName}">Model name</td>
 
-        <td>
-            <button onclick="acceptRentalHandler(event);">승인</button>
-            <button>거절</button>
-        </td>
+    <table>
 
-    </tr>
-    </tbody>
+        <thead>
+            <tr>
+                <th>비품 ID</th>
+                <th>카테고리</th>
+                <th>모델명</th>
+                <th>처리</th>
+            </tr>
+        </thead>
 
-</table>
+        <tbody>
+            <tr th:each="info : ${supplyList}">
+
+                <td class="supplyId" th:text="${info.supplyId}">Supply ID</td>
+
+                <td th:text="${info.category.categoryName}">Category</td>
+
+                <td th:text="${info.modelName}">Model name</td>
+
+                <td>
+                    <button onclick="onApproveRentalHandler(event);">승인</button>
+                </td>
+
+            </tr>
+        </tbody>
+
+    </table>
+
+    <div>
+        <a th:href="@{/admin-main}"><button>메인 페이지</button></a>
+    </div>
+
 </body>
 </html>
