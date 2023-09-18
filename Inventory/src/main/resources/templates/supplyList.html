@@ -6,10 +6,13 @@
 </head>
 <body>
 <h1>Supply List</h1>
-<form id="myForm" th:action="@{/getSupplyByStatus}" method="get">
+<a th:href="@{/supply/create}" class="btn btn-primary">
+    <button type="button">비품 등록</button>
+</a>
+<form id="myForm" th:action="@{/supply/list}" method="get">
     <select name="selectedStatus" id="selectedStatus">
-        <option value="all" th:selected="${selectedStatus == 'all'}">이넘</option>
-        <option th:each="c : ${statusList}" th:value="${c}" th:text="${c.korean}" th:selected="${selectedStatus == c.korean}"></option>
+        <option value="all" th:selected="${selectedStatus == 'all'}">전체 보기</option>
+        <option th:each="c : ${statusList}" th:value="${c}" th:text="${c.korean}"  th:selected="${selectedStatus == c.name()}"></option>
     </select>
 </form>
 <table>
@@ -38,21 +41,18 @@
     </tr>
     </tbody>
 </table>
+<div>
+    <ul>
+        <li th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
+            <a th:href="@{'/supply/list' + '?selectedStatus=' + ${selectedStatus} + '&page=' + ${pageNum} + '&size=' + ${size}}" th:text="${pageNum + 1}"></a>
+        </li>
+    </ul>
+</div>
 </body>
 <script>
     var selectElement = document.getElementById("selectedStatus");
 
     selectElement.addEventListener("change", function () {
-        // 모든 옵션의 selected 속성을 제거
-        var options = selectElement.options;
-        for (var i = 0; i < options.length; i++) {
-            options[i].removeAttribute("selected");
-        }
-
-        // 선택한 옵션에 selected 속성 추가
-        var selectedOption = options[selectElement.selectedIndex];
-        selectedOption.setAttribute("selected", "selected");
-
         // 폼을 제출
         document.getElementById('myForm').submit();
     });
