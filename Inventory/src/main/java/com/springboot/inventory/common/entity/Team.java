@@ -12,20 +12,20 @@ import javax.persistence.*;
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long team_id;
 
     @Column(nullable = false, unique = true)
-    private String groupName;
+    private String teamName;
 
     private Boolean deleted;
 
     @Builder
-    public Team(String groupName) {
-        this.groupName = groupName;
+    public Team(String teamName) {
+        this.teamName = teamName;
         this.deleted = false;
     }
 
-    public void update(String groupName) {
-        this.groupName = groupName;
+    public void update(String teamName) {
+        this.teamName = teamName;
     }
 }

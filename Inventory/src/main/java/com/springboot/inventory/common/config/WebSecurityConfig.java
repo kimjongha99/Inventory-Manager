@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,10 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
     private final JwtProvider jwtProvider;
-
     @Autowired
     public WebSecurityConfig(JwtProvider jwtProvider) {
         this.jwtProvider = jwtProvider;
@@ -33,8 +33,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/sign-api/sign-in").permitAll()
-                .antMatchers("/sign-api/sign-up").permitAll()
+                .antMatchers("/", "/resources/**", "/static/**", "/js/**",  "/css/**", "/scripts/**", "/fonts/**", "/plugin/**").permitAll()
+                .antMatchers("/sign-api/**/**").permitAll()
+                .antMatchers("/signUpPage").permitAll()
+                .antMatchers( "/","/index", "/LandingPage", "/LogInPage", "/logOut").permitAll()
+                .antMatchers("/ManagerPage").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
@@ -43,6 +46,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity webSecurity) {
         webSecurity.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html",
-                "/swagger-ui/*","/webjars/**", "/swagger/**", "/sign-api/sign-in");
+                "/swagger-ui/*","/webjars/**", "/swagger/**", "/resources/**", "/static/**", "/static/css/**", "/js/**", "/imgs/**");
     }
 }

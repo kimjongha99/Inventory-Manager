@@ -23,8 +23,8 @@ public class UserDetailsImpl implements UserDetails {
     // 해당 유저의 권한을 리턴
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        UserRoleEnum role = user.getRole();
-        String authority = role.getAuthority();
+        UserRoleEnum roles = user.getRoles();
+        String authority = roles.getAuthority();
 
         SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
         Collection<GrantedAuthority> authorities = new ArrayList<>();

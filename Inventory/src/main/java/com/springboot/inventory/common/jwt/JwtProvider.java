@@ -41,7 +41,7 @@ public class JwtProvider {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String REFRESH_HEADER = "Refresh";
     public static final String AUTHORIZATION_KEY = "auth";
-    private static final String BEARER_PREFIX = "Bearer ";
+    private static final String BEARER_PREFIX = "Bearer-";
 
     public static final long ACCESS_TOKEN_TIME = 300 * 1000L;   // 5분
     public static final long REFRESH_TOKEN_TIME = 14 * 24 * 60 * 60 * 1000L;    // 2주
@@ -68,13 +68,13 @@ public class JwtProvider {
     }
 
     // 토큰 생성
-    public String createToken(String email, UserRoleEnum role, TokenType tokenType) {
+    public String createToken(String email, UserRoleEnum roles, TokenType tokenType) {
         Date date = new Date();
         long time = tokenType == TokenType.ACCESS ? ACCESS_TOKEN_TIME : REFRESH_TOKEN_TIME;
 
         return BEARER_PREFIX + Jwts.builder()
                 .setSubject(email)
-                .claim(AUTHORIZATION_KEY, role)
+                .claim(AUTHORIZATION_KEY, roles)
                 .setExpiration(new Date(date.getTime() + time))
                 .setIssuedAt(date)
                 .signWith(key, signatureAlgorithm)
