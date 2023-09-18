@@ -1,12 +1,10 @@
-package com.springboot.inventory.Supply.service;
+package com.springboot.inventory.supply.service;
 
-import com.springboot.inventory.Supply.dto.SupplyDTO;
-import com.springboot.inventory.Supply.dto.SupplyRequestDto;
-import com.springboot.inventory.Supply.repository.SupplyRepository;
+import com.springboot.inventory.supply.dto.SupplyDTO;
+import com.springboot.inventory.supply.repository.SupplyRepository;
 import com.springboot.inventory.category.repository.CategoryRepository;
 import com.springboot.inventory.common.entity.Category;
 import com.springboot.inventory.common.entity.Supply;
-import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.LargeCategory;
 import com.springboot.inventory.common.enums.SupplyStatusEnum;
 import com.springboot.inventory.user.repository.UserRepository;
@@ -17,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.io.File;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 

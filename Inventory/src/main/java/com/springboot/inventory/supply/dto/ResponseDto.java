@@ -1,4 +1,4 @@
-package com.springboot.inventory.Supply.dto;
+package com.springboot.inventory.supply.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;

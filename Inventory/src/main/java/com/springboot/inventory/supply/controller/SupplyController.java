@@ -1,19 +1,13 @@
-package com.springboot.inventory.Supply.controller;
+package com.springboot.inventory.supply.controller;
 
-import com.springboot.inventory.Supply.dto.SupplyDTO;
-import com.springboot.inventory.Supply.service.SupplyService;
-import com.springboot.inventory.category.service.CategoryService;
-import com.springboot.inventory.common.entity.Category;
-import com.springboot.inventory.common.entity.Supply;
+import com.springboot.inventory.supply.dto.SupplyDTO;
+import com.springboot.inventory.supply.service.SupplyService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping("/supply")
