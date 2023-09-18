@@ -1,62 +1,65 @@
-package com.springboot.inventory.Supply.controller;
+package com.springboot.inventory.supply.controller;
 
-import com.springboot.inventory.Supply.dto.SupplyDTO;
-import com.springboot.inventory.Supply.service.SupplyService;
-import com.springboot.inventory.category.service.CategoryService;
-import com.springboot.inventory.common.entity.Category;
-import com.springboot.inventory.common.entity.Supply;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.springboot.inventory.supply.domain.entity.Supply;
+import com.springboot.inventory.supply.domain.enums.SupplyStatusEnum;
+import com.springboot.inventory.supply.dto.SupplyResponseDto;
+import com.springboot.inventory.supply.service.SupplyResponseDtoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
-@RequestMapping("/supply")
-@RequiredArgsConstructor
+@Transactional
+@RequestMapping("/")
 public class SupplyController {
 
-    private final SupplyService supplyService;
-    private final CategoryService categoryService;
+    private final SupplyResponseDtoService supplyResponseDtoService;
+    @GetMapping("/getSupplyByStatus")
+    public String getSupplyByStatus(@RequestParam("selectedStatus") String selectedStatus, Model model) {
+        // 선택된 상태에 따라 Supply 조회 로직을 수행
+        System.out.println("selectedStatus: " + selectedStatus);
+        if(selectedStatus.equals("all")){
+            System.out.println(selectedStatus);
+            return "redirect:/supply/admin/list";
 
-    @GetMapping("")
-    public  String home() {
-        return "home";
+        } else {
+            List<SupplyResponseDto> supplyResponseDtos = supplyResponseDtoService.findDistinctByStatusAndDeletedFalse(SupplyStatusEnum.valueOf(selectedStatus));
+            List<SupplyStatusEnum> statusList = Arrays.asList(SupplyStatusEnum.values());
+
+            model.addAttribute("selectedStatus", selectedStatus); // 선택된 상태를 모델에 추가
+            model.addAttribute("supplyResponseDtos", supplyResponseDtos);
+            model.addAttribute("statusList", statusList);
+            return "supplyList"; // Supply 목록을 표시하는 템플릿 이름
+        }
+    }
+    @Autowired
+    public SupplyController(SupplyResponseDtoService supplyResponseDtoService) {
+        this.supplyResponseDtoService = supplyResponseDtoService;
+    }
+    @GetMapping("/")
+    public String index() {
+        return "index"; // Thymeleaf 템플릿의 이름을 반환합니다. 여기서는 "index.html"을 찾을 것입니다.
     }
 
-    @GetMapping("/create")
-    public String createSupplyForm(Model model) {
-        SupplyDTO supplyDTO = new SupplyDTO(); // SupplyDTO 객체 생성
-        model.addAttribute("supplyDTO", supplyDTO); // 모델에 supplyDTO 추가
-        return "supply"; // supply.html 템플릿을 렌더링
+    @GetMapping("supply/admin/list")
+    public String getAllSupplyDetails(Model model) {
+        List<SupplyResponseDto> supplyResponseDtos = supplyResponseDtoService.findByDeletedFalse();
+        List<SupplyStatusEnum> statusList = Arrays.asList(SupplyStatusEnum.values());
+
+        model.addAttribute("supplyResponseDtos", supplyResponseDtos);
+        model.addAttribute("statusList", statusList);
+        model.addAttribute("selectedStatus", "USING"); // 초기 상태를 "all"로 설정
+        return "supplyList"; // Supply 목록을 표시하는 Thymeleaf 템플릿 파일 이름
     }
 
-    @PostMapping("/create")
-    public String createSupply(
-            @ModelAttribute @Valid SupplyDTO supplyDTO) throws Exception {
-        supplyService.createSupply(supplyDTO);
-        return "redirect:/supply";
-    }
 
-    @GetMapping("/update/{supplyId}")
-    public String updateSupplyForm(@PathVariable Long supplyId , Model model) {
-        SupplyDTO supplyDTO = new SupplyDTO(); // SupplyDTO 객체 생성
-        model.addAttribute("supplyDTO", supplyDTO); // 모델에 supplyDTO 추가
-        model.addAttribute("supplyId", supplyId); // 모델에 supplyId 추가
-        return "supplyUpdate"; // supplyUpdate.html 템플릿을 렌더링
-    }
 
-    @PostMapping("/update/{supplyId}")
-    public String updateSupply (
-            @PathVariable("supplyId") Long supplyId,
-            @ModelAttribute @Valid SupplyDTO supplyDTO) throws Exception {
-       supplyService.updateSupply(supplyId, supplyDTO) ;
-        return "redirect:/supply";
-    }
 
 }
-
