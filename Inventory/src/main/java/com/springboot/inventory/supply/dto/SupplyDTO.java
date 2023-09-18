@@ -1,6 +1,5 @@
-package com.springboot.inventory.Supply.dto;
+package com.springboot.inventory.supply.dto;
 
-import com.springboot.inventory.common.entity.Category;
 import com.springboot.inventory.common.enums.LargeCategory;
 import com.springboot.inventory.common.enums.SupplyStatusEnum;
 import lombok.Data;
