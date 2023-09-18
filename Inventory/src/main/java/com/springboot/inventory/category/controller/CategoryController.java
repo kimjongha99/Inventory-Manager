@@ -21,7 +21,7 @@ public class CategoryController {
     public String createCategoryForm(Model model) {
         List<Category> categoryList = categoryService.getAllCategories(); // 데이터베이스에서 카테고리 목록 가져오기
         model.addAttribute("categoryList", categoryList); // 모델에 카테고리 목록 추가
-        return "supply"; // supply.html 템플릿 렌더링
+        return "supplyCreate"; // supplyCreate.html 템플릿 렌더링
     }
 
 }
