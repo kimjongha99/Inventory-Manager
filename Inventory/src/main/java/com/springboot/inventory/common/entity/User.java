@@ -1,49 +1,39 @@
 package com.springboot.inventory.common.entity;
 
 import com.springboot.inventory.common.enums.UserRoleEnum;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
+
 
 @Entity
+@Table(name = "user")
 @Getter
 @Setter
-@NoArgsConstructor
-public class User {
+public class User extends TimeStamp implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
 
     @Column(nullable = false, unique = true)
-//    @NotEmpty(message = "닉네임은"+MUST_INPUT)
-//    @Length(min =3, message = "닉네임은 3글자 이상이어야 합니다")
-//    @Pattern(regexp = "^[a-zA-Z0-9]{3,}$", message = "닉네임은 최소 3자 이상, 알파벳 대소문자(a~z, A~Z), 숫자(0~9)입력 가능합니다.")
-    private String nickname;
+    private  String email;
 
-    @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING) //저장될때는 string으로 저장되도록
+    @Column(nullable = false, unique = true)
+    private String name;
+
+    private String tel;
+
+    @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
+//    @Column(nullable = false)
+//    private Boolean alarm;
 
+    private Boolean deleted;
 
-    public User(String nickname, String password, UserRoleEnum role) {
-        this.nickname = nickname;
-        this.password = password;
-        this.role = role;
-
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", nickname='" + nickname + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role +
-                '}';
-    }
 }

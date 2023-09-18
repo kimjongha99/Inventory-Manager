@@ -1,13 +1,32 @@
 package com.springboot.inventory.user.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.springboot.inventory.common.enums.UserRoleEnum;
+import lombok.*;
 
+
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @Setter
-public class    UserDto {
-    private String nickname;
+public class UserDTO {
+
+    //
+    private  String email;
+
     private String password;
-    private boolean admin = false;
-    private String adminToken = "";
+
+
+    //
+    private String name;
+
+    private String tel;
+
+    //
+    private UserRoleEnum role;
+
+    private Boolean alarm;
+
+    private Boolean deleted;
 }
