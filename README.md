@@ -1,16 +1,15 @@
 # 프로젝트명 - 인벤토리 매니저(Inventory Manager)
 
 
-
+# 조명 - 인벤토리
 
 ## 목차
 1. 팀원 소개
-2. 깃허브 레포
-3. 프로젝트 목적
-4. 프로젝트 기능
-5. ERD
-6. 기술스택
-7. 노션[팀 노션 ](https://www.notion.so/4d2c1199613740e0a7d14cdbfa913dc5)
+2. 프로젝트 개요
+3. 기술 스택
+4. ERD
+5. 커뮤니케이션 규칙
+6. 노션[노션 ](https://www.notion.so/4d2c1199613740e0a7d14cdbfa913dc5)
 
 
 
@@ -19,7 +18,7 @@
 | 스택  | 이름   | 깃허브 주소                 |
 |-----| ------ | --------------------------- |
 | BE  | 김종하 |[#](https://github.com/kimjongha99) https://github.com/kimjongha99 |
-| BE  | 최무영 |#  |
+| BE  | 최무영 |[#](https://github.com/JinDalgi) https://github.com/JinDalgi  |
 | BE  | 김지호 |[#](https://github.com/Jihoyakim) https://github.com/Jihoyakim |
 | BE  | 임승혁 | [#](https://github.com/Yim119) https://github.com/Yim119  |
 | BE  | 오강석 | [#](https://github.com/SUPERK98) https://github.com/SUPERK98 |
@@ -28,8 +27,9 @@
 
 
 
-##  프로젝트 목적
+##  프로젝트 개요
 
+# 1-1. 프로젝트 개발 배경
 
 학원 비품 관리 시스템은 학원 수강생과 학원 관리자의 비품 관리를 편리하게 하기 위해 개발되었습니다.
 
@@ -43,6 +43,8 @@
 이러한 학원 비품 관리 시스템은 학원 수강생과 학원 관리자의 비품 관리 업무를 효율화하고, 학원 운영의 효율성을 높이는 데 도움이 될 것입니다.
 
 
+# 1-2. 프로젝트 목표 및 주요 기능
+최종 목표 : 모든 비품을 체계적으로 관리할수있으며  실시간 재고 및 비품 현황 파악, 통계 및 분석이 가능하게합니다.
 
 
 
@@ -81,6 +83,16 @@
 
 ## ERD
 
-![Copy of Inven](https://github.com/kimjongha99/Inventory-Manager/assets/95283879/85dc0dbb-0056-4343-9507-dda662de2bc7)
+![Copy of Inventory](https://github.com/kimjongha99/Inventory-Manager/assets/95283879/598c3c09-7888-4839-9131-e9e54bffc7c3)
+
+
+
+## 커뮤니케이션 규칙
+1. 기술을 새롭게 적용 할때, 팀원들이 납득할수있는 타당한 이유와 근거를 제시함며 논리적으로 설득
+2. 팀원은  commit진행시 develop브런치로 pull request 남김
+3. 의견 충돌 발생시 공격적인 어조를 사용하지않는다.
+4.  반드시 이름, 존댓말을 쓰며 회의한다.
+5.  반드시 커밋- 컨밴션을 지킨다.
+6.  문서화를 한다
 
 

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+<head>
+    <title>맴버 회원가입</title>
+</head>
+
+<div layout:fragment="content">
+
+    <h1>유저 - 비품 요청 페이지</h1>
+
+    <form id="request_form" onsubmit="onSubmitRequest(event);">
+        <label for="request_type">요청 종류</label>
+        <select id="request_type">
+            <option value="repair">수리</option>
+            <option value="rental">대여</option>
+            <option value="return">반납</option>
+            <option value="purchase">구매</option>
+        </select>
+
+        <label for="category">대상 품목</label>
+        <select id="category">
+
+        </select>
+        <label for="content">요청 내용</label><textarea id="content" ></textarea>
+        <button>제출</button>
+    </form>
+
+    <div>
+        <a th:href="@{/}" ><button>메인 페이지</button></a>
+    </div>
+
+
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script type="text/javascript" th:src="@{/js/request.js}"></script>
+<script layout:fragment="script" th:inline="javascript">
+
+</script>
+
+</html>
