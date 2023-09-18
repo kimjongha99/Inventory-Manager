@@ -25,7 +25,7 @@ public class SupplyCreateUpdateController {
     public String createSupplyForm(Model model) {
         SupplyDTO supplyDTO = new SupplyDTO(); // SupplyDTO 객체 생성
         model.addAttribute("supplyDTO", supplyDTO); // 모델에 supplyDTO 추가
-        return "supply"; // supply.html 템플릿을 렌더링
+        return "supplyCreate"; // supplyCreate.html 템플릿을 렌더링
     }
 
     @PostMapping("/create")
