@@ -1,7 +1,7 @@
-package com.springboot.inventory.Supply.service;
+package com.springboot.inventory.supply.service;
 
-import com.springboot.inventory.Supply.dto.SupplyResponseDto;
-import com.springboot.inventory.Supply.repository.SupplyRepository;
+import com.springboot.inventory.supply.dto.SupplyResponseDto;
+import com.springboot.inventory.supply.repository.SupplyRepository;
 import com.springboot.inventory.common.entity.Supply;
 import com.springboot.inventory.common.enums.SupplyStatusEnum;
 
