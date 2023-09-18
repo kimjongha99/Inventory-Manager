@@ -12,7 +12,7 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/supply")
 @RequiredArgsConstructor
-public class SupplyController {
+public class SupplyCreateUpdateController {
 
     private final SupplyService supplyService;
 
