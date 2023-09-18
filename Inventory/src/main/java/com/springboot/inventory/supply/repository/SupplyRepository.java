@@ -1,14 +1,11 @@
-package com.springboot.inventory.supply.repository;
+package com.springboot.inventory.Supply.repository;
 
-import com.springboot.inventory.supply.domain.entity.Category;
-import com.springboot.inventory.supply.domain.entity.Supply;
-import com.springboot.inventory.supply.domain.entity.User;
-import com.springboot.inventory.supply.domain.enums.SupplyStatusEnum;
+import com.springboot.inventory.common.entity.Supply;
+import com.springboot.inventory.common.enums.SupplyStatusEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface SupplyRepository extends JpaRepository<Supply, Long> {
