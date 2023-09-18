@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -23,5 +23,9 @@
 
         <button>제출</button>
     </form>
+
+    <div>
+        <a th:href="@{/admin-main}"><button>메인 페이지</button></a>
+    </div>
 </body>
 </html>

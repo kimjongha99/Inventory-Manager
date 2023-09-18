@@ -1,14 +1,17 @@
 package com.springboot.inventory.request.controller;
 
+import com.springboot.inventory.common.entity.Request;
+import com.springboot.inventory.common.userDetails.CustomUserDetails;
 import com.springboot.inventory.request.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -42,7 +45,23 @@ public class RequestController {
         model.addAttribute("return", returnCount);
         model.addAttribute("purchase", purchaseCount);
 
-        return "/requests/AdminMain";
+        return "requests/AdminMainPage";
+    }
+
+    @GetMapping(value = "/user-main")
+    public String requestHistoryPage(Model model,
+                                     @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        System.out.println("===========================컨트롤러 진입===========================");
+
+        System.out.println(userDetails.getUser().getEmail());
+
+        List<Request> requestHistory =
+                requestService.getUserRequestHistory(userDetails.getUser()).getData();
+
+        model.addAttribute("requestHistory", requestHistory);
+
+        return "requests/UserMainPage";
     }
 
     @GetMapping(value = "/admin-requestlist")

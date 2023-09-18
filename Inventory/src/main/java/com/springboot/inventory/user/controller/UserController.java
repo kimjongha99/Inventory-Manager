@@ -1,7 +1,6 @@
 package com.springboot.inventory.user.controller;
 
 import com.springboot.inventory.common.dto.ResponseDTO;
-import com.springboot.inventory.common.enums.UserRoleEnum;
 import com.springboot.inventory.user.dto.SignInRequestDTO;
 import com.springboot.inventory.user.dto.UserDTO;
 import com.springboot.inventory.user.service.UserService;
@@ -26,7 +25,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    // 공통적으로 사용되는 ModelAndView를 생성하는 메소드
     private ModelAndView createModelAndView(String view) {
         return new ModelAndView(view);
     }
