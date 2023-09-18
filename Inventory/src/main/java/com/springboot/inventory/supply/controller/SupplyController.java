@@ -1,7 +1,7 @@
 package com.springboot.inventory.supply.controller;
 
-import com.springboot.inventory.Supply.dto.SupplyResponseDto;
-import com.springboot.inventory.Supply.service.SupplyResponseDtoService;
+import com.springboot.inventory.supply.dto.SupplyResponseDto;
+import com.springboot.inventory.supply.service.SupplyResponseDtoService;
 import com.springboot.inventory.common.enums.SupplyStatusEnum;
 
 import org.springframework.beans.factory.annotation.Autowired;

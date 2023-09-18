@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableJpaAuditing //BaseTimeEntity
 @SpringBootApplication
-@EnableJpaAuditing
 public class InventoryApplication {
 
     public static void main(String[] args) {

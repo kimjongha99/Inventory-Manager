@@ -1,4 +1,4 @@
-package com.springboot.inventory.Supply.dto;
+package com.springboot.inventory.supply.dto;
 
 import com.springboot.inventory.common.entity.Supply;
 import com.springboot.inventory.common.entity.User;
@@ -22,23 +22,23 @@ public class SupplyResponseDto {
     private String categoryName; // 분류
     private LocalDateTime createdAt;
 
-    public SupplyResponseDto(Supply supply){
-        User user = supply.getUser();
-
-        this.supplyId = supply.getSupplyId();
-        this.modelName = supply.getModelName();
-        this.serialNum = supply.getSerialNum();
-        this.amount = supply.getAmount();
-        this.createdAt = supply.getCreatedAt();
-        this.status = supply.getStatus().getKorean();
-        if (supply.getUser() != null) {
-            this.username = supply.getUser().getUsername();
-        }
-        if (supply.getCategory() != null) {
-            this.categoryName = supply.getCategory().getCategoryName();
-        }
-
-    }
+//    public SupplyResponseDto(Supply supply){
+//        User user = supply.getUser();
+//
+//        this.supplyId = supply.getSupplyId();
+//        this.modelName = supply.getModelName();
+//        this.serialNum = supply.getSerialNum();
+//        this.amount = supply.getAmount();
+//        this.createdAt = supply.getCreatedAt();
+//        this.status = supply.getStatus().getKorean();
+//        if (supply.getUser() != null) {
+//            this.username = supply.getUser().getUsername();
+//        }
+//        if (supply.getCategory() != null) {
+//            this.categoryName = supply.getCategory().getCategoryName();
+//        }
+//
+//    }
 
 
 

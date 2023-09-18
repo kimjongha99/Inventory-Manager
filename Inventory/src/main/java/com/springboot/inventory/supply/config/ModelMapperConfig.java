@@ -1,4 +1,4 @@
-package com.springboot.inventory.Supply.config;
+package com.springboot.inventory.supply.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
