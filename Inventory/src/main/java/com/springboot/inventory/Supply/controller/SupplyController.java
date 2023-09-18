@@ -21,7 +21,6 @@ import java.util.List;
 public class SupplyController {
 
     private final SupplyService supplyService;
-    private final CategoryService categoryService;
 
     @GetMapping("")
     public  String home() {
