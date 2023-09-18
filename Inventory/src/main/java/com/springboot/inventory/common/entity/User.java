@@ -1,4 +1,4 @@
-package com.springboot.inventory.supply.domain.entity;
+package com.springboot.inventory.common.entity;
 
 import com.springboot.inventory.common.enums.UserRole;
 import lombok.*;

@@ -1,7 +1,7 @@
-package com.springboot.inventory.supply.dto;
+package com.springboot.inventory.Supply.dto;
 
-import com.springboot.inventory.supply.domain.entity.Supply;
-import com.springboot.inventory.supply.domain.entity.User;
+import com.springboot.inventory.common.entity.Supply;
+import com.springboot.inventory.common.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
