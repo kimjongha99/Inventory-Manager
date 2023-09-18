@@ -16,4 +16,10 @@ spring:
     open-in-view: false
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
+
+  # 이미지 파일크기 제한
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
