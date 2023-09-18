@@ -40,8 +40,9 @@ dependencies {
     /*test*/
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-//    implementation 'org.springframework.boot:spring-boot-starter-security'
-//    testImplementation 'org.springframework.security:spring-security-test'
+    /*Model Mapper*/
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.4.2'
+
 
 }
 
