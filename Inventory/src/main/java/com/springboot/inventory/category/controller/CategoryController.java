@@ -1,30 +1,27 @@
 package com.springboot.inventory.category.controller;
 
-import com.springboot.inventory.category.dto.CategoryDTO;
 import com.springboot.inventory.category.service.CategoryService;
+import com.springboot.inventory.common.entity.Category;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("/api/category")
+import java.util.List;
+
+@Controller
+@RequestMapping("/category")
+@RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @Autowired
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
+    @GetMapping("/create")
+    public String createCategoryForm(Model model) {
+        List<Category> categoryList = categoryService.getAllCategories(); // 데이터베이스에서 카테고리 목록 가져오기
+        model.addAttribute("categoryList", categoryList); // 모델에 카테고리 목록 추가
+        return "supply"; // supply.html 템플릿 렌더링
     }
 
-    @PostMapping
-    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO) {
-        CategoryDTO createdCategory = categoryService.createCategory(categoryDTO);
-        return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
-    }
 }

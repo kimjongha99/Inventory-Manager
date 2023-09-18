@@ -2,6 +2,8 @@ package com.springboot.inventory.Supply.controller;
 
 import com.springboot.inventory.Supply.dto.SupplyDTO;
 import com.springboot.inventory.Supply.service.SupplyService;
+import com.springboot.inventory.category.service.CategoryService;
+import com.springboot.inventory.common.entity.Category;
 import com.springboot.inventory.common.entity.Supply;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/supply")
@@ -18,6 +21,7 @@ import javax.validation.Valid;
 public class SupplyController {
 
     private final SupplyService supplyService;
+    private final CategoryService categoryService;
 
     @GetMapping("")
     public  String home() {
@@ -53,5 +57,6 @@ public class SupplyController {
        supplyService.updateSupply(supplyId, supplyDTO) ;
         return "redirect:/supply";
     }
+
 }
 
