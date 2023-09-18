@@ -1,6 +1,6 @@
-package com.springboot.inventory.supply.domain.entity;
+package com.springboot.inventory.common.entity;
 
-import com.springboot.inventory.supply.domain.enums.LargeCategory;
+import com.springboot.inventory.common.enums.LargeCategory;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

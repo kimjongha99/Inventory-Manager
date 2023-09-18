@@ -1,15 +1,14 @@
-package com.springboot.inventory.supply.service;
+package com.springboot.inventory.Supply.service;
 
-import com.springboot.inventory.supply.domain.entity.Supply;
-import com.springboot.inventory.supply.domain.enums.SupplyStatusEnum;
-import com.springboot.inventory.supply.dto.SupplyResponseDto;
-import com.springboot.inventory.supply.repository.SupplyRepository;
+import com.springboot.inventory.Supply.dto.SupplyResponseDto;
+import com.springboot.inventory.Supply.repository.SupplyRepository;
+import com.springboot.inventory.common.entity.Supply;
+import com.springboot.inventory.common.enums.SupplyStatusEnum;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
