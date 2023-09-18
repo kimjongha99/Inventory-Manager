@@ -28,6 +28,7 @@ public class SupplyResponseDto {
         this.supplyId = supply.getSupplyId();
         this.modelName = supply.getModelName();
         this.serialNum = supply.getSerialNum();
+        this.amount = supply.getAmount();
         this.createdAt = supply.getCreatedAt();
         this.status = supply.getStatus().getKorean();
         if (supply.getUser() != null) {
@@ -38,6 +39,7 @@ public class SupplyResponseDto {
         }
 
     }
+
 
 
 }

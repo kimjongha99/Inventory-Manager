@@ -6,6 +6,12 @@
 </head>
 <body>
 <h1>Supply List</h1>
+<form id="myForm" th:action="@{/getSupplyByStatus}" method="get">
+    <select name="selectedStatus" id="selectedStatus">
+        <option value="all" th:selected="${selectedStatus == 'all'}">이넘</option>
+        <option th:each="c : ${statusList}" th:value="${c}" th:text="${c.korean}" th:selected="${selectedStatus == c.korean}"></option>
+    </select>
+</form>
 <table>
     <thead>
     <tr>
@@ -33,4 +39,22 @@
     </tbody>
 </table>
 </body>
+<script>
+    var selectElement = document.getElementById("selectedStatus");
+
+    selectElement.addEventListener("change", function () {
+        // 모든 옵션의 selected 속성을 제거
+        var options = selectElement.options;
+        for (var i = 0; i < options.length; i++) {
+            options[i].removeAttribute("selected");
+        }
+
+        // 선택한 옵션에 selected 속성 추가
+        var selectedOption = options[selectElement.selectedIndex];
+        selectedOption.setAttribute("selected", "selected");
+
+        // 폼을 제출
+        document.getElementById('myForm').submit();
+    });
+</script>
 </html>
