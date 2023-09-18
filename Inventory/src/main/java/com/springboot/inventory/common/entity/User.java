@@ -1,7 +1,6 @@
 package com.springboot.inventory.common.entity;
 
 import com.springboot.inventory.common.enums.UserRole;
-import com.springboot.inventory.user.dto.UserDTO;
 import lombok.*;
 
 import javax.persistence.*;
