@@ -14,7 +14,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long user_id;
 
     // 아이디
     @Column(nullable = false, unique = true)
@@ -26,12 +26,8 @@ public class User {
     private String username;
     private String tel;
 
-
-//     토큰
-    private String token;
-
     @Enumerated(value = EnumType.STRING)
-    private UserRoleEnum role;
+    private UserRoleEnum roles;
 
     @Column(nullable = true)
     private Boolean alarm;
@@ -44,14 +40,13 @@ public class User {
     private Boolean deleted;
 
     @Builder
-    public User(String email, String token, String password, String username, String tel,
-                UserRoleEnum role, Team team, Boolean deleted) {
+    public User(String email, String password, String username, String tel,
+                UserRoleEnum roles, Team team, Boolean deleted) {
         this.email = email;
-        this.token = token;
         this.password = password;
         this.username = username;
         this.tel = tel;
-        this.role = role;
+        this.roles = roles;
         this.team = team;
         this.deleted = deleted;
     }
@@ -67,12 +62,9 @@ public class User {
         this.password = password;
     }
 
-    public void refreshToken(String token) {
-        this.token = token;
-    }
 
-    public void changeRole(UserRoleEnum role) {
+    public void changeRole(UserRoleEnum roles) {
         // 부여하는 권한을 가지고 있는 경우, 권한을 취소할 수 있음
-        this.role = this.role == role ? UserRoleEnum.USER : role;
+        this.roles = this.roles == roles ? UserRoleEnum.USER : roles;
     }
 }
