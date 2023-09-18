@@ -1,4 +1,4 @@
-package com.springboot.inventory.Supply.controller;
+package com.springboot.inventory.supply.controller;
 
 import com.springboot.inventory.Supply.dto.SupplyResponseDto;
 import com.springboot.inventory.Supply.service.SupplyResponseDtoService;
