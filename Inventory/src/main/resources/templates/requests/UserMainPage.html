@@ -1,61 +1,66 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/basic.html}"
+>
+  <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-</head>
-<body>
 
-<div>
+    <title>유저요청</title>
+  </head>
+  <body>
     <h1>유저 - 요청 내역</h1>
-    <a th:href="@{/}"><button>메인 페이지</button></a>
-</div>
 
-    <table>
-
+    <div layout:fragment="content">
+      <table>
         <thead>
-            <tr>
-                <th>요청 일시</th>
-                <th>요청 종류</th>
-                <th>요청 내용</th>
-                <th>요청 품목</th>
-                <th>승인 여부</th>
-                <th>관리자 답변</th>
-                <th>할당 품목</th>
-                <th>처리 일시</th>
-            </tr>
+          <tr>
+            <th>요청 일시</th>
+            <th>요청 종류</th>
+            <th>요청 내용</th>
+            <th>요청 품목</th>
+            <th>승인 여부</th>
+            <th>관리자 답변</th>
+            <th>할당 품목</th>
+            <th>처리 일시</th>
+          </tr>
         </thead>
 
         <tbody>
-            <tr th:each="history : ${requestHistory}">
-                <td th:text="${history.created_at}"></td>
+          <tr th:each="history : ${requestHistory}">
+            <td th:text="${history.created_at}"></td>
 
-                <td th:text="${history.requestType}"></td>
+            <td th:text="${history.requestType}"></td>
 
+            <td th:text="${history.content}"></td>
+            <td th:text="${history.category.categoryName}"></td>
 
-                <td th:text="${history.content}"></td>
-                <td th:text="${history.category.categoryName}"></td>
+            <!-- -->
+            <td
+              th:if="${history.accept != null}"
+              th:text="${history.accept.booleanValue() == true ? '승인' : '거부'}"
+            ></td>
+            <td th:if="${history.accept == null}" th:text="대기중"></td>
+            <!-- -->
 
-                <!-- -->
-                <td th:if="${history.accept != null}"
-                    th:text="${history.accept.booleanValue() == true ? '승인' : '거부'}"></td>
-                <td th:if="${history.accept == null}" th:text="대기중"></td>
-                <!-- -->
+            <td th:text="${history.comment}"></td>
 
-                <td th:text="${history.comment}"></td>
+            <!-- -->
+            <td
+              th:if="${history.supply != null}"
+              th:text="${history.supply.getModelName()}"
+            ></td>
+            <td th:if="${history.supply == null}"></td>
+            <!-- -->
 
-                <!-- -->
-                <td th:if="${history.supply != null}"
-                   th:text="${history.supply.getModelName()}"></td>
-                <td th:if="${history.supply == null}"></td>
-                <!-- -->
-
-                <td th:text="${history.updated_at}"></td>
-            </tr>
+            <td th:text="${history.updated_at}"></td>
+          </tr>
         </tbody>
-    </table>
+      </table>
+    </div>
 
-</body>
+    <script layout:fragment="script" th:inline="javascript"></script>
+  </body>
 </html>

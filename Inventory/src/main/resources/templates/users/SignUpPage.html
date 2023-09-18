@@ -1,44 +1,57 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Sign Up Page</title>
-</head>
-<body>
-<h1>회원 가입</h1>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/basic.html}"
+>
+  <head>
+    <title>맴버 회원가입</title>
+  </head>
 
-<!-- 회원 가입 폼 시작 -->
-<form th:action="@{/signup}" th:object="${userDTO}"  method="post">
-
-    <!-- 이메일 입력 -->
-    <div>
+  <div layout:fragment="content">
+    <!-- 회원 가입 폼 시작 -->
+    <form th:action="@{/signup}" th:object="${userDTO}" method="post">
+      <!-- 이메일 입력 -->
+      <div>
         <label for="email">이메일:</label>
-        <input type="email" id="email" name="email" th:field="*{email}" required>
-    </div>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          th:field="*{email}"
+          required
+        />
+      </div>
 
-    <!-- 비밀번호 입력 -->
-    <div>
+      <!-- 비밀번호 입력 -->
+      <div>
         <label for="password">비밀번호:</label>
-        <input type="password" id="password" name="password"
-               th:field="*{password}" required>
-    </div>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          th:field="*{password}"
+          required
+        />
+      </div>
 
-    <!-- 이름 입력 -->
-    <div>
+      <!-- 이름 입력 -->
+      <div>
         <label for="name">이름:</label>
-        <input type="text" id="name" name="name" th:field="*{name}" required>
-    </div>
+        <input type="text" id="name" name="name" th:field="*{name}" required />
+      </div>
 
-    <div>
+      <div>
         <label for="tel">전화번호:</label>
-        <input type="text" id="tel" name="tel" th:field="*{tel}" required>
-    </div>
+        <input type="text" id="tel" name="tel" th:field="*{tel}" required />
+      </div>
 
-    <!-- 회원 가입 버튼 -->
-    <div>
+      <!-- 회원 가입 버튼 -->
+      <div>
         <button type="submit">가입하기</button>
-    </div>
-</form>
-<!-- 회원 가입 폼 끝 -->
-</body>
+      </div>
+    </form>
+  </div>
+
+  <script layout:fragment="script" th:inline="javascript"></script>
 </html>

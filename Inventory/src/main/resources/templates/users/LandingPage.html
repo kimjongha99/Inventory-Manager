@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
-</head>
-<body>
-    <div>안녕하세요!</div>
+<html
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/basic.html}"
+>
+  <div layout:fragment="content">
+    <body>
+      <div>안녕하세요!</div>
 
-    <div>
-        <a th:href="@{/signin}"><button>로그인</button></a>
-        <a th:href="@{/user-request}"><button>비품 요청</button></a>
-        <a th:href="@{/user-main}"><button>요청 기록 조회</button></a>
-    </div>
-</body>
+      <h1>
+        여기는 홈 랜딩페이지입니다. 페이지 소개or페이지 정보가있었으면
+        좋을거같습니다.
+      </h1>
+
+      <th:block layout:fragment="script"> </th:block>
+    </body>
+  </div>
 </html>
