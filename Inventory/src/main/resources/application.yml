@@ -16,7 +16,7 @@ spring:
     open-in-view: false
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
 
   # 이미지 파일크기 제한
   servlet:

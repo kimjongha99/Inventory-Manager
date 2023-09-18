@@ -1,63 +1,62 @@
 package com.springboot.inventory.supply.controller;
 
+import com.springboot.inventory.common.enums.SupplyStatusEnum;
 import com.springboot.inventory.supply.dto.SupplyResponseDto;
 import com.springboot.inventory.supply.service.SupplyResponseDtoService;
-import com.springboot.inventory.common.enums.SupplyStatusEnum;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Controller
-@Transactional
-@RequestMapping("/")
+@RequestMapping("/supply")
 public class SupplyController {
 
     private final SupplyResponseDtoService supplyResponseDtoService;
-    @GetMapping("/getSupplyByStatus")
-    public String getSupplyByStatus(@RequestParam("selectedStatus") String selectedStatus, Model model) {
-        // 선택된 상태에 따라 Supply 조회 로직을 수행
-        System.out.println("selectedStatus: " + selectedStatus);
-        if(selectedStatus.equals("all")){
-            System.out.println(selectedStatus);
-            return "redirect:/supply/admin/list";
 
+    @GetMapping("/list")
+    public String getSupplyByStatus(
+            @RequestParam(required = false, defaultValue = "all") String selectedStatus,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<SupplyResponseDto> supplyResponseDtosPage;
+
+        if("all".equals(selectedStatus)){
+            supplyResponseDtosPage = supplyResponseDtoService.findAllByDeletedFalse(pageable);
         } else {
-            List<SupplyResponseDto> supplyResponseDtos = supplyResponseDtoService.findDistinctByStatusAndDeletedFalse(SupplyStatusEnum.valueOf(selectedStatus));
-            List<SupplyStatusEnum> statusList = Arrays.asList(SupplyStatusEnum.values());
-
-            model.addAttribute("selectedStatus", selectedStatus); // 선택된 상태를 모델에 추가
-            model.addAttribute("supplyResponseDtos", supplyResponseDtos);
-            model.addAttribute("statusList", statusList);
-            return "supplyList"; // Supply 목록을 표시하는 템플릿 이름
+            supplyResponseDtosPage = supplyResponseDtoService.findDistinctByStatusAndDeletedFalse(SupplyStatusEnum.valueOf(selectedStatus), pageable);
         }
+
+        List<SupplyStatusEnum> statusList = Arrays.asList(SupplyStatusEnum.values());
+
+        model.addAttribute("supplyResponseDtos", supplyResponseDtosPage.getContent());
+        model.addAttribute("page", pageable.getPageNumber());
+        model.addAttribute("size", pageable.getPageSize());
+        model.addAttribute("totalPages", supplyResponseDtosPage.getTotalPages());
+        model.addAttribute("selectedStatus", selectedStatus);
+        model.addAttribute("statusList", statusList);
+
+        return "supplyList";
     }
+
     @Autowired
     public SupplyController(SupplyResponseDtoService supplyResponseDtoService) {
         this.supplyResponseDtoService = supplyResponseDtoService;
     }
-    @GetMapping("/")
+
+    @GetMapping("/index")
     public String index() {
-        return "index"; // Thymeleaf 템플릿의 이름을 반환합니다. 여기서는 "index.html"을 찾을 것입니다.
+        return "index";
     }
-
-    @GetMapping("supply/admin/list")
-    public String getAllSupplyDetails(Model model) {
-        List<SupplyResponseDto> supplyResponseDtos = supplyResponseDtoService.findByDeletedFalse();
-        List<SupplyStatusEnum> statusList = Arrays.asList(SupplyStatusEnum.values());
-
-        model.addAttribute("supplyResponseDtos", supplyResponseDtos);
-        model.addAttribute("statusList", statusList);
-        model.addAttribute("selectedStatus", "USING"); // 초기 상태를 "all"로 설정
-        return "supplyList"; // Supply 목록을 표시하는 Thymeleaf 템플릿 파일 이름
-    }
-
-
-
-
 }
