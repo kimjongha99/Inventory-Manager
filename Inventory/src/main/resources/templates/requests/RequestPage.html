@@ -4,9 +4,12 @@
       layout:decorate="~{layout/basic.html}">
 
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/request.js}"></script>
     <title>맴버 회원가입</title>
 </head>
-
+<body>
 <div layout:fragment="content">
 
     <h1>유저 - 비품 요청 페이지</h1>
@@ -36,11 +39,9 @@
 
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script type="text/javascript" th:src="@{/js/request.js}"></script>
+
 <script layout:fragment="script" th:inline="javascript">
 
 </script>
-
+</body>
 </html>
