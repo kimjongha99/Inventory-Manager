@@ -27,15 +27,26 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    /*Thymeleaf*/
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+
+    /*lombok*/
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
+
+    /*test*/
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     //aws 의존성
     //implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    /*Model Mapper*/
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.4.2'
+
 
 }
 

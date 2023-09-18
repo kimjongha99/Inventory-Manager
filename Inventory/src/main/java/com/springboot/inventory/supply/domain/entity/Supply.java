@@ -1,6 +1,6 @@
-package com.springboot.inventory.common.entity;
+package com.springboot.inventory.supply.domain.entity;
 
-import com.springboot.inventory.common.enums.SupplyStatusEnum;
+import com.springboot.inventory.supply.domain.enums.SupplyStatusEnum;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -75,4 +75,8 @@ public class Supply extends Timestamped {
 //        this.user = user;
         this.category = category;
     }
+
+
+
+
 }
