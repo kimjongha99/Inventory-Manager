@@ -21,12 +21,12 @@
       <label for="pw">PASSWORD</label>
     </div>
 
-      <button id="btn" type="submit">LOGIN</button>
+    <button id="btn" type="submit">LOGIN</button>
 
   </form>
 </section>
 
-<script>
+<script th:inline="javascript">
   function submitLoginForm(e) {
     e.preventDefault();
 
@@ -45,9 +45,9 @@
 
     axios.post("/sign-api/custom-login", credentials)
             .then(function (res) {
-              alert(res.data);
-              window.location.replace("/index");
-              }
+                      alert(res.data);
+                      window.location.replace("/index");
+                    }
             )
             .catch(function (error) {
               // 로그인 실패 처리

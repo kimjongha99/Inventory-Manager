@@ -21,7 +21,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -94,13 +96,21 @@ public class UserRestController {
                 .build();
     }
 
+
     // 회원 조회
-    @GetMapping("/finduser/{email}")
-    public ResponseEntity<?> findByEmail(@PathVariable("email") String email) {
-        Optional<User> user = userService.findByEmail(email);
+    @GetMapping(value = "/MyPage")
+    public ResponseEntity<Map<String, String>> getMyPage(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        String userEmail = userDetails.getUsername();
+        Optional<User> user = userService.findByEmail(userEmail);
+
+        Map<String, String> userInfo = new HashMap<>();
+        userInfo.put("email", user.get().getEmail());
+        userInfo.put("username", user.get().getUsername());
+
         if (user.isPresent()) {
-            return ResponseEntity.ok(user.get());
+            return ResponseEntity.ok(userInfo);
         } else {
+            // 사용자 정보가 없는 경우
             return ResponseEntity.notFound().build();
         }
     }
@@ -118,5 +128,21 @@ public class UserRestController {
                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return userService.grantRole(email, userDetails.getUser().getRoles());
     }
+
+    // 회원 삭제
+    @DeleteMapping("/MyPage/delete")
+    public ResponseEntity<String> deleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                             HttpServletRequest request,
+                                             HttpServletResponse response) throws URISyntaxException {
+        String userEmail = userDetails.getUsername();
+
+        userService.deleteUser(userEmail, request, response);
+
+        return ResponseEntity.status(HttpStatus.SEE_OTHER)
+                .location(new URI("/index"))
+                .build();
+    }
+
+
 
 }

@@ -33,5 +33,8 @@ public class UserController {
     @GetMapping("/MangerPage")
     public String ManagerPage() { return "/ManagerPage"; }
 
+    @GetMapping("/MyPage")
+    public String MyPage() {return "/MyPage"; }
+
 
 }
