@@ -2,10 +2,14 @@ package com.springboot.inventory.user.controller;
 
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.security.UserDetailsImpl;
-import com.springboot.inventory.user.dto.*;
+
+import com.springboot.inventory.user.dto.SignInResultDto;
+import com.springboot.inventory.user.dto.SignUpResultDto;
+import com.springboot.inventory.user.dto.SigninRequestDto;
+import com.springboot.inventory.user.dto.UserInfoDto;
+
 import com.springboot.inventory.user.service.UserService;
 import io.swagger.annotations.ApiParam;
-import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -20,7 +24,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -36,7 +42,7 @@ public class UserRestController {
 
     @PostMapping("/custom-login")
     @ResponseBody
-    public ResponseEntity<String> signIn(@RequestBody SigninRequestDTO signinRequestDTO, HttpServletResponse response) throws UnsupportedEncodingException {
+    public ResponseEntity<String> signIn(@RequestBody SigninRequestDto signinRequestDTO, HttpServletResponse response) throws UnsupportedEncodingException {
         LOGGER.info("[UserRestController - signIn]");
 
         String email = signinRequestDTO.getUsername();
@@ -57,29 +63,29 @@ public class UserRestController {
 
         return ResponseEntity.ok("로그인 성공");
     }
-    @PostMapping("/login/admin")
-    @ResponseBody
-    public ResponseEntity<String> adminSignIn(@RequestBody AdminLoginRequestDto adminLoginRequestDto, HttpServletResponse response) throws UnsupportedEncodingException {
-        LOGGER.info("[UserRestController - signIn]");
-
-        String email = adminLoginRequestDto.getUsername();
-
-        String password = adminLoginRequestDto.getPassword();
-
-
-        SignInResultDto signInResultDto = userService.signIn(email, password);
-
-        String token = signInResultDto.getToken();
-
-        Cookie cookie = new Cookie("Authorization", token);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        response.addCookie(cookie);
-
-        System.out.println(response);
-
-        return ResponseEntity.ok("로그인 성공");
-    }
+//    @PostMapping("/login/admin")
+//    @ResponseBody
+//    public ResponseEntity<String> adminSignIn(@RequestBody AdminLoginRequestDto adminLoginRequestDto, HttpServletResponse response) throws UnsupportedEncodingException {
+//        LOGGER.info("[UserRestController - signIn]");
+//
+//        String email = adminLoginRequestDto.getUsername();
+//
+//        String password = adminLoginRequestDto.getPassword();
+//
+//
+//        SignInResultDto signInResultDto = userService.signIn(email, password);
+//
+//        String token = signInResultDto.getToken();
+//
+//        Cookie cookie = new Cookie("Authorization", token);
+//        cookie.setHttpOnly(true);
+//        cookie.setPath("/");
+//        response.addCookie(cookie);
+//
+//        System.out.println(response);
+//
+//        return ResponseEntity.ok("로그인 성공");
+//    }
 
 
     @PostMapping(value = "/sign-up")
@@ -116,13 +122,21 @@ public class UserRestController {
                 .build();
     }
 
+
     // 회원 조회
-    @GetMapping("/finduser/{email}")
-    public ResponseEntity<?> findByEmail(@PathVariable("email") String email) {
-        Optional<User> user = userService.findByEmail(email);
+    @GetMapping(value = "/MyPage")
+    public ResponseEntity<Map<String, String>> getMyPage(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        String userEmail = userDetails.getUsername();
+        Optional<User> user = userService.findByEmail(userEmail);
+
+        Map<String, String> userInfo = new HashMap<>();
+        userInfo.put("email", user.get().getEmail());
+        userInfo.put("username", user.get().getUsername());
+
         if (user.isPresent()) {
-            return ResponseEntity.ok(user.get());
+            return ResponseEntity.ok(userInfo);
         } else {
+            // 사용자 정보가 없는 경우
             return ResponseEntity.notFound().build();
         }
     }
@@ -134,11 +148,34 @@ public class UserRestController {
         return ResponseEntity.status(HttpStatus.OK).body(userList);
     }
 
+    // 모든 회원 조회 (ADMIN용)
+    @GetMapping("/allUserListForAdmin")
+    public ResponseEntity<List<UserInfoDto>> findAllUserForAdmin(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        String userEmail = userDetails.getUsername();
+        List<UserInfoDto> userList = userService.findAllUserForAdmin(userEmail);
+        return ResponseEntity.status(HttpStatus.OK).body(userList);
+
+    }
+
     // 권한 부여
     @PutMapping("/roles/{email}")
     public ResponseEntity<String> grantRole(@PathVariable String email,
                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return userService.grantRole(email, userDetails.getUser().getRoles());
+    }
+
+    // 회원 삭제
+    @DeleteMapping("/MyPage/delete")
+    public ResponseEntity<String> deleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                             HttpServletRequest request,
+                                             HttpServletResponse response) throws URISyntaxException {
+        String userEmail = userDetails.getUsername();
+
+        userService.deleteUser(userEmail, request, response);
+
+        return ResponseEntity.status(HttpStatus.SEE_OTHER)
+                .location(new URI("/index"))
+                .build();
     }
 
 }

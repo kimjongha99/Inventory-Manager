@@ -1,6 +1,5 @@
 package com.springboot.inventory.user.service;
 
-import com.springboot.inventory.common.dto.ResponseDto;
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.ResponseEnum;
 import com.springboot.inventory.common.enums.TokenType;
@@ -8,7 +7,6 @@ import com.springboot.inventory.common.enums.UserRoleEnum;
 import com.springboot.inventory.common.jwt.JwtProvider;
 import com.springboot.inventory.common.util.redis.RedisRepository;
 import com.springboot.inventory.common.util.redis.RefreshToken;
-import com.springboot.inventory.user.dto.AdminLoginResponseDto;
 import com.springboot.inventory.user.dto.SignInResultDto;
 import com.springboot.inventory.user.dto.SignUpResultDto;
 import com.springboot.inventory.user.dto.UserInfoDto;
@@ -17,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -99,36 +98,80 @@ public class UserServiceImpl implements UserService {
         return signInResultDto;
     }
 
-    // Admin 로그인
-    @Transactional
-    @Override
-    public AdminLoginResponseDto adminSignIn(String email, String password) throws RuntimeException {
-        LOGGER.info("[UserServiceImpl - AdminLogin]");
-        User user = userRepository.getByEmail(email);
-
-        if(!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException();
-        }       // 로그인 실패 시
-
-        getRefreshToken(user);
-
-        String accessToken = jwtProvider.createToken(user.getEmail(), user.getRoles(), TokenType.ACCESS);
-
-        AdminLoginResponseDto adminLoginResponseDto = AdminLoginResponseDto.builder()
-                .token(accessToken)
-                .build();
-
-        setSuccessResult(adminLoginResponseDto);
-
-        return signInResultDto;
-    }
-
-
     // 로그아웃
+    @Override
+    @Transactional
     public ResponseEntity<String> logOut(String email, HttpServletRequest request, HttpServletResponse response) {
         deleteAllCookies(request, response);
         deleteRefreshToken(email);
         return ResponseEntity.ok("로그아웃 성공");
+    }
+
+
+
+    // 권한 변경
+    @Override
+    @Transactional
+    public ResponseEntity<String> grantRole(String email, UserRoleEnum roles) {
+        User user = userRepository.getByEmail(email);
+
+        if (user != null) {
+            UserRoleEnum currentRole = user.getRoles();
+
+            // 현재 권한이 USER이면 MANAGER로, MANAGER이면 USER로 변경
+            UserRoleEnum newRole = (currentRole == UserRoleEnum.USER) ? UserRoleEnum.MANAGER : UserRoleEnum.USER;
+
+            user.changeRole(newRole);
+            return ResponseEntity.ok("권한 부여가 완료되었습니다.");
+        } else {
+            // 사용자를 찾을 수 없을 때 처리
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
+        }
+    }
+
+    // 매니저가 회원을 조회
+    @Override
+    @Transactional
+    public List<UserInfoDto> findAllUser()
+    {
+        List<User> userList = userRepository.findAll();
+        List<UserInfoDto> userDtoList = new ArrayList<>();
+
+        for (User user : userList){
+            userDtoList.add(UserInfoDto.toDto(user));
+        }
+        return  userDtoList;
+    }
+
+    // 개인 조회
+    @Override
+    @Transactional
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(String email, HttpServletRequest request, HttpServletResponse response) {
+        userRepository.deleteByEmail(email);
+        deleteRefreshToken(email);
+        deleteAllCookies(request, response);
+
+    }
+
+    // 전체 유저 조회(ADMIN용)
+    @Override
+    public List<UserInfoDto> findAllUserForAdmin(String adminEmail) {
+        List<User> userList = userRepository.findAll();
+        List<UserInfoDto> userDtoList = new ArrayList<>();
+
+        for (User user : userList) {
+            // 현재 유저를 제외한 다른 유저만 추가
+            if (!user.getEmail().equals(adminEmail)) {
+                userDtoList.add(UserInfoDto.toDto(user));
+            }
+        }
+        return userDtoList;
     }
 
     private void deleteRefreshToken(String email) {
@@ -153,51 +196,6 @@ public class UserServiceImpl implements UserService {
             }
         }
     }
-
-
-    // 권한 변경
-    @Transactional
-    public ResponseEntity<String> grantRole(String email, UserRoleEnum roles) {
-        User user = userRepository.getByEmail(email);
-
-        UserRoleEnum grantedRole = roles == UserRoleEnum.USER ? UserRoleEnum.MANAGER : UserRoleEnum.USER;
-        user.changeRole(grantedRole);
-        return ResponseEntity.ok("권한 부여가 완료되었습니다.");
-    }
-
-    // 전체 유저 조회
-    @Override
-    @Transactional
-    public List<UserInfoDto> findAllUser()
-    {
-        List<User> userList = userRepository.findAll();
-        List<UserInfoDto> userDtoList = new ArrayList<>();
-
-        for (User user : userList){
-            userDtoList.add(UserInfoDto.toDto(user));
-        }
-        return  userDtoList;
-    }
-
-//    @Override
-//    public List<UserDto> getAllUsers() {    // 유저 전체 목록 보기
-//        List<User> userList = userRepository.findAll(); // 리스트 타입으로 레포지토리의 findAll()
-//        List<UserDto> userDtoList = new ArrayList<>(); // 새 ArrayList에다가 담아준다.
-//
-//        for (User user : userList) { // 모든 유저 리스트들을 userDtoList의 담아준다.
-//            userDtoList.add(UserDto.toDto(user));
-////            UserDto userDto = UserDto.toDto(user);
-////            userDtoList.add(userDto);
-//
-//        }
-//        return userDtoList; // 그리고 반환한다.
-//    }
-    @Override
-    @Transactional
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
 
     private void setSuccessResult(SignUpResultDto result) {
         result.setSuccess(true);
