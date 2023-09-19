@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
     // 회원가입
     @Transactional
     @Override
-    public SignUpResultDto signUp(String email, String password, String name, String tel) {
+    public SignUpResultDto signUp(String email, String password, String name, String tel, String team) {
 
         LOGGER.info("[UserServiceImpl - signUp]");
 
@@ -56,6 +57,7 @@ public class UserServiceImpl implements UserService {
                 .password(passwordEncoder.encode(password))
                 .username(name)
                 .tel(tel)
+                .team(team)
                 .roles(UserRoleEnum.USER)
                 .build();
 
@@ -157,6 +159,25 @@ public class UserServiceImpl implements UserService {
         deleteRefreshToken(email);
         deleteAllCookies(request, response);
 
+    }
+
+    @Override
+    @Transactional
+    public void delete(String email){
+        userRepository.deleteByEmail(email);
+        deleteRefreshToken(email);
+    }
+    // 팀 설정 업데이트하기
+    @Transactional
+    public void updateTeam(String email, String newTeam) {
+        Optional<User> byUser = userRepository.findByEmail(email);
+        if(byUser.isPresent()){
+            User user = byUser.get();
+            user.updateTeam(newTeam);
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("User not found with email: " + email);
+        }
     }
 
     // 전체 유저 조회(ADMIN용)

@@ -68,9 +68,10 @@ public class UserRestController {
                                   @ApiParam(value = "비밀번호", required = true) @RequestParam String password,
                                   @ApiParam(value = "이름", required = true) @RequestParam String username,
                                   @ApiParam(value = "전화번호", required = true) @RequestParam String tel,
+                                  @ApiParam(value = "팀 이름", required = true) @RequestParam String team,
                                   HttpServletResponse response) {
         LOGGER.info("[UserRestController - signUp]");
-        SignUpResultDto signUpResultDto = userService.signUp(email, password, username, tel);
+        SignUpResultDto signUpResultDto = userService.signUp(email, password, username, tel,team);
         LOGGER.info("[UserRestController - signUp 완료.]");
 
         // 회원가입이 성공한 경우, 메인 페이지로 리다이렉트
@@ -122,6 +123,15 @@ public class UserRestController {
         List<UserInfoDto> userList = userService.findAllUser();
         return ResponseEntity.status(HttpStatus.OK).body(userList);
     }
+    // 팀 수정하기
+    @PostMapping("/updateteam")
+    public ResponseEntity<String> updateTeam(@RequestBody Map<String, String> requestData) {
+        String email = requestData.get("email");
+        String team = requestData.get("team");
+        
+        userService.updateTeam(email, team);
+        return ResponseEntity.status(HttpStatus.OK).body("팀이 업데이트되었습니다.");
+    }
 
     // 모든 회원 조회 (ADMIN용)
     @GetMapping("/allUserListForAdmin")
@@ -152,5 +162,17 @@ public class UserRestController {
                 .location(new URI("/index"))
                 .build();
     }
+
+    // 회원 삭제 (매니저가 관리용)
+    @DeleteMapping("/delete/{email}")
+    public ResponseEntity<String> delete(@PathVariable String email) throws URISyntaxException {
+
+        userService.delete(email);
+
+        return ResponseEntity.status(HttpStatus.SEE_OTHER)
+                .location(new URI("/ManagerPage"))
+                .build();
+    }
+
 
 }
