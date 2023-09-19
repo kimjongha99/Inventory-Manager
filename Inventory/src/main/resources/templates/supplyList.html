@@ -7,6 +7,10 @@
 </head>
 <body>
 <h1>Supply List</h1>
+<form th:action="@{/supply/list}" method="get">
+    <input type="text" name="keyword" placeholder="검색어를 입력하세요">
+    <button type="submit">검색</button>
+</form>
 <a th:href="@{/supply/create}" class="btn btn-primary">
     <button type="button">비품 등록</button>
 </a>
@@ -19,26 +23,24 @@
 <table>
     <thead>
     <tr>
-        <th>Supply ID</th>
+        <th>Category Name</th>
+        <th>Model Name</th>
         <th>Serial Number</th>
         <th>Amount</th>
-        <th>Model Name</th>
-        <th>Status</th>
         <th>Username</th>
-        <th>Category Name</th>
         <th>Created At</th>
+        <th>Status</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="dto : ${supplyResponseDtos}">
-        <td th:text="${dto.supplyId}"></td>
+        <td th:text="${dto.categoryName}"></td> <!-- categoryName 출력 -->
+        <td th:text="${dto.modelName}"></td>
         <td th:text="${dto.serialNum}"></td>
         <td th:text="${dto.amount}"></td>
-        <td th:text="${dto.modelName}"></td>
-        <td th:text="${dto.status}"></td>
         <td th:text="${dto.username}"></td> <!-- username 출력 -->
-        <td th:text="${dto.categoryName}"></td> <!-- categoryName 출력 -->
         <td th:text="${dto.createdAt}"></td>
+        <td th:text="${dto.status}"></td>
     </tr>
     </tbody>
 </table>

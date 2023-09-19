@@ -11,7 +11,18 @@ public enum SupplyStatusEnum {
 
     SupplyStatusEnum(String korean) {
         this.korean = korean;
+    }
 
-}
+    public String getKorean() {
+        return korean;
+    }
+    public static SupplyStatusEnum getByKorean(String korean) {
+        for (SupplyStatusEnum status : values()) {
+            if (status.getKorean().equals(korean)) {
+                return status;
+            }
+        }
+        return null; // 또는 기본값, 또는 예외를 던질 수 있습니다.
+    }
 
 }

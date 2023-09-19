@@ -25,32 +25,29 @@ public class SupplyResponseDtoService {
         this.supplyRepository = supplyRepository;
         this.modelMapper = modelMapper;
     }
-    @Transactional
-    public List<SupplyResponseDto> findByDeletedFalse() {
-        List<Supply> supplies = supplyRepository.findByDeletedFalse();
-        return convertToSupplyResponseDtos(supplies);
-    }
-    @Transactional
-    public List<SupplyResponseDto> convertToSupplyResponseDtos(List<Supply> supplies) {
-        return supplies.stream()
-                .map(supply -> modelMapper.map(supply, SupplyResponseDto.class))
-                .collect(Collectors.toList());
-    }
-    @Transactional
-    public List<SupplyResponseDto> findDistinctByStatusAndDeletedFalse(SupplyStatusEnum status){
-        List<Supply> supplies = supplyRepository.findDistinctByStatusAndDeletedFalse(status);
-        return convertToSupplyResponseDtos(supplies);
-    }
+
     @Transactional
     public Page<SupplyResponseDto> findAllByDeletedFalse(Pageable pageable) {
         Page<Supply> supplies = supplyRepository.findAllByDeletedFalse(pageable);
-        return supplies.map(supply -> modelMapper.map(supply, SupplyResponseDto.class));
+        return convertToDtoPage(supplies);
     }
 
     @Transactional
     public Page<SupplyResponseDto> findDistinctByStatusAndDeletedFalse(SupplyStatusEnum status, Pageable pageable){
-        // 원하는 쿼리를 페이지네이션과 함께 처리하도록 수정하세요. 아래는 예시입니다.
         Page<Supply> supplies = supplyRepository.findDistinctByStatusAndDeletedFalse(status, pageable);
+        return convertToDtoPage(supplies);
+    }
+
+
+    // 중복되는 Entity에서 DTO로의 변환 로직을 이 메서드로 분리
+    private Page<SupplyResponseDto> convertToDtoPage(Page<Supply> supplies) {
         return supplies.map(supply -> modelMapper.map(supply, SupplyResponseDto.class));
+    }
+
+    @Transactional
+    public Page<SupplyResponseDto> searchByKeyword(String keyword, Pageable pageable) {
+        Page<Supply> supplies = supplyRepository.searchByKeyword(keyword, pageable);
+        System.out.println("Search results: " + supplies.getContent());
+        return convertToDtoPage(supplies);
     }
 }
