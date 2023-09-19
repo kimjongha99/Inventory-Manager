@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<form th:action="@{/sign-api/sign-up}" method="post">
+    <!-- 이메일 입력 폼 -->
+    <div>
+        <label for="email">이메일:</label>
+        <input type="email" id="email" name="email" required>
+        <button type="button" id="checkEmailButton">중복 확인</button>
+        <div id="emailStatus"></div>
+    </div>
+
+    <!-- 비밀번호 입력 폼 -->
+    <div>
+        <label for="password">비밀번호:</label>
+        <input type="password" id="password" name="password" required pattern="^[0-9]*${6}" title="6자리 숫자를 입력해 주세요.">
+    </div>
+
+    <!-- 전화번호 입력 폼 -->
+    <div>
+        <label for="tel">전화번호:</label>
+        <input type="tel" id="tel" name="tel" required>
+    </div>
+
+    <!-- 유저이름 입력 폼 -->
+    <div>
+        <label for="username">유저이름:</label>
+        <input type="text" id="username" name="username" required>
+    </div>
+
+    <button type="submit">회원가입</button>
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // 중복 확인 버튼 클릭 시 Axios 요청 보내기
+        document.getElementById("checkEmailButton").addEventListener("click", function () {
+            var email = document.getElementById("email").value;
+            axios.get("/sign-api/check-email?email=" + email)
+                .then(function (response) {
+                    // 서버로부터의 응답을 팝업창으로 표시
+                    var message = response.data;
+                    if (response.status === 409) {
+                        // 409 상태 코드인 경우 중복된 이메일로 처리
+                        alert(message);
+                    } else {
+                        // 그 외의 상태 코드인 경우 (200 OK 등) 처리
+                        // 사용 가능한 이메일인 경우
+                        alert(message);
+                    }
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
+        });
+    });
+</script>
+</body>
+</html>

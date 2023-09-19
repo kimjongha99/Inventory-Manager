@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="#">
+  <title>Document</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Landing Page</title>
+</head>
+<body>
+<div>안녕하세요!</div>
+</body>
+</html>
+<script th:inline="javascript">
+  var token = /*[[${accessToken}]]*/ '';
+
+  // 쿠키 만료 시간을 5분으로 설정
+  var expirationTime = new Date();
+  expirationTime.setTime(expirationTime.getTime() + 300000); // 현재 시간에서 5분(300,000 밀리초)을 더함
+
+
+  // JavaScript로 쿠키를 설정하는 함수
+  function setCookie(name, value, expiration) {
+    document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expiration.toUTCString() +  '; path=/';
+  }
+  setCookie('Authorization', token, expirationTime);
+
+</script>
+</body>
+</html>
