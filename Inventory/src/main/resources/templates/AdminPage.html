@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User List</title>
+</head>
+<body>
+<table id="userTable">
+    <thead>
+    <tr>
+        <th>이름</th>
+        <th>전화</th>
+        <th>이메일</th>
+        <th>권한</th>
+        <th>권한 수정</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+    function fetchUserData() {
+        fetch('/sign-api/allUserListForAdmin')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.querySelector('#userTable tbody');
+                tableBody.innerHTML = '';
+
+                data.forEach(user => {
+                    const row = tableBody.insertRow();
+                    const cell1 = row.insertCell(0);
+                    cell1.textContent = user.name;  // 수정: username 대신 name 필드 사용
+                    const cell2 = row.insertCell(1);
+                    cell2.textContent = user.tel;
+                    const cell3 = row.insertCell(2);
+                    cell3.textContent = user.email;
+                    const cell4 = row.insertCell(3);
+                    cell4.textContent = user.roles;
+                    const cell5 = row.insertCell(4);
+                    const grantRoleButton = document.createElement('button');
+                    grantRoleButton.textContent = '권한 수정';
+                    grantRoleButton.addEventListener('click', () => grantRole(user.email));
+                    cell5.appendChild(grantRoleButton);
+                });
+            })
+            .catch(error => console.error('사용자 데이터를 가져오는 중 오류 발생:', error));
+    }
+
+    function grantRole(email) {
+        fetch(`/sign-api/roles/${email}`, { method: 'PUT' }) // `${email}`로 이메일을 동적으로 추가
+            .then(function (response) {
+                alert("권한부여에 성공하였습니다.");
+                // 회원 탈퇴 성공 시 메인페이지로
+                window.location.href = '/AdminPage';
+            })
+            .catch(error => console.error('권한 부여 중 오류 발생:', error));
+    }
+
+    fetchUserData();
+</script>
+</body>
+</html>
