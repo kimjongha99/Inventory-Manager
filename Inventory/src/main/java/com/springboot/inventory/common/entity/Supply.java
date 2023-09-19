@@ -41,16 +41,16 @@ public class Supply extends Timestamped {
     private SupplyStatusEnum status; // 비품 상태
 
 
-   /* @ManyToOne(fetch = FetchType.LAZY) // 지연로딩
-    @JoinColumn(name = "userId")
-    private User user; //사용자*/
+    @ManyToOne(fetch = FetchType.LAZY) // 지연로딩
+    @JoinColumn(name = "id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoryId")
     private Category category; // 분류
 
     @Builder
-    public Supply(String serialNum, String modelContent, int amount, String image, String imagePath, String modelName, boolean deleted, SupplyStatusEnum status, Category category) {
+    public Supply(String serialNum, String modelContent, int amount, String image, String imagePath, String modelName, boolean deleted, User user, SupplyStatusEnum status, Category category) {
         this.serialNum = serialNum;
         this.modelContent = modelContent;
         this.amount = amount;
@@ -59,7 +59,7 @@ public class Supply extends Timestamped {
         this.modelName = modelName;
         this.deleted = deleted;
         this.status = status;
-//        this.user = user;
+        this.user = user;
         this.category = category;
     }
 

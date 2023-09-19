@@ -3,6 +3,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.15'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
+def queryDslSrcDir = 'src/main/generated'
 
 group = 'com.springboot'
 version = '0.0.1-SNAPSHOT'
@@ -39,8 +40,8 @@ dependencies {
 
     /*test*/
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
 
     //aws 의존성
     //implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'

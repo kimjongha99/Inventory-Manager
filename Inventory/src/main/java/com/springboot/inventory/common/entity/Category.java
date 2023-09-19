@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,6 +29,8 @@ public class Category {
 
     private Boolean deleted;
 
+    @OneToMany(mappedBy = "category")
+    private List<Supply> supplies = new ArrayList<>();
 
     @Builder
     public Category(String categoryName, LargeCategory largeCategory, Boolean deleted) {
