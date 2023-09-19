@@ -9,6 +9,7 @@ import com.springboot.inventory.common.util.redis.RedisRepository;
 import com.springboot.inventory.common.util.redis.RefreshToken;
 import com.springboot.inventory.user.dto.SignInResultDto;
 import com.springboot.inventory.user.dto.SignUpResultDto;
+import com.springboot.inventory.user.dto.UserInfoDto;
 import com.springboot.inventory.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -139,10 +141,30 @@ public class UserServiceImpl implements UserService {
     // 전체 유저 조회
     @Override
     @Transactional
-    public List<User> findAllUser() {
-        return userRepository.findAll();
+    public List<UserInfoDto> findAllUser()
+    {
+        List<User> userList = userRepository.findAll();
+        List<UserInfoDto> userDtoList = new ArrayList<>();
+
+        for (User user : userList){
+            userDtoList.add(UserInfoDto.toDto(user));
+        }
+        return  userDtoList;
     }
 
+//    @Override
+//    public List<UserDto> getAllUsers() {    // 유저 전체 목록 보기
+//        List<User> userList = userRepository.findAll(); // 리스트 타입으로 레포지토리의 findAll()
+//        List<UserDto> userDtoList = new ArrayList<>(); // 새 ArrayList에다가 담아준다.
+//
+//        for (User user : userList) { // 모든 유저 리스트들을 userDtoList의 담아준다.
+//            userDtoList.add(UserDto.toDto(user));
+////            UserDto userDto = UserDto.toDto(user);
+////            userDtoList.add(userDto);
+//
+//        }
+//        return userDtoList; // 그리고 반환한다.
+//    }
     @Override
     @Transactional
     public Optional<User> findByEmail(String email) {

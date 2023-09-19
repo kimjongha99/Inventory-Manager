@@ -5,6 +5,7 @@ import com.springboot.inventory.common.security.UserDetailsImpl;
 import com.springboot.inventory.user.dto.SignInResultDto;
 import com.springboot.inventory.user.dto.SignUpResultDto;
 import com.springboot.inventory.user.dto.SigninRequestDTO;
+import com.springboot.inventory.user.dto.UserInfoDto;
 import com.springboot.inventory.user.service.UserService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -106,9 +107,9 @@ public class UserRestController {
     }
 
     // 모든 회원
-    @GetMapping("/ManagerPage")
-    public ResponseEntity<List<User>> findAllUser() {
-        List<User> userList = userService.findAllUser();
+    @GetMapping("/allUserlist")
+    public ResponseEntity<List<UserInfoDto>> findAllUser() {
+        List<UserInfoDto> userList = userService.findAllUser();
         return ResponseEntity.status(HttpStatus.OK).body(userList);
     }
 
