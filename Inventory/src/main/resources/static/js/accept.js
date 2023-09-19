@@ -6,7 +6,7 @@ function onApproveRentalHandler(event) {
 
     const data = {
         requestId : requestId,
-        supplyId: supplyId
+        supplyId: supplyId,
     }
 
     $.ajax({
@@ -30,8 +30,6 @@ function onApproveReturnHandler(event) {
     const requestId = event.target.closest('tr').querySelector('.requestId').textContent;
     const supplyId = event.target.closest('tr').querySelector('.supplyId').attributes.value.value;
 
-    console.log(requestId);
-    console.log(supplyId);
 
     const data = {
         requestId : requestId,
@@ -75,8 +73,6 @@ function onRejectRentalHandler(event) {
         requestId : requestId,
         comment : comment
     }
-
-    console.log(data);
 
     $.ajax({
         type: 'POST',

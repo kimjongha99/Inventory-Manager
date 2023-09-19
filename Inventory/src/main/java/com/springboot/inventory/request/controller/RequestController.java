@@ -65,18 +65,6 @@ public class RequestController {
         return "requests/ReturnRequest";
     }
 
-    // 수리요청
-    @GetMapping("/request-user/repair")
-    public  String RepairRequest() {
-        return "requests/RepairRequest";
-    }
-
-    // 구매요청
-    @GetMapping("/request-user/buy")
-    public  String BuyRequest() {
-        return "requests/BuyRequest";
-    }
-
 
     /* ========================================================================= */
     /* ================================= ADMIN ================================= */
@@ -92,6 +80,7 @@ public class RequestController {
 
         model.addAttribute("rental", rentalCount);
         model.addAttribute("return", returnCount);
+
 
         return "requests/AdminMainPage";
     }
@@ -119,8 +108,12 @@ public class RequestController {
     @GetMapping(value = "/admin-request-accept/rental")
     public String rentalRequestAcceptPage(@RequestParam(name = "requestId", defaultValue = "") String requestId
             , Model model) {
+        
+        System.out.println("컨트롤러 진입");
 
         Map<String, ?> response =  requestService.getRentalRequestInfo(requestId).getData();
+
+        System.out.println(response.get("supplyList"));
 
         model.addAttribute("requestId", response.get("requestId"));
         model.addAttribute("supplyList", response.get("supplyList"));

@@ -1,9 +1,14 @@
 package com.springboot.inventory.request.repository;
 
+//
 import com.springboot.inventory.common.entity.Request;
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.RequestTypeEnum;
+
+//
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +25,10 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     Optional<Request> findByRequestId(Long requestId);
 
     // 대여 상태 품목
-    List<Request> findByUserAndRequestTypeAndReturnAvailableIsTrue(User user,
-                                                               RequestTypeEnum requestTypeEnum);
+    @Query("SELECT r FROM Request r WHERE r.user = :user AND r.requestType = :requestType AND " +
+            " r.supply IS NOT NULL AND (r.returnAvailable = true OR r.returnAvailable IS NULL)")
+    List<Request> findAllByUserAndRequestTypeAndSupplyIsNotNullAndReturnAvailableIsTrue(@Param(
+            "user") User user,
+                                                                       @Param("requestType") RequestTypeEnum requestType);
+
 }

@@ -27,13 +27,19 @@
         <tbody>
             <tr class="requestId" th:each="rentalList : ${rentalRequestList}"
                 th:value="${rentalList.requestId}">
+
                 <td class="category" th:text="${rentalList.category.categoryName}"></td>
+
                 <td class="supplyId" th:value="${rentalList.supply.getSupplyId()}"
                     th:text="${rentalList.supply.getModelName()}"></td>
+
                 <td th:text="${rentalList.updated_at}"></td>
+
                 <td><button th:text="${rentalList.returnAvailable == true ? '반납 대기' : '반납 신청'}"
+                            th:disabled="${rentalList.returnAvailable == true}"
                             onclick="onReturnRequestHandler(event)">
                     </button></td>
+
             </tr>
         </tbody>
     </table>

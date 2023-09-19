@@ -33,8 +33,11 @@ public class Request extends TimeStamp implements Serializable {
 
     private Boolean accept;
 
-    @Column
-    private Boolean returnAvailable = true;
+    private Boolean returnAvailable;
+
+    @OneToOne
+    @JoinColumn(name = "previous_request", referencedColumnName = "requestId")
+    private Request request;
 
     private String comment;
 

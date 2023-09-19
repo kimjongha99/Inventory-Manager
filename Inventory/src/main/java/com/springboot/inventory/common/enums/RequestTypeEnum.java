@@ -5,10 +5,8 @@ import lombok.Getter;
 @Getter
 public enum RequestTypeEnum {
 
-    REPAIR("repair"),
     RENTAL("rental"),
-    RETURN("return"),
-    PURCHASE("purchase");
+    RETURN("return");
 
     private final String type;
 
