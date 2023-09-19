@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 
@@ -41,16 +40,20 @@ public class Supply extends Timestamped {
     private SupplyStatusEnum status; // 비품 상태
 
 
-   /* @ManyToOne(fetch = FetchType.LAZY) // 지연로딩
+    @ManyToOne(fetch = FetchType.LAZY) // 지연로딩
     @JoinColumn(name = "userId")
-    private User user; //사용자*/
+    private User user; //사용자
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "teamId")
+    private Team team; //
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoryId")
     private Category category; // 분류
 
     @Builder
-    public Supply(String serialNum, String modelContent, int amount, String image, String imagePath, String modelName, boolean deleted, SupplyStatusEnum status, Category category) {
+    public Supply(String serialNum, String modelContent, int amount, String image, String imagePath, String modelName, boolean deleted, SupplyStatusEnum status,User user, Team team, Category category) {
         this.serialNum = serialNum;
         this.modelContent = modelContent;
         this.amount = amount;
@@ -59,11 +62,12 @@ public class Supply extends Timestamped {
         this.modelName = modelName;
         this.deleted = deleted;
         this.status = status;
-//        this.user = user;
+        this.user = user;
+        this.team = team;
         this.category = category;
     }
 
-    public void updateSupply(String serialNum, String modelContent, int amount, String image, String imagePath, String modelName, boolean deleted, SupplyStatusEnum status, Category category) {
+    public void updateSupply(String serialNum, String modelContent, int amount, String image, String imagePath, String modelName, boolean deleted, SupplyStatusEnum status,User user, Category category) {
         this.serialNum = serialNum;
         this.modelContent = modelContent;
         this.amount = amount;
@@ -72,7 +76,7 @@ public class Supply extends Timestamped {
         this.modelName = modelName;
         this.deleted = deleted;
         this.status = status;
-//        this.user = user;
+        this.user = user;
         this.category = category;
     }
 
