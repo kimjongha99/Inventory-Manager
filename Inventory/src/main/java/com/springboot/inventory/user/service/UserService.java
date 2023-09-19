@@ -9,12 +9,14 @@ import org.springframework.http.ResponseEntity;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
     SignUpResultDto signUp(String email, String password, String name, String tel);
     SignInResultDto signIn(String email, String password) throws RuntimeException;
     ResponseEntity<String> logOut(String email, HttpServletRequest request, HttpServletResponse response);
-    List<User> findAllUser();
     ResponseEntity<String> grantRole(String email, UserRoleEnum roles);
+    List<User> findAllUser();
+    Optional<User> findByEmail(String email);
 }

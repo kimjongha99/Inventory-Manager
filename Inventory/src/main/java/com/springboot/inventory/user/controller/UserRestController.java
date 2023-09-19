@@ -9,6 +9,7 @@ import com.springboot.inventory.user.service.UserService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/sign-api/")
@@ -27,7 +29,7 @@ public class UserRestController {
     private final Logger LOGGER = LoggerFactory.getLogger(UserRestController.class);
     private final UserService userService;
 
-    public UserRestController( UserService userService ) {
+    public UserRestController(UserService userService) {
         this.userService = userService;
     }
 
@@ -87,9 +89,22 @@ public class UserRestController {
         return userService.logOut(userDetails.getUsername(), request, response);
     }
 
-    @GetMapping("/findAllUser")
-    public List<User> findAllUser() {
-        return userService.findAllUser();
+    // 회원 조회
+    @GetMapping("/finduser/{email}")
+    public ResponseEntity<?> findByEmail(@PathVariable("email") String email) {
+        Optional<User> user = userService.findByEmail(email);
+        if (user.isPresent()) {
+            return ResponseEntity.ok(user.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // 모든 회원
+    @GetMapping("/ManagerPage")
+    public ResponseEntity<List<User>> findAllUser() {
+        List<User> userList = userService.findAllUser();
+        return ResponseEntity.status(HttpStatus.OK).body(userList);
     }
 
     // 권한 부여
@@ -98,4 +113,5 @@ public class UserRestController {
                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return userService.grantRole(email, userDetails.getUser().getRoles());
     }
+
 }

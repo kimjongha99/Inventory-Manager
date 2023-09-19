@@ -125,19 +125,28 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+
+    // 권한 변경
+    @Transactional
+    public ResponseEntity<String> grantRole(String email, UserRoleEnum roles) {
+        User user = userRepository.getByEmail(email);
+
+        UserRoleEnum grantedRole = roles == UserRoleEnum.USER ? UserRoleEnum.MANAGER : UserRoleEnum.USER;
+        user.changeRole(grantedRole);
+        return ResponseEntity.ok("권한 부여가 완료되었습니다.");
+    }
+
     // 전체 유저 조회
+    @Override
+    @Transactional
     public List<User> findAllUser() {
         return userRepository.findAll();
     }
 
-    // 권한 변경
+    @Override
     @Transactional
-    public ResponseEntity<String> grantRole(String email, UserRoleEnum role) {
-        User user = userRepository.getByEmail(email);
-
-        UserRoleEnum grantedRole = role == UserRoleEnum.USER ? UserRoleEnum.MANAGER : UserRoleEnum.USER;
-        user.changeRole(grantedRole);
-        return ResponseEntity.ok("권한 부여가 완료되었습니다.");
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
 
