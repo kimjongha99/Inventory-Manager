@@ -96,10 +96,48 @@ public class UserServiceImpl implements UserService {
     }
 
     // 로그아웃
+    @Override
+    @Transactional
     public ResponseEntity<String> logOut(String email, HttpServletRequest request, HttpServletResponse response) {
         deleteAllCookies(request, response);
         deleteRefreshToken(email);
         return ResponseEntity.ok("로그아웃 성공");
+    }
+
+
+
+    // 권한 변경
+    @Override
+    @Transactional
+    public ResponseEntity<String> grantRole(String email, UserRoleEnum roles) {
+        User user = userRepository.getByEmail(email);
+
+        UserRoleEnum grantedRole = roles == UserRoleEnum.USER ? UserRoleEnum.MANAGER : UserRoleEnum.USER;
+        user.changeRole(grantedRole);
+        return ResponseEntity.ok("권한 부여가 완료되었습니다.");
+    }
+
+    // 전체 유저 조회
+    @Override
+    @Transactional
+    public List<User> findAllUser() {
+        return userRepository.findAll();
+    }
+
+    // 개인 조회
+    @Override
+    @Transactional
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(String email, HttpServletRequest request, HttpServletResponse response) {
+        userRepository.deleteByEmail(email);
+        deleteRefreshToken(email);
+        deleteAllCookies(request, response);
+
     }
 
     private void deleteRefreshToken(String email) {
@@ -125,29 +163,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
-    // 권한 변경
-    @Transactional
-    public ResponseEntity<String> grantRole(String email, UserRoleEnum roles) {
-        User user = userRepository.getByEmail(email);
-
-        UserRoleEnum grantedRole = roles == UserRoleEnum.USER ? UserRoleEnum.MANAGER : UserRoleEnum.USER;
-        user.changeRole(grantedRole);
-        return ResponseEntity.ok("권한 부여가 완료되었습니다.");
-    }
-
-    // 전체 유저 조회
-    @Override
-    @Transactional
-    public List<User> findAllUser() {
-        return userRepository.findAll();
-    }
-
-    @Override
-    @Transactional
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
 
 
     private void setSuccessResult(SignUpResultDto result) {
