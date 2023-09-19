@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Supply List</title>
+    <link rel="stylesheet" type="text/css" href="/css/supplylist.css">
 </head>
 <body>
 <h1>Supply List</h1>
@@ -42,12 +43,33 @@
     </tbody>
 </table>
 <div>
-    <ul>
+    <ul class="pagination justify-content-center" th:if="${totalPages > 0}">
+        <!-- 이전 페이지 화살표 -->
+        <li class="page-item">
+            <a th:if="${page > 0}" th:href="@{/supply/list(page=0)}" class="page-link">First</a>
+            <span th:unless="${page > 0}" class="page-link">First</span>
+        </li>
+        <li class="page-item">
+            <a th:if="${page > 0}" th:href="@{/supply/list(page=${page - 1})}" class="page-link">Previous</a>
+            <span th:unless="${page > 0}" class="page-link">Previous</span>
+        </li>
+        <!-- 페이지 번호-->
         <li th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
             <a th:href="@{'/supply/list' + '?selectedStatus=' + ${selectedStatus} + '&page=' + ${pageNum} + '&size=' + ${size}}" th:text="${pageNum + 1}"></a>
         </li>
+
+        <!-- 다음 페이지 화살표 -->
+        <li class="page-item">
+            <a th:if="${page < totalPages - 1}" th:href="@{/supply/list(page=${page + 1})}" class="page-link">Next</a>
+            <span th:unless="${page < totalPages - 1}" class="page-link">Next</span>
+        </li>
+        <li class="page-item">
+            <a th:if="${page < totalPages - 1}" th:href="@{/supply/list(page=${totalPages - 1})}" class="page-link">Last</a>
+            <span th:unless="${page < totalPages - 1}" class="page-link">Last</span>
+        </li>
     </ul>
 </div>
+
 </body>
 <script>
     var selectElement = document.getElementById("selectedStatus");
