@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,11 +84,14 @@ public class UserRestController {
     }
 
     // 로그아웃
-    @PostMapping("/logOut")
-    public ResponseEntity<String> logOut(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                         HttpServletRequest request,
-                                         HttpServletResponse response) throws UnsupportedEncodingException {
-        return userService.logOut(userDetails.getUsername(), request, response);
+    @GetMapping("/logOut")
+    public ResponseEntity<Void> logOut(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) throws IOException, URISyntaxException {
+        userService.logOut(userDetails.getUsername(), request, response);
+        return ResponseEntity.status(HttpStatus.SEE_OTHER)
+                .location(new URI("/index"))
+                .build();
     }
 
     // 회원 조회
