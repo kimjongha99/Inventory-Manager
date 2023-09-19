@@ -32,30 +32,32 @@ public class User {
     @Column(nullable = true)
     private Boolean alarm;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
-    private Team team;
+    @Column(nullable = true)
+    private String team;
 
     @Column(nullable = true)
     private Boolean deleted;
 
     @Builder
-    public User(String email, String password, String username, String tel,
-                UserRoleEnum roles, Team team, Boolean deleted) {
+    public User(String email, String password, String username, String tel,String team,
+                UserRoleEnum roles,  Boolean deleted) {
         this.email = email;
         this.password = password;
         this.username = username;
         this.tel = tel;
-        this.roles = roles;
         this.team = team;
+        this.roles = roles;
         this.deleted = deleted;
     }
 
-    public void update(String username, Team team, String tel, String password) {
+    public void update(String username, String tel, String password) {
         this.username = username;
-        this.team = team;
         this.tel = tel;
         this.password = password;
+    }
+
+    public void updateTeam(String newTeam){
+       this.team = newTeam;
     }
 
     public void changePassword(String password) {

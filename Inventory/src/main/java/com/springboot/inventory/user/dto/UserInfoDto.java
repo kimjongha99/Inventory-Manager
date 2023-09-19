@@ -13,16 +13,18 @@ import lombok.ToString;
 @ToString
 public class UserInfoDto {
     private String email;
-    private String name;
+    private String username;
     private UserRoleEnum roles;
     private String tel;
+    private String team;
 
     public static UserInfoDto toDto(User user) {
         UserInfoDto userInfoDto = new UserInfoDto();
         userInfoDto.setEmail(user.getEmail());
-        userInfoDto.setName(user.getUsername());
+        userInfoDto.setUsername(user.getUsername());
         userInfoDto.setRoles(user.getRoles());
         userInfoDto.setTel(user.getTel());
+        userInfoDto.setTeam(user.getTeam());
         return userInfoDto;
     }
 

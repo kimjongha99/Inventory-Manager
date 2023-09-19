@@ -15,12 +15,16 @@ import java.util.Optional;
 public interface UserService {
 
 
-    SignUpResultDto signUp(String email, String password, String name, String tel);
+    SignUpResultDto signUp(String email, String password, String name, String tel, String team);
     SignInResultDto signIn(String email, String password) throws RuntimeException;
     ResponseEntity<String> logOut(String email, HttpServletRequest request, HttpServletResponse response);
     ResponseEntity<String> grantRole(String email, UserRoleEnum roles);
-    List<UserInfoDto> findAllUser();
+    List<UserInfoDto> findAllUser(); // 전체 목록 조회 (MANAGER)
     Optional<User> findByEmail(String email);
     void deleteUser(String email, HttpServletRequest request, HttpServletResponse response);
+
+    void delete(String email); // MANAGER가 유저를 삭제
     List<UserInfoDto> findAllUserForAdmin(String Email);    // 전체 유저 조회(ADMIN)
+
+    void updateTeam(String email, String team);  // 팀 업데이트 (MANAGER,ADMIN)
 }
