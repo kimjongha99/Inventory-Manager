@@ -13,21 +13,15 @@
 <h2>안녕하세요!</h2>
 
     <div>
-        <span>수리 요청</span>
-        <a th:href="@{/admin-requestlist(pageType='repair')}"><span th:text="${repair}">0</span></a>
-    </div>
-    <div>
         <span>대여 요청</span>
-        <a th:href="@{/admin-requestlist(pageType='rental')}"><span th:text="${rental}">0</span></a>
+        <a th:href="@{/admin-requestlist/rental}"><span th:text="${rental}">0</span></a>
     </div>
+
     <div>
         <span>반납 요청</span>
-        <a th:href="@{/admin-requestlist(pageType='return')}"> <span th:text="${return}">0</span></a>
+        <a th:href="@{/admin-requestlist/return}"> <span th:text="${return}">0</span></a>
     </div>
-    <div>
-        <span>구매 요청</span>
-        <a th:href="@{/admin-requestlist(pageType='purchase')}"><span th:text="${purchase}">0</span></a>
-    </div>
+
 
     <div>
         <a th:href="@{/register-supply}" ><button>비품 등록</button></a>

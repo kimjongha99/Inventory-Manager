@@ -7,8 +7,10 @@ import com.springboot.inventory.common.entity.Request;
 import com.springboot.inventory.common.entity.Supply;
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.RequestTypeEnum;
+import com.springboot.inventory.request.dto.ApproveDTO;
 import com.springboot.inventory.request.dto.RentalRejectDTO;
-import com.springboot.inventory.request.dto.RequestDTO;
+import com.springboot.inventory.request.dto.RentalRequestDTO;
+import com.springboot.inventory.request.dto.ReturnRequestDTO;
 import com.springboot.inventory.request.repository.RequestRepository;
 import com.springboot.inventory.request.service.RequestService;
 import com.springboot.inventory.supply.repository.SupplyRepository;
@@ -36,32 +38,87 @@ public class RequestServiceImpl implements RequestService {
         this.modelMapper = modelMapper;
     }
 
-    public ResponseDTO<RequestDTO> registerRequest(RequestDTO requestDTO, User user) {
+    /* ========================================================================= */
+    /* ================================== USER ================================= */
+    /* ========================================================================= */
 
-        Request request = modelMapper.map(requestDTO, Request.class);
-        
-        // 요청 종류 불러오기
-        RequestTypeEnum requestType = RequestTypeEnum.fromString(requestDTO.getType());
+
+    public ResponseDTO<?> registerRentalRequest(RentalRequestDTO rentalRequestDTO,
+                                                          User user) {
+
+        Request request = modelMapper.map(rentalRequestDTO, Request.class);
+
+
+        RequestTypeEnum requestType = RequestTypeEnum.fromString(rentalRequestDTO.getType());
         Category category =
-                categoryRepository.findByCategoryName(requestDTO.getCategory()).orElse(null);
+                categoryRepository.findByCategoryName(rentalRequestDTO.getCategory()).orElse(null);
 
-        // 추가 매핑
         request.setRequestType(requestType);
         request.setCategory(category);
         request.setUser(user);
 
-        // 저장
         requestRepository.save(request);
 
         return new ResponseDTO<>(true, null);
     }
 
-    public ResponseDTO<ArrayList<?>> getRequestUnhandled(String type) {
+    public ResponseDTO<?> registerReturnRequest(ReturnRequestDTO returnRequestDTO, User user) {
 
-        RequestTypeEnum requestType = RequestTypeEnum.fromString(type);
+        Request returnRequest = new Request();
+        Request rentalRequest =
+                requestRepository.findByRequestId(Long.parseLong(returnRequestDTO.getRentalRequestId())).orElse(null);
+
+        RequestTypeEnum requestType = RequestTypeEnum.fromString(returnRequestDTO.getType());
+        Supply supply =
+                supplyRepository.findBySupplyId(Long.parseLong(returnRequestDTO.getSupplyId())).orElse(null);
+        Category category =
+                categoryRepository.findByCategoryName(returnRequestDTO.getCategory()).orElse(null);
+
+
+
+        returnRequest.setRequestType(requestType);
+        returnRequest.setCategory(category);
+        returnRequest.setSupply(supply);
+        returnRequest.setUser(user);
+
+        rentalRequest.setReturnAvailable(true);
+
+        requestRepository.save(rentalRequest);
+        requestRepository.save(returnRequest);
+
+        return new ResponseDTO<>(true, null);
+    }
+
+    public ResponseDTO<List<Request>> getUserRequestHistory(User user) {
+
+        List<Request> requestHistory = requestRepository.findAllByUser(user);
+
+        return new ResponseDTO<>(true, requestHistory);
+    }
+
+    public ResponseDTO<List<Request>> getRentalSupplyByUser(User user) {
+
+        List<Boolean> returnAvailable = new ArrayList<>();
+
+        returnAvailable.add(true);
+        returnAvailable.add(null);
+
+        List<Request> rentalRequestList =
+                requestRepository.findByUserAndRequestTypeAndReturnAvailableIsTrue(user,
+                        RequestTypeEnum.RENTAL);
+
+        return new ResponseDTO<>(true, rentalRequestList);
+    }
+
+    /* ========================================================================= */
+    /* ================================= ADMIN ================================= */
+    /* ========================================================================= */
+
+
+    public ResponseDTO<ArrayList<?>> getRequestUnhandled(RequestTypeEnum type) {
 
         ArrayList<?> requestList = requestRepository.findAllByAcceptAndRequestType(null,
-                requestType).orElse(new ArrayList<>());
+                type).orElse(new ArrayList<>());
 
         return new ResponseDTO<>(true, requestList);
     }
@@ -73,7 +130,7 @@ public class RequestServiceImpl implements RequestService {
         Category category = request.getCategory();
 
         ArrayList<Supply> supplyList =
-                supplyRepository.findAllByCategoryAndStateIsNull(category).orElse(new ArrayList<>());
+                supplyRepository.findAllByCategoryAndStateIsNot(category, RequestTypeEnum.RENTAL).orElse(new ArrayList<>());
 
         Map<String, Object> data = new HashMap<>();
 
@@ -83,17 +140,18 @@ public class RequestServiceImpl implements RequestService {
         return new ResponseDTO<>(true, data);
     }
 
-    public ResponseDTO<?> approveRequest(String reqId, String supId, String requestType) {
+    public ResponseDTO<?> approveRequest(ApproveDTO approveDTO, RequestTypeEnum requestTypeEnum) {
+
+        String reqId = approveDTO.getRequestId();
+        String supId = approveDTO.getSupplyId();
 
         Long requestId = Long.parseLong(reqId);
         Long supplyId = Long.parseLong(supId);
 
-        RequestTypeEnum state = RequestTypeEnum.fromString(requestType);
-
         Request request = requestRepository.findByRequestId(requestId).orElse(null);
         Supply supply = supplyRepository.findBySupplyId(supplyId).orElse(null);
 
-        supply.setState(state);
+        supply.setState(requestTypeEnum);
         request.setSupply(supply);
         request.setAccept(true);
 
@@ -120,18 +178,6 @@ public class RequestServiceImpl implements RequestService {
 
 
         return new ResponseDTO<>(true, null);
-    }
-
-    public ResponseDTO<List<Request>> getUserRequestHistory(User user) {
-
-        System.out.println("=====================서비스 진입====================");
-
-        List<Request> requestHistory = requestRepository.findAllByUser(user);
-
-        System.out.println(user.getEmail());
-        System.out.println(requestHistory.get(1));
-
-        return new ResponseDTO<>(true, requestHistory);
     }
 
 }

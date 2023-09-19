@@ -10,9 +10,8 @@ import java.util.Optional;
 
 public interface SupplyRepository extends JpaRepository<Supply, Long> {
 
-    Optional<ArrayList<Supply>> findAllByState(RequestTypeEnum requestTypeEnum);
-
-    Optional<ArrayList<Supply>> findAllByCategoryAndStateIsNull(Category category);
+    Optional<ArrayList<Supply>> findAllByCategoryAndStateIsNot(Category category,
+                                                               RequestTypeEnum requestTypeEnum);
 
     Optional<Supply> findBySupplyId(Long supplyId);
 

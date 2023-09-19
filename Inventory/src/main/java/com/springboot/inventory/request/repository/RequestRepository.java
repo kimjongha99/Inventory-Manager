@@ -19,5 +19,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     Optional<Request> findByRequestId(Long requestId);
 
-
+    // 대여 상태 품목
+    List<Request> findByUserAndRequestTypeAndReturnAvailableIsTrue(User user,
+                                                               RequestTypeEnum requestTypeEnum);
 }

@@ -1,8 +1,8 @@
 package com.springboot.inventory.common.entity;
 
 import com.springboot.inventory.common.enums.RequestTypeEnum;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -33,7 +33,8 @@ public class Request extends TimeStamp implements Serializable {
 
     private Boolean accept;
 
-    private String requestStatus;
+    @Column
+    private Boolean returnAvailable = true;
 
     private String comment;
 

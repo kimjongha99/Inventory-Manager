@@ -1,11 +1,8 @@
-// approve api
+// approve api - rental
 function onApproveRentalHandler(event) {
 
     const requestId = document.querySelector('#requestId').textContent;
     const supplyId = event.target.closest('tr').querySelector('.supplyId').textContent;
-
-    console.log(requestId);
-    console.log(supplyId);
 
     const data = {
         requestId : requestId,
@@ -23,6 +20,35 @@ function onApproveRentalHandler(event) {
         window.location.replace("/admin-main");
     }).fail(() => {
         alert("요청 실패");
+    })
+
+}
+
+// approve api - return
+function onApproveReturnHandler(event) {
+
+    const requestId = event.target.closest('tr').querySelector('.requestId').textContent;
+    const supplyId = event.target.closest('tr').querySelector('.supplyId').attributes.value.value;
+
+    console.log(requestId);
+    console.log(supplyId);
+
+    const data = {
+        requestId : requestId,
+        supplyId : supplyId
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: '/request-api/admin-request/return-request-approve/',
+        data: JSON.stringify(data),
+        dataType: 'text',
+        contentType: 'application/json'
+    }).done((res) => {
+        alert(res);
+        window.location.replace("/admin-main");
+    }).fail(() => {
+        alert("처리 실패");
     })
 
 }

@@ -8,4 +8,5 @@ public interface SupplyService {
     ResponseDTO<?> registerSupply(SupplyRegisterDTO supplyRegisterDTO,
                                   CustomUserDetails userDetails);
 
+
 }
