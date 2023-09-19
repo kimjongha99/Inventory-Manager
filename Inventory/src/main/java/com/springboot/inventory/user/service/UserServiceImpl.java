@@ -9,11 +9,13 @@ import com.springboot.inventory.common.util.redis.RedisRepository;
 import com.springboot.inventory.common.util.redis.RefreshToken;
 import com.springboot.inventory.user.dto.SignInResultDto;
 import com.springboot.inventory.user.dto.SignUpResultDto;
+import com.springboot.inventory.user.dto.UserInfoDto;
 import com.springboot.inventory.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -112,16 +115,32 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> grantRole(String email, UserRoleEnum roles) {
         User user = userRepository.getByEmail(email);
 
-        UserRoleEnum grantedRole = roles == UserRoleEnum.USER ? UserRoleEnum.MANAGER : UserRoleEnum.USER;
-        user.changeRole(grantedRole);
-        return ResponseEntity.ok("권한 부여가 완료되었습니다.");
+        if (user != null) {
+            UserRoleEnum currentRole = user.getRoles();
+
+            // 현재 권한이 USER이면 MANAGER로, MANAGER이면 USER로 변경
+            UserRoleEnum newRole = (currentRole == UserRoleEnum.USER) ? UserRoleEnum.MANAGER : UserRoleEnum.USER;
+
+            user.changeRole(newRole);
+            return ResponseEntity.ok("권한 부여가 완료되었습니다.");
+        } else {
+            // 사용자를 찾을 수 없을 때 처리
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
+        }
     }
 
     // 전체 유저 조회
     @Override
     @Transactional
-    public List<User> findAllUser() {
-        return userRepository.findAll();
+    public List<UserInfoDto> findAllUser()
+    {
+        List<User> userList = userRepository.findAll();
+        List<UserInfoDto> userDtoList = new ArrayList<>();
+
+        for (User user : userList){
+            userDtoList.add(UserInfoDto.toDto(user));
+        }
+        return  userDtoList;
     }
 
     // 개인 조회
@@ -138,6 +157,21 @@ public class UserServiceImpl implements UserService {
         deleteRefreshToken(email);
         deleteAllCookies(request, response);
 
+    }
+
+    // 전체 유저 조회(ADMIN용)
+    @Override
+    public List<UserInfoDto> findAllUserForAdmin(String adminEmail) {
+        List<User> userList = userRepository.findAll();
+        List<UserInfoDto> userDtoList = new ArrayList<>();
+
+        for (User user : userList) {
+            // 현재 유저를 제외한 다른 유저만 추가
+            if (!user.getEmail().equals(adminEmail)) {
+                userDtoList.add(UserInfoDto.toDto(user));
+            }
+        }
+        return userDtoList;
     }
 
     private void deleteRefreshToken(String email) {
