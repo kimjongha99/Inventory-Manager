@@ -32,7 +32,7 @@ public class SupplyCreateUpdateController {
     public String createSupply(
             @ModelAttribute @Valid SupplyDTO supplyDTO) throws Exception {
         supplyService.createSupply(supplyDTO);
-        return "redirect:/supply";
+        return "redirect:/supply/list";
     }
 
     @GetMapping("/update/{supplyId}")
@@ -48,7 +48,7 @@ public class SupplyCreateUpdateController {
             @PathVariable("supplyId") Long supplyId,
             @ModelAttribute @Valid SupplyDTO supplyDTO) throws Exception {
        supplyService.updateSupply(supplyId, supplyDTO) ;
-        return "redirect:/supply";
+        return "redirect:/supply/list";
     }
 
 }
