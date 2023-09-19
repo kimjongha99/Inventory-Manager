@@ -2,6 +2,7 @@ package com.springboot.inventory.user.service;
 
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.UserRoleEnum;
+import com.springboot.inventory.user.dto.AdminLoginResponseDto;
 import com.springboot.inventory.user.dto.SignInResultDto;
 import com.springboot.inventory.user.dto.SignUpResultDto;
 import com.springboot.inventory.user.dto.UserInfoDto;
@@ -20,4 +21,5 @@ public interface UserService {
     ResponseEntity<String> grantRole(String email, UserRoleEnum roles);
     List<UserInfoDto> findAllUser();
     Optional<User> findByEmail(String email);
+    AdminLoginResponseDto adminSignIn(String email, String password);
 }

@@ -2,12 +2,10 @@ package com.springboot.inventory.user.controller;
 
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.security.UserDetailsImpl;
-import com.springboot.inventory.user.dto.SignInResultDto;
-import com.springboot.inventory.user.dto.SignUpResultDto;
-import com.springboot.inventory.user.dto.SigninRequestDTO;
-import com.springboot.inventory.user.dto.UserInfoDto;
+import com.springboot.inventory.user.dto.*;
 import com.springboot.inventory.user.service.UserService;
 import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -44,6 +42,29 @@ public class UserRestController {
         String email = signinRequestDTO.getUsername();
 
         String password = signinRequestDTO.getPassword();
+
+
+        SignInResultDto signInResultDto = userService.signIn(email, password);
+
+        String token = signInResultDto.getToken();
+
+        Cookie cookie = new Cookie("Authorization", token);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
+        System.out.println(response);
+
+        return ResponseEntity.ok("로그인 성공");
+    }
+    @PostMapping("/login/admin")
+    @ResponseBody
+    public ResponseEntity<String> adminSignIn(@RequestBody AdminLoginRequestDto adminLoginRequestDto, HttpServletResponse response) throws UnsupportedEncodingException {
+        LOGGER.info("[UserRestController - signIn]");
+
+        String email = adminLoginRequestDto.getUsername();
+
+        String password = adminLoginRequestDto.getPassword();
 
 
         SignInResultDto signInResultDto = userService.signIn(email, password);

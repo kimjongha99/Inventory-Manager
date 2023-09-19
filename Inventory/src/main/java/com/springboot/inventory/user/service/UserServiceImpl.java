@@ -1,5 +1,6 @@
 package com.springboot.inventory.user.service;
 
+import com.springboot.inventory.common.dto.ResponseDto;
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.ResponseEnum;
 import com.springboot.inventory.common.enums.TokenType;
@@ -7,6 +8,7 @@ import com.springboot.inventory.common.enums.UserRoleEnum;
 import com.springboot.inventory.common.jwt.JwtProvider;
 import com.springboot.inventory.common.util.redis.RedisRepository;
 import com.springboot.inventory.common.util.redis.RefreshToken;
+import com.springboot.inventory.user.dto.AdminLoginResponseDto;
 import com.springboot.inventory.user.dto.SignInResultDto;
 import com.springboot.inventory.user.dto.SignUpResultDto;
 import com.springboot.inventory.user.dto.UserInfoDto;
@@ -96,6 +98,31 @@ public class UserServiceImpl implements UserService {
 
         return signInResultDto;
     }
+
+    // Admin 로그인
+    @Transactional
+    @Override
+    public AdminLoginResponseDto adminSignIn(String email, String password) throws RuntimeException {
+        LOGGER.info("[UserServiceImpl - AdminLogin]");
+        User user = userRepository.getByEmail(email);
+
+        if(!passwordEncoder.matches(password, user.getPassword())) {
+            throw new RuntimeException();
+        }       // 로그인 실패 시
+
+        getRefreshToken(user);
+
+        String accessToken = jwtProvider.createToken(user.getEmail(), user.getRoles(), TokenType.ACCESS);
+
+        AdminLoginResponseDto adminLoginResponseDto = AdminLoginResponseDto.builder()
+                .token(accessToken)
+                .build();
+
+        setSuccessResult(adminLoginResponseDto);
+
+        return signInResultDto;
+    }
+
 
     // 로그아웃
     public ResponseEntity<String> logOut(String email, HttpServletRequest request, HttpServletResponse response) {
