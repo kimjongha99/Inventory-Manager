@@ -4,6 +4,7 @@ import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.UserRoleEnum;
 import com.springboot.inventory.user.dto.SignInResultDto;
 import com.springboot.inventory.user.dto.SignUpResultDto;
+import com.springboot.inventory.user.dto.UserInfoDto;
 import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,6 @@ public interface UserService {
     SignInResultDto signIn(String email, String password) throws RuntimeException;
     ResponseEntity<String> logOut(String email, HttpServletRequest request, HttpServletResponse response);
     ResponseEntity<String> grantRole(String email, UserRoleEnum roles);
-    List<User> findAllUser();
+    List<UserInfoDto> findAllUser();
     Optional<User> findByEmail(String email);
 }
