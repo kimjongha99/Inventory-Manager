@@ -68,6 +68,7 @@ public class RequestServiceImpl implements RequestService {
         Request rentalRequest =
                 requestRepository.findByRequestId(Long.parseLong(returnRequestDTO.getRentalRequestId())).orElse(null);
 
+
         RequestTypeEnum requestType = RequestTypeEnum.fromString(returnRequestDTO.getType());
         Supply supply =
                 supplyRepository.findBySupplyId(Long.parseLong(returnRequestDTO.getSupplyId())).orElse(null);
@@ -75,13 +76,13 @@ public class RequestServiceImpl implements RequestService {
                 categoryRepository.findByCategoryName(returnRequestDTO.getCategory()).orElse(null);
 
 
-
         returnRequest.setRequestType(requestType);
         returnRequest.setCategory(category);
         returnRequest.setSupply(supply);
+        returnRequest.setRequest(rentalRequest);
         returnRequest.setUser(user);
-
         rentalRequest.setReturnAvailable(true);
+
 
         requestRepository.save(rentalRequest);
         requestRepository.save(returnRequest);
@@ -98,13 +99,8 @@ public class RequestServiceImpl implements RequestService {
 
     public ResponseDTO<List<Request>> getRentalSupplyByUser(User user) {
 
-        List<Boolean> returnAvailable = new ArrayList<>();
-
-        returnAvailable.add(true);
-        returnAvailable.add(null);
-
         List<Request> rentalRequestList =
-                requestRepository.findByUserAndRequestTypeAndReturnAvailableIsTrue(user,
+                requestRepository.findAllByUserAndRequestTypeAndSupplyIsNotNullAndReturnAvailableIsTrue(user,
                         RequestTypeEnum.RENTAL);
 
         return new ResponseDTO<>(true, rentalRequestList);
@@ -132,6 +128,8 @@ public class RequestServiceImpl implements RequestService {
         ArrayList<Supply> supplyList =
                 supplyRepository.findAllByCategoryAndStateIsNot(category, RequestTypeEnum.RENTAL).orElse(new ArrayList<>());
 
+        System.out.println(supplyList.get(0));
+
         Map<String, Object> data = new HashMap<>();
 
         data.put("requestId", requestId);
@@ -142,11 +140,8 @@ public class RequestServiceImpl implements RequestService {
 
     public ResponseDTO<?> approveRequest(ApproveDTO approveDTO, RequestTypeEnum requestTypeEnum) {
 
-        String reqId = approveDTO.getRequestId();
-        String supId = approveDTO.getSupplyId();
-
-        Long requestId = Long.parseLong(reqId);
-        Long supplyId = Long.parseLong(supId);
+        Long requestId = Long.parseLong(approveDTO.getRequestId());
+        Long supplyId = Long.parseLong(approveDTO.getSupplyId());
 
         Request request = requestRepository.findByRequestId(requestId).orElse(null);
         Supply supply = supplyRepository.findBySupplyId(supplyId).orElse(null);
@@ -156,7 +151,18 @@ public class RequestServiceImpl implements RequestService {
         request.setAccept(true);
 
         requestRepository.save(request);
+
         supplyRepository.save(supply);
+
+        if (requestTypeEnum == RequestTypeEnum.RETURN) {
+            Request pastRequest =  request.getRequest();
+
+            pastRequest.setReturnAvailable(false);
+
+            requestRepository.save(pastRequest);
+        }
+
+
 
         return new ResponseDTO<>(true, null);
     }
@@ -174,8 +180,6 @@ public class RequestServiceImpl implements RequestService {
         request.setComment(comment);
 
         requestRepository.save(request);
-
-
 
         return new ResponseDTO<>(true, null);
     }

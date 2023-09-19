@@ -32,7 +32,7 @@
           <tr th:each="history : ${requestHistory}">
             <td th:text="${history.created_at}"></td>
 
-            <td th:text="${history.requestType}"></td>
+            <td th:text="${history.requestType.getType() == 'rental' ? '대여' : '반납'}"></td>
 
             <td th:text="${history.content}"></td>
             <td th:text="${history.category.categoryName}"></td>
@@ -41,6 +41,7 @@
             <td
               th:if="${history.accept != null}"
               th:text="${history.accept.booleanValue() == true ? '승인' : '거부'}"
+              th:style="${history.accept.booleanValue() == true ? 'background-color : #28D485;' : 'background-color : #F05650;'}"
             ></td>
             <td th:if="${history.accept == null}" th:text="대기중"></td>
             <!-- -->
