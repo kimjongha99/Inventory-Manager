@@ -3,7 +3,7 @@ package com.springboot.inventory.user.dto;
 import lombok.Data;
 
 @Data
-public class SigninRequestDTO {
+public class SigninRequestDto {
 
     String username;
 

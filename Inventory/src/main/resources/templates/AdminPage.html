@@ -20,7 +20,9 @@
 
 <script>
     function fetchUserData() {
-        fetch('/sign-api/allUserlist')
+
+        fetch('/sign-api/allUserListForAdmin')
+
             .then(response => response.json())
             .then(data => {
                 const tableBody = document.querySelector('#userTable tbody');
@@ -47,11 +49,13 @@
     }
 
     function grantRole(email) {
-        fetch(`/sign-api/roles/{email}${email}`, { method: 'PUT' })
-            .then(response => response.json())
-            .then(data => {
-                console.log('권한 부여 성공:', data);
-                fetchUserData();
+
+        fetch(`/sign-api/roles/${email}`, { method: 'PUT' }) // `${email}`로 이메일을 동적으로 추가
+            .then(function (response) {
+                alert("권한부여에 성공하였습니다.");
+                // 회원 탈퇴 성공 시 메인페이지로
+                window.location.href = '/AdminPage';
+
             })
             .catch(error => console.error('권한 부여 중 오류 발생:', error));
     }
