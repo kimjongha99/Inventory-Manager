@@ -4,7 +4,7 @@ import com.springboot.inventory.common.entity.User;
 import lombok.Data;
 
 @Data
-public class RequestDTO {
+public class RentalRequestDTO {
 
     private String type;
     private String category;

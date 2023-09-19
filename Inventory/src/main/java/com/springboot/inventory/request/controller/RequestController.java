@@ -1,6 +1,8 @@
 package com.springboot.inventory.request.controller;
 
 import com.springboot.inventory.common.entity.Request;
+import com.springboot.inventory.common.entity.User;
+import com.springboot.inventory.common.enums.RequestTypeEnum;
 import com.springboot.inventory.common.userDetails.CustomUserDetails;
 import com.springboot.inventory.request.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,57 +26,94 @@ public class RequestController {
         this.requestService = requestService;
     }
 
-    @GetMapping(value = "/user-request")
-    public String requestPage() {
-        return "requests/RequestPage";
-    }
+    /* ========================================================================= */
+    /* ================================== USER ================================= */
+    /* ========================================================================= */
 
+    // 전체요청내역
+    @GetMapping("/request-user/history")
+    public  String RequestDetail(Model model,
+                                 @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-
-    @GetMapping(value = "/admin-main")
-    public String requestListPage(Model model) {
-
-        int repairCount = requestService.getRequestUnhandled("repair").getData().size();
-
-        int rentalCount = requestService.getRequestUnhandled("rental").getData().size();
-
-        int returnCount = requestService.getRequestUnhandled("return").getData().size();
-
-        int purchaseCount = requestService.getRequestUnhandled("purchase").getData().size();
-
-        model.addAttribute("repair", repairCount);
-        model.addAttribute("rental", rentalCount);
-        model.addAttribute("return", returnCount);
-        model.addAttribute("purchase", purchaseCount);
-
-        return "requests/AdminMainPage";
-    }
-
-    @GetMapping(value = "/user-main")
-    public String requestHistoryPage(Model model,
-                                     @AuthenticationPrincipal CustomUserDetails userDetails) {
-
-        System.out.println("===========================컨트롤러 진입===========================");
-
-        System.out.println(userDetails.getUser().getEmail());
 
         List<Request> requestHistory =
                 requestService.getUserRequestHistory(userDetails.getUser()).getData();
 
         model.addAttribute("requestHistory", requestHistory);
 
-        return "requests/UserMainPage";
+
+        return "requests/RequestDetails";
     }
 
-    @GetMapping(value = "/admin-requestlist")
-    public String requestInfoPage (@RequestParam(name = "pageType", defaultValue = "/") String pageType,
-                                   Model model) {
+    // 대여요청
+    @GetMapping("/request-user/rental")
+    public  String RequestSupplies() {
+        return "requests/RequestSupplies";
+    }
 
-        ArrayList<?> requestList = requestService.getRequestUnhandled(pageType).getData();
+    // 반납요청
+    @GetMapping("/request-user/return")
+    public  String ReturnRequest(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                 Model model) {
+
+        User user = userDetails.getUser();
+
+        List<Request> rentalRequestList = requestService.getRentalSupplyByUser(user).getData();
+
+        model.addAttribute("rentalRequestList", rentalRequestList);
+
+        return "requests/ReturnRequest";
+    }
+
+    // 수리요청
+    @GetMapping("/request-user/repair")
+    public  String RepairRequest() {
+        return "requests/RepairRequest";
+    }
+
+    // 구매요청
+    @GetMapping("/request-user/buy")
+    public  String BuyRequest() {
+        return "requests/BuyRequest";
+    }
+
+
+    /* ========================================================================= */
+    /* ================================= ADMIN ================================= */
+    /* ========================================================================= */
+
+    @GetMapping(value = "/admin-main")
+    public String requestListPage(Model model) {
+
+        int rentalCount = requestService.getRequestUnhandled(RequestTypeEnum.RENTAL).getData().size();
+
+        int returnCount =
+                requestService.getRequestUnhandled(RequestTypeEnum.RETURN).getData().size();
+
+        model.addAttribute("rental", rentalCount);
+        model.addAttribute("return", returnCount);
+
+        return "requests/AdminMainPage";
+    }
+
+    @GetMapping(value = "/admin-requestlist/rental")
+    public String rentalInfoPage (Model model) {
+
+        ArrayList<?> requestList = requestService.getRequestUnhandled(RequestTypeEnum.RENTAL).getData();
 
         model.addAttribute("requestList", requestList);
 
-        return "/requests/RequestListPage";
+        return "requests/RentalRequestListPage";
+    }
+
+    @GetMapping(value = "/admin-requestlist/return")
+    public String returnInfoPage (Model model) {
+
+        ArrayList<?> requestList = requestService.getRequestUnhandled(RequestTypeEnum.RETURN).getData();
+
+        model.addAttribute("requestList", requestList);
+
+        return "requests/ReturnRequestListPage";
     }
 
     @GetMapping(value = "/admin-request-accept/rental")
@@ -88,7 +127,6 @@ public class RequestController {
 
         return "/requests/RentalAcceptPage";
     }
-
 
 
 

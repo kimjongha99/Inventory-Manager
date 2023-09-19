@@ -2,10 +2,9 @@ package com.springboot.inventory.request.controller;
 
 //
 import com.springboot.inventory.common.entity.User;
+import com.springboot.inventory.common.enums.RequestTypeEnum;
 import com.springboot.inventory.common.userDetails.CustomUserDetails;
-import com.springboot.inventory.request.dto.RentalRejectDTO;
-import com.springboot.inventory.request.dto.RentalApproveDTO;
-import com.springboot.inventory.request.dto.RequestDTO;
+import com.springboot.inventory.request.dto.*;
 import com.springboot.inventory.request.service.RequestService;
 
 //
@@ -25,45 +24,67 @@ public class RequestRestController {
         this.requestService = requestService;
     }
 
-    @PostMapping(value = "/user-request")
-    @ResponseBody
-    public ResponseEntity<?> sendRequest(@RequestBody RequestDTO requestDTO,
+    /* ========================================================================= */
+    /* ================================== USER ================================= */
+    /* ========================================================================= */
+
+    @PostMapping(value = "/user-rental")
+    public ResponseEntity<?> rentalRequest(@RequestBody RentalRequestDTO requestDTO,
                                               @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         User user = userDetails.getUser();
-        requestService.registerRequest(requestDTO, user);
+        requestService.registerRentalRequest(requestDTO, user);
 
         return ResponseEntity.ok("요청 완료");
     }
 
+    @PostMapping(value = "/user-return")
+    public ResponseEntity<?> returnRequest(@RequestBody ReturnRequestDTO returnRequestDTO,
+                                           @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        User user = userDetails.getUser();
+        requestService.registerReturnRequest(returnRequestDTO, user);
+
+        return ResponseEntity.ok("요청 완료");
+    }
+
+    /* ========================================================================= */
+    /* ================================= ADMIN ================================= */
+    /* ========================================================================= */
+
+
     @GetMapping(value = "/admin-request/count")
-    @ResponseBody
     public ResponseEntity<?> getRequestList(@RequestBody String type) {
 
-        ArrayList<?> requestList = requestService.getRequestUnhandled(type).getData();
+        RequestTypeEnum requestTypeEnum = RequestTypeEnum.fromString(type);
+
+        ArrayList<?> requestList = requestService.getRequestUnhandled(requestTypeEnum).getData();
 
         return ResponseEntity.ok(requestList);
     }
 
     @PostMapping(value = "/admin-request/rental-request-approve")
-    @ResponseBody
-    public ResponseEntity<?> approveRentalRequest(@RequestBody RentalApproveDTO rentalApproveDTO) {
+    public ResponseEntity<?> approveRentalRequest(@RequestBody ApproveDTO approveDTO) {
 
-        String reqId = rentalApproveDTO.getRequestId();
-        String supId = rentalApproveDTO.getSupplyId();
-
-        requestService.approveRequest(reqId, supId, "rental");
+        requestService.approveRequest(approveDTO, RequestTypeEnum.RENTAL);
 
         return ResponseEntity.ok("승인되었습니다.");
     }
 
     @PostMapping(value = "/admin-request/rental-request-reject")
-    @ResponseBody
     public ResponseEntity<?> rejectRentalRequest(@RequestBody RentalRejectDTO rentalRejectDTO) {
 
         requestService.rejectRequest(rentalRejectDTO);
         
         return ResponseEntity.ok("승인 거부되었습니다.");
+    }
+
+    @PostMapping(value = "/admin-request/return-request-approve")
+    public ResponseEntity<?> approveReturnRequest(@RequestBody ApproveDTO approveDTO) {
+
+        requestService.approveRequest(approveDTO, RequestTypeEnum.RETURN);
+
+        return ResponseEntity.ok("반납 처리 완료");
     }
 
 }
