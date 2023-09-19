@@ -23,6 +23,12 @@ public class User extends Timestamped{
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    private Boolean deleted;
 
-
+    @Builder
+    public User(String username, UserRole role, Boolean deleted) {
+        this.username = username;
+        this.role = role;
+        this.deleted = deleted;
+    }
 }
