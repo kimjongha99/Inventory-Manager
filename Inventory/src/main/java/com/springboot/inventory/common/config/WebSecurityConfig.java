@@ -35,6 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "/resources/**", "/static/**", "/js/**",  "/css/**", "/scripts/**", "/fonts/**", "/plugin/**").permitAll()
                 .antMatchers("/sign-api/**/**").permitAll()
+                .antMatchers("/sign-api/roles/{email}").permitAll()
                 .antMatchers("/signUpPage").permitAll()
                 .antMatchers("/AdminPage").permitAll() // 임시로 진행중
                 .antMatchers( "/","/index", "/LandingPage", "/LogInPage", "/logOut").permitAll()
