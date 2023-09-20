@@ -20,6 +20,9 @@ public interface UserService {
     ResponseEntity<String> logOut(String email, HttpServletRequest request, HttpServletResponse response);
     ResponseEntity<String> grantRole(String email, UserRoleEnum roles);
     List<UserInfoDto> findAllUser(); // 전체 목록 조회 (MANAGER)
+    List<User> getUsersByUserRole(); // 유저 롤로 조회
+
+    boolean doublecheck(String email) ; // 이메일 중복확인
     Optional<User> findByEmail(String email);
     void deleteUser(String email, HttpServletRequest request, HttpServletResponse response);
 

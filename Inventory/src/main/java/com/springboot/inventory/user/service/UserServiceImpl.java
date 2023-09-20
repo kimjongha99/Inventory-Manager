@@ -130,19 +130,37 @@ public class UserServiceImpl implements UserService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
         }
     }
-
-    // 전체 유저 조회
-    @Override
+    // USER 찾기
+    public List<User> getUsersByUserRole() {
+        // 역할(role)이 USER인 사용자만 필터링하여 반환
+        return userRepository.findByRoles(UserRoleEnum.USER);
+    }
     @Transactional
-    public List<UserInfoDto> findAllUser()
-    {
-        List<User> userList = userRepository.findAll();
+    public List<UserInfoDto> findAllUser() { // 모든 USER를 보여준다.(MANAGER,ADMIN)
+        List<User> userList = getUsersByUserRole();
         List<UserInfoDto> userDtoList = new ArrayList<>();
 
-        for (User user : userList){
+        for (User user : userList) {
             userDtoList.add(UserInfoDto.toDto(user));
         }
-        return  userDtoList;
+
+        return userDtoList;
+    }
+
+    // 이메일 중복 확인
+    public boolean doublecheck(String email) {
+        // 이메일 중복 확인: 데이터베이스에서 해당 이메일로 사용자를 찾아봄
+        Optional<User> userOptional = userRepository.findByEmail(email);
+
+        if (userOptional.isPresent()) {
+            // 이메일이 이미 존재하는 경우
+            System.out.println("중복된 값입니다. 다시 입력해주세요.");
+            return true;
+        } else {
+            // 이메일이 존재하지 않는 경우
+            System.out.println("사용할 수 있는 이메일입니다.");
+            return false;
+        }
     }
 
     // 개인 조회

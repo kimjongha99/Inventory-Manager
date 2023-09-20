@@ -43,21 +43,20 @@
         // 중복 확인 버튼 클릭 시 Axios 요청 보내기
         document.getElementById("checkEmailButton").addEventListener("click", function () {
             var email = document.getElementById("email").value;
+            var emailStatus = document.getElementById("emailStatus");
+            emailStatus.innerText = "";  // 초기화
+
             axios.get("/sign-api/check-email?email=" + email)
                 .then(function (response) {
                     // 서버로부터의 응답을 팝업창으로 표시
                     var message = response.data;
-                    if (response.status === 409) {
-                        // 409 상태 코드인 경우 중복된 이메일로 처리
-                        alert(message);
-                    } else {
-                        // 그 외의 상태 코드인 경우 (200 OK 등) 처리
-                        // 사용 가능한 이메일인 경우
-                        alert(message);
-                    }
+                    emailStatus.innerText = message;
+                    emailStatus.style.color = response.status === 409 ? "red" : "blue";
                 })
                 .catch(function (error) {
                     console.error(error);
+                    emailStatus.innerText = "중복된 이메일 입니다.";
+                    emailStatus.style.color = "red";
                 });
         });
     });
