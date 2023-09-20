@@ -10,47 +10,6 @@
 <body>
 <div layout:fragment="content">
 
-
-                        <div th:if="${#authorization.expression('isAnonymous()')}">
-                            <li class="nav-item"><a class="nav-link" href="/LogInPage">로그인</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/signUpPage">회원가입</a></li>
-                        </div>
-
-                        <a href="/AdminPage">어드민 페이지</a>
-                        <a href="/ManagerPage">매니저 페이지</a>
-
-                        <div th:if="${#authorization.expression('isAuthenticated()')}">
-                            <li  class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${#authentication.name}">Dropdown</a>
-                                <div class='dropdown-menu dropdown-menu-end' aria-labelledby='navbarDropdown'>
-                                    <a class='dropdown-item' href='/MyPage'>내 정보</a>
-                                    <div class='dropdown-divider'></div>
-                                    <a  clas='dropdown-item'  href='/sign-api/logOut'>로그아웃</a>
-                                </div>
-                            </li>
-                        </div>
-                    </ul>
-
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <!-- Page content-->
-        <div class="container-fluid" layout:fragment="content">
-            <h1 class="mt-4">Simple Sidebar</h1>
-            <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
-            <p>
-                Make sure to keep all page content within the
-                <code>#page-content-wrapper</code>
-                . The top navbar is optional, and just for demonstration. Just create an element with the
-                <code>#sidebarToggle</code>
-                ID which will toggle the menu when clicked.
-            </p>
-        </div>
-    </div>
-</div>
-
-
 <script layout:fragment="script" th:inline="javascript">
 
 </script>
