@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +43,7 @@ public class UserServiceImpl implements UserService {
     // 회원가입
     @Transactional
     @Override
-    public SignUpResultDto signUp(String email, String password, String name, String tel) {
+    public SignUpResultDto signUp(String email, String password, String name, String tel, String team) {
 
         LOGGER.info("[UserServiceImpl - signUp]");
 
@@ -54,6 +55,7 @@ public class UserServiceImpl implements UserService {
                 .password(passwordEncoder.encode(password))
                 .username(name)
                 .tel(tel)
+                .team(team)
                 .roles(UserRoleEnum.USER)
                 .build();
 
@@ -126,19 +128,37 @@ public class UserServiceImpl implements UserService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
         }
     }
-
-    // 전체 유저 조회
-    @Override
+    // USER 찾기
+    public List<User> getUsersByUserRole() {
+        // 역할(role)이 USER인 사용자만 필터링하여 반환
+        return userRepository.findByRoles(UserRoleEnum.USER);
+    }
     @Transactional
-    public List<UserInfoDto> findAllUser()
-    {
-        List<User> userList = userRepository.findAll();
+    public List<UserInfoDto> findAllUser() { // 모든 USER를 보여준다.(MANAGER,ADMIN)
+        List<User> userList = getUsersByUserRole();
         List<UserInfoDto> userDtoList = new ArrayList<>();
 
-        for (User user : userList){
+        for (User user : userList) {
             userDtoList.add(UserInfoDto.toDto(user));
         }
-        return  userDtoList;
+
+        return userDtoList;
+    }
+
+    // 이메일 중복 확인
+    public boolean doublecheck(String email) {
+        // 이메일 중복 확인: 데이터베이스에서 해당 이메일로 사용자를 찾아봄
+        Optional<User> userOptional = userRepository.findByEmail(email);
+
+        if (userOptional.isPresent()) {
+            // 이메일이 이미 존재하는 경우
+            System.out.println("중복된 값입니다. 다시 입력해주세요.");
+            return true;
+        } else {
+            // 이메일이 존재하지 않는 경우
+            System.out.println("사용할 수 있는 이메일입니다.");
+            return false;
+        }
     }
 
     // 개인 조회
@@ -156,6 +176,25 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteByEmail(email);
         deleteRefreshToken(email);
         deleteAllCookies(request, response);
+    }
+
+    @Override
+    @Transactional
+    public void delete(String email){
+        userRepository.deleteByEmail(email);
+        deleteRefreshToken(email);
+    }
+    // 팀 설정 업데이트하기
+    @Transactional
+    public void updateTeam(String email, String newTeam) {
+        Optional<User> byUser = userRepository.findByEmail(email);
+        if(byUser.isPresent()){
+            User user = byUser.get();
+            user.updateTeam(newTeam);
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("User not found with email: " + email);
+        }
     }
 
     // 전체 유저 조회(ADMIN용)
