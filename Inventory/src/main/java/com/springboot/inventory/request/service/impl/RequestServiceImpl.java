@@ -14,11 +14,19 @@ import com.springboot.inventory.request.dto.ReturnRequestDTO;
 import com.springboot.inventory.request.repository.RequestRepository;
 import com.springboot.inventory.request.service.RequestService;
 import com.springboot.inventory.supply.repository.SupplyRepository;
-import org.modelmapper.ModelMapper;
+
+//
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+//
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+//
 import java.util.*;
+import org.modelmapper.ModelMapper;
 
 @Service
 public class RequestServiceImpl implements RequestService {
@@ -128,8 +136,6 @@ public class RequestServiceImpl implements RequestService {
         ArrayList<Supply> supplyList =
                 supplyRepository.findAllByCategoryAndStateIsNot(category, RequestTypeEnum.RENTAL).orElse(new ArrayList<>());
 
-        System.out.println(supplyList.get(0));
-
         Map<String, Object> data = new HashMap<>();
 
         data.put("requestId", requestId);
@@ -182,6 +188,19 @@ public class RequestServiceImpl implements RequestService {
         requestRepository.save(request);
 
         return new ResponseDTO<>(true, null);
+    }
+
+    /* ========================================================================= */
+    /* ================================= ADMIN ================================= */
+    /* ========================================================================= */
+
+    public ResponseDTO<Page<?>> paging(int pages, int size, Object data) {
+        Pageable pageable = PageRequest.of(pages, size);
+
+        Page<Request> page = requestRepository.findAll(pageable);
+
+
+        return new ResponseDTO<>(true, page);
     }
 
 }

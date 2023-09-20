@@ -47,7 +47,8 @@ public class SecurityConfig {
                 .antMatchers("/admin/**", "/admin-main", "/admin-requestlist/**", "/register" +
                         "-supply/**", "/admin-request-accept/rental").hasAuthority(
                         "ADMIN")
-                .antMatchers("/user/**", "/request-user/**", "/request-api/user-request/**").hasAuthority(
+                .antMatchers("/user/**", "/request-user/**", "/request-api/user-request/**",
+                        "/request-user/history/**").hasAuthority(
                         "USER")
 
 

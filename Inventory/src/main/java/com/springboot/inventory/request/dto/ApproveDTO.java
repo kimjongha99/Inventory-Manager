@@ -9,7 +9,4 @@ public class ApproveDTO {
 
     private String supplyId;
 
-    // if type is 'return', requestId
-    private String pastRequestId;
-
 }

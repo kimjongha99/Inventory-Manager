@@ -2,6 +2,7 @@ package com.springboot.inventory.request.repository;
 
 //
 import com.springboot.inventory.common.entity.Request;
+import com.springboot.inventory.common.entity.Supply;
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.RequestTypeEnum;
 
@@ -30,5 +31,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     List<Request> findAllByUserAndRequestTypeAndSupplyIsNotNullAndReturnAvailableIsTrue(@Param(
             "user") User user,
                                                                        @Param("requestType") RequestTypeEnum requestType);
+
+
 
 }

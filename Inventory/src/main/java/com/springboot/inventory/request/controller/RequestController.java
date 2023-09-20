@@ -5,13 +5,17 @@ import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.RequestTypeEnum;
 import com.springboot.inventory.common.userDetails.CustomUserDetails;
 import com.springboot.inventory.request.service.RequestService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
+
+//
+import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 
+//
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,14 +36,22 @@ public class RequestController {
 
     // 전체요청내역
     @GetMapping("/request-user/history")
-    public  String RequestDetail(Model model,
-                                 @AuthenticationPrincipal CustomUserDetails userDetails) {
-
+    public  String RequestDetail(@AuthenticationPrincipal
+                                 CustomUserDetails userDetails,
+                                 @RequestParam(name = "page", defaultValue = "0") int page,
+                                 @RequestParam(name = "size", defaultValue = "10") int size,
+                                 Model model
+                                 ) {
 
         List<Request> requestHistory =
                 requestService.getUserRequestHistory(userDetails.getUser()).getData();
 
-        model.addAttribute("requestHistory", requestHistory);
+        Page<?> historyPage = requestService.paging(page, size, requestHistory).getData();
+
+        model.addAttribute("requestHistory", historyPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", historyPage.getTotalPages());
+        model.addAttribute("currentUrl", "/request-user/history");
 
 
         return "requests/RequestDetails";
@@ -86,11 +98,18 @@ public class RequestController {
     }
 
     @GetMapping(value = "/admin-requestlist/rental")
-    public String rentalInfoPage (Model model) {
+    public String rentalInfoPage (@RequestParam(name = "page", defaultValue = "0") int page,
+                                  @RequestParam(name = "size", defaultValue = "10") int size,
+                                  Model model) {
 
         ArrayList<?> requestList = requestService.getRequestUnhandled(RequestTypeEnum.RENTAL).getData();
 
-        model.addAttribute("requestList", requestList);
+        Page<?> rentalReqeustPage = requestService.paging(page, size, requestList).getData();
+
+        model.addAttribute("requestList", rentalReqeustPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", rentalReqeustPage.getTotalPages());
+        model.addAttribute("currentUrl", "/admin-requestlist/rental");
 
         return "requests/RentalRequestListPage";
     }
@@ -109,11 +128,9 @@ public class RequestController {
     public String rentalRequestAcceptPage(@RequestParam(name = "requestId", defaultValue = "") String requestId
             , Model model) {
         
-        System.out.println("컨트롤러 진입");
 
         Map<String, ?> response =  requestService.getRentalRequestInfo(requestId).getData();
 
-        System.out.println(response.get("supplyList"));
 
         model.addAttribute("requestId", response.get("requestId"));
         model.addAttribute("supplyList", response.get("supplyList"));

@@ -8,6 +8,7 @@ import com.springboot.inventory.request.dto.ApproveDTO;
 import com.springboot.inventory.request.dto.RentalRejectDTO;
 import com.springboot.inventory.request.dto.RentalRequestDTO;
 import com.springboot.inventory.request.dto.ReturnRequestDTO;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,5 +32,7 @@ public interface RequestService {
     ResponseDTO<List<Request>> getUserRequestHistory(User user);
 
     ResponseDTO<List<Request>> getRentalSupplyByUser(User user);
+
+    ResponseDTO<Page<?>> paging(int page, int size, Object data);
 
 }
