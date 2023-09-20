@@ -142,6 +142,17 @@ public class UserRestController {
 
     }
 
+    // 이메일 중복확인
+    @GetMapping("/check-email")
+    public ResponseEntity<String> checkEmail(@RequestParam("email") String email) {
+        boolean isEmailDuplicate = userService.doublecheck(email);
+
+        if (isEmailDuplicate) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("중복된 이메일입니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body("사용 가능한 이메일입니다.");
+        }
+    }
     // 권한 부여
     @PutMapping("/roles/{email}")
     public ResponseEntity<String> grantRole(@PathVariable String email,

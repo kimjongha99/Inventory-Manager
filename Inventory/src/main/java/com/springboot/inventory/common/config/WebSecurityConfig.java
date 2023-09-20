@@ -40,9 +40,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers( "/","/index", "/LandingPage", "/LogInPage", "/logOut").permitAll()
                 .antMatchers("/AdminPage").permitAll()
                 .antMatchers("/ManagerPage").permitAll()
-                .antMatchers("/sign-api/allUserListForAdmin").permitAll()
-                .antMatchers("/sign-api/updateteam").permitAll()
-                .antMatchers("/sign-api/delete").permitAll()
 
                 .anyRequest().authenticated()
                 .and()
