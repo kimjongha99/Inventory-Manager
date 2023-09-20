@@ -30,7 +30,7 @@ public class UserController {
     @GetMapping("/logOut")
     public String logOug() { return "/index"; }
 
-    @GetMapping("/MangerPage")
+    @GetMapping("/ManagerPage")
     public String ManagerPage() { return "/ManagerPage"; }
 
     @GetMapping("/MyPage")
