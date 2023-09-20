@@ -1,23 +1,25 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="#">
-  <title>Document</title>
+  <title>맴버 </title>
 </head>
 <body>
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <title>Landing Page</title>
-</head>
-<body>
-<div>안녕하세요!</div>
-</body>
-</html>
-<script th:inline="javascript">
+<div layout:fragment="content">
+
+
+
+  <div>안녕하세요!</div>
+
+
+
+
+</div>
+
+
+<script layout:fragment="script" th:inline="javascript">
   var token = /*[[${accessToken}]]*/ '';
 
   // 쿠키 만료 시간을 5분으로 설정
