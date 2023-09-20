@@ -35,12 +35,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "/resources/**", "/static/**", "/js/**",  "/css/**", "/scripts/**", "/fonts/**", "/plugin/**").permitAll()
                 .antMatchers("/sign-api/**/**").permitAll()
-                .antMatchers("/sign-api/**").permitAll()
                 .antMatchers("/signUpPage").permitAll()
                 .antMatchers( "/","/index", "/LandingPage", "/LogInPage", "/logOut").permitAll()
-                .antMatchers("/AdminPage").permitAll()
-                .antMatchers("/ManagerPage").permitAll()
-
+                .antMatchers("/ManagerPage").hasAnyRole("MANAGER", "ADMIN")
+                .antMatchers("/AdminPage").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);

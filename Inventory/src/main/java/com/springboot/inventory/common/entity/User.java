@@ -4,12 +4,14 @@ import com.springboot.inventory.common.enums.UserRoleEnum;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
 
 @Entity(name = "users")
 @NoArgsConstructor
 @Getter
+@SQLDelete(sql = "UPDATE users SET deleted = true, tel = null, username = CONCAT('탈퇴한 유저#', user_id) WHERE user_id = ?")
 public class User {
 
     @Id
@@ -39,25 +41,24 @@ public class User {
     private Boolean deleted;
 
     @Builder
-    public User(String email, String password, String username, String tel,String team,
-                UserRoleEnum roles,  Boolean deleted) {
+    public User(String email, String password, String username, String tel,
+                UserRoleEnum roles, String team, Boolean deleted) {
         this.email = email;
         this.password = password;
         this.username = username;
         this.tel = tel;
-        this.team = team;
         this.roles = roles;
+        this.team = team;
         this.deleted = deleted;
     }
 
-    public void update(String username, String tel, String password) {
+    public void updateUser(String username, String tel) {
         this.username = username;
         this.tel = tel;
-        this.password = password;
     }
 
-    public void updateTeam(String newTeam){
-       this.team = newTeam;
+    public void updateTeam(String team) {
+        this.team = team;
     }
 
     public void changePassword(String password) {

@@ -1,32 +1,36 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--<html xmlns:th="http://www.thymeleaf.org"-->
+<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--      layout:decorate="~{layout/basic.html}">-->
+
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Page</title>
-  <link rel="stylesheet" type="text/css" th:href="@{/css/LoginStyle.css}">
+  <title>맴버 </title>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-<section class="login-form">
-  <h1>LOGIN</h1>
-  <form id="loginForm" onsubmit="submitLoginForm(event);">
-    <div class="int-area">
-      <input type="text" name="username" id="id" autocomplete="off" required>
-      <label for="id">E-mail</label>
-    </div>
-    <div class="int-area">
-      <input type="password" name="password" id="pw" autocomplete="off" required>
-      <label for="pw">PASSWORD</label>
-    </div>
+<!--layout:fragment="content"-->
+<div>
 
-    <button id="btn" type="submit">LOGIN</button>
+  <section class="login-form">
+    <h1>LOGIN</h1>
+    <form id="loginForm" onsubmit="submitLoginForm(event);">
+      <div class="int-area">
+        <input type="text" name="username" id="id" autocomplete="off" required>
+        <label for="id">E-mail</label>
+      </div>
+      <div class="int-area">
+        <input type="password" name="password" id="pw" autocomplete="off" required>
+        <label for="pw">PASSWORD</label>
+      </div>
 
-  </form>
-</section>
+      <button id="btn" type="submit">LOGIN</button>
 
-<script th:inline="javascript">
+    </form>
+  </section>
+
+</div>
+<!--layout:fragment="script" th:inline="javascript"-->
+<script>
   function submitLoginForm(e) {
     e.preventDefault();
 
@@ -51,7 +55,6 @@
             )
             .catch(function (error) {
               // 로그인 실패 처리
-              console.error("Login failed: " + error);
               alert("이메일 또는 패스워드를 다시 확인해주세요.");
             });
   }
