@@ -12,7 +12,11 @@ public enum LargeCategory {
 
     private final String korean;
 
+
     LargeCategory(String korean) {
         this.korean = korean;
+    }
+    public String getKorean() {
+        return korean;
     }
 }

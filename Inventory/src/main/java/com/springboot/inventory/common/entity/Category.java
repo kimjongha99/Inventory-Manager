@@ -38,4 +38,11 @@ public class Category {
         this.largeCategory = largeCategory;
         this.deleted = deleted;
     }
+
+    @Builder
+    public Category(Long categoryId, String categoryName, LargeCategory largeCategory) {
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.largeCategory = largeCategory;
+    }
 }

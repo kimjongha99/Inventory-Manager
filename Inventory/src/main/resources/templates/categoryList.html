@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+    <li th:each="category : ${T(com.springboot.inventory.common.enums.LargeCategory).values()}"
+        th:data-value="${category}">
+        <a th:href="@{/category/categories(largeCategory=${category})}" th:text="${category.getKorean()}">컴퓨터</a>
+    </li>
+</ul>
+
+<h2 th:text="${selectedCategory}">Selected Category</h2>
+
+<ul>
+    <li th:each="category : ${categories}" th:text="${category.categoryName}">Example Category</li>
+</ul>
+
+</body>
+
+<form action="/category/addCategory" method="post">
+    <!-- categoryName 입력 필드 -->
+    <div>
+        <label for="categoryName">Category Name:</label>
+        <input type="text" id="categoryName" name="categoryName" required>
+    </div>
+
+    <!-- largeCategory 드롭다운 선택 필드 -->
+    <div>
+        <label for="largeCategory">Large Category:</label>
+        <select id="largeCategory" name="largeCategory">
+            <option th:each="category : ${T(com.springboot.inventory.common.enums.LargeCategory).values()}"
+                    th:value="${category.name()}" th:text="${category.getKorean()}"></option>
+        </select>
+    </div>
+
+    <!-- 제출 버튼 -->
+    <div>
+        <button type="submit">Create Category</button>
+    </div>
+</form>
+</html>
