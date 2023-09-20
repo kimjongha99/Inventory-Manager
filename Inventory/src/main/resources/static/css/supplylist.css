@@ -12,4 +12,12 @@ li {
     padding: 5px 10px;
     border: 1px solid #ccc;
 }
-
+li a:visited {
+    color: inherit;       /* 부모 요소의 색상을 그대로 사용 */
+    text-decoration: none;  /* 밑줄 제거 */
+}
+.current-page {
+    font-weight: bold;
+    color: white !important;
+    background-color: blue !important;
+}
