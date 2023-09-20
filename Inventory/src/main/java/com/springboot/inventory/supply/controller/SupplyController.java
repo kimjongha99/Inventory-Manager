@@ -1,6 +1,8 @@
 package com.springboot.inventory.supply.controller;
 
+import com.springboot.inventory.common.entity.Supply;
 import com.springboot.inventory.common.enums.SupplyStatusEnum;
+import com.springboot.inventory.supply.dto.SupplyDetailsDto;
 import com.springboot.inventory.supply.dto.SupplyResponseDto;
 import com.springboot.inventory.supply.service.SupplyResponseDtoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +12,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/supply")
@@ -28,24 +29,30 @@ public class SupplyController {
             @RequestParam(required = false, defaultValue = "all") String selectedStatus,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String keyword ,
             Model model) {
 
         System.out.println("Received keyword: " + keyword);
         Pageable pageable = PageRequest.of(page, size);
         Page<SupplyResponseDto> supplyResponseDtosPage;
 
-        if (StringUtils.hasText(keyword)) {
-            supplyResponseDtosPage = supplyResponseDtoService.searchByKeyword(keyword, pageable);
-        } else if ("all".equals(selectedStatus)) {
-            supplyResponseDtosPage = supplyResponseDtoService.findAllByDeletedFalse(pageable);
-        } else {
-            supplyResponseDtosPage = supplyResponseDtoService.findDistinctByStatusAndDeletedFalse(SupplyStatusEnum.valueOf(selectedStatus), pageable);
+       List<SupplyStatusEnum> statusList = Arrays.asList(SupplyStatusEnum.values());
+        if ("null".equals(keyword)) {
+            keyword = "";
         }
-
-
-
-        List<SupplyStatusEnum> statusList = Arrays.asList(SupplyStatusEnum.values());
+        if (StringUtils.hasText(keyword)) {
+            if (!"all".equals(selectedStatus)) {
+                supplyResponseDtosPage = supplyResponseDtoService.searchByKeywordAndStatus(keyword, SupplyStatusEnum.valueOf(selectedStatus), pageable);
+            } else {
+                supplyResponseDtosPage = supplyResponseDtoService.searchByKeyword(keyword, pageable);
+            }
+        } else {
+            if ("all".equals(selectedStatus)) {
+                supplyResponseDtosPage = supplyResponseDtoService.findAllByDeletedFalse(pageable);
+            } else {
+                supplyResponseDtosPage = supplyResponseDtoService.findDistinctByStatusAndDeletedFalse(SupplyStatusEnum.valueOf(selectedStatus), pageable);
+            }
+        }
 
         model.addAttribute("supplyResponseDtos", supplyResponseDtosPage.getContent());
         model.addAttribute("page", pageable.getPageNumber());
@@ -53,10 +60,28 @@ public class SupplyController {
         model.addAttribute("totalPages", supplyResponseDtosPage.getTotalPages());
         model.addAttribute("selectedStatus", selectedStatus);
         model.addAttribute("statusList", statusList);
-
+        model.addAttribute("keyword", keyword);
         return "supplyList";
     }
 
+    @GetMapping("/details/{id}")
+    public String supplyDetails(@PathVariable("id") Long supplyId, Model model) {
+        Optional<SupplyDetailsDto> supplyOptional = supplyResponseDtoService.getSupplyById(supplyId);
+
+        if (supplyOptional.isPresent()) {
+            SupplyDetailsDto supply = supplyOptional.get();
+            model.addAttribute("supply", supply);
+        } else {
+            return "supplyList";
+        }
+        return "supplyDetails"; // 상세 정보를 표시할 뷰 템플릿 이름
+    }
+    // DELETE 요청을 처리하는 엔드포인트입니다.
+    @PostMapping("/supplies/{supplyId}")
+    public String deleteSupply(@PathVariable Long supplyId) {
+        supplyResponseDtoService.deleteSupply(supplyId);
+        return "redirect:/supply/list"; // 삭제 후 공급품 목록 페이지로 리다이렉트합니다. 실제 리다이렉트 경로는 상황에 따라 변경될 수 있습니다.
+    }
     @Autowired
     public SupplyController(SupplyResponseDtoService supplyResponseDtoService) {
         this.supplyResponseDtoService = supplyResponseDtoService;
