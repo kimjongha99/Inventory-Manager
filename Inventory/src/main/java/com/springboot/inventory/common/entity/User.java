@@ -4,12 +4,14 @@ import com.springboot.inventory.common.enums.UserRoleEnum;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
 
 @Entity(name = "users")
 @NoArgsConstructor
 @Getter
+@SQLDelete(sql = "UPDATE users SET deleted = true, tel = null, username = CONCAT('탈퇴한 유저#', user_id) WHERE user_id = ?")
 public class User {
 
     @Id

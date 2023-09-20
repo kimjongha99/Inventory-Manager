@@ -173,6 +173,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteUser(String email, HttpServletRequest request, HttpServletResponse response) {
+
         userRepository.deleteByEmail(email);
         deleteRefreshToken(email);
         deleteAllCookies(request, response);
