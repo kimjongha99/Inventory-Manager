@@ -70,9 +70,6 @@ public class UserServiceImpl implements UserService {
             body.put("token", token);
             body.put("role", role);
 
-            System.out.println(role);
-            System.out.println(UserRoleEnum.USER.getRole());
-
             return new ResponseDTO<>(true, body);
         }
 
