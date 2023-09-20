@@ -1,24 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
 <head>
-    <meta charset="UTF-8">
-    <title>User List</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>맴버 회원가입</title>
 </head>
 <body>
-<table id="userTable">
-    <thead>
-    <tr>
-        <th>이름</th>
-        <th>전화</th>
-        <th>이메일</th>
-        <th>권한</th>
-        <th>권한 수정</th>
-    </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+<div layout:fragment="content">
+    <table id="userTable">
+        <thead>
+        <tr>
+            <th>이름</th>
+            <th>전화</th>
+            <th>이메일</th>
+            <th>권한</th>
+            <th>권한 수정</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
 
-<script>
+<script layout:fragment="script" th:inline="javascript">
     function fetchUserData() {
         fetch('/sign-api/allUserListForAdmin')
             .then(response => response.json())

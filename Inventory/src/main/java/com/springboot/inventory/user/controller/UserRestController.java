@@ -2,10 +2,7 @@ package com.springboot.inventory.user.controller;
 
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.security.UserDetailsImpl;
-import com.springboot.inventory.user.dto.SignInResultDto;
-import com.springboot.inventory.user.dto.SignUpResultDto;
-import com.springboot.inventory.user.dto.SigninRequestDTO;
-import com.springboot.inventory.user.dto.UserInfoDto;
+import com.springboot.inventory.user.dto.*;
 import com.springboot.inventory.user.service.UserService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -82,7 +79,6 @@ public class UserRestController {
                 e.printStackTrace();
             }
         }
-
         return signUpResultDto;
     }
 
@@ -107,6 +103,7 @@ public class UserRestController {
         Map<String, String> userInfo = new HashMap<>();
         userInfo.put("email", user.get().getEmail());
         userInfo.put("username", user.get().getUsername());
+        userInfo.put("tel", user.get().getTel());
 
         if (user.isPresent()) {
             return ResponseEntity.ok(userInfo);
@@ -129,7 +126,6 @@ public class UserRestController {
         String userEmail = userDetails.getUsername();
         List<UserInfoDto> userList = userService.findAllUserForAdmin(userEmail);
         return ResponseEntity.status(HttpStatus.OK).body(userList);
-
     }
 
     // 권한 부여
@@ -153,4 +149,17 @@ public class UserRestController {
                 .build();
     }
 
+    // 비밀번호 수정
+    @PutMapping("/MyPage/changePassword")
+    public ResponseEntity<String> changepassword(@RequestBody ChangePasswordDto changePasswordDto,
+                                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return userService.changePassword(changePasswordDto, userDetails.getUser());
+    }
+
+    // 회원 정보 수정
+    @PutMapping("/MyPage/updateUser")
+    public ResponseEntity<String> updateUser(@RequestBody UpdateUserDto updateUserDto,
+                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return userService.updateUser(updateUserDto, userDetails.getUser());
+    }
 }

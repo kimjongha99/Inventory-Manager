@@ -7,9 +7,7 @@ import com.springboot.inventory.common.enums.UserRoleEnum;
 import com.springboot.inventory.common.jwt.JwtProvider;
 import com.springboot.inventory.common.util.redis.RedisRepository;
 import com.springboot.inventory.common.util.redis.RefreshToken;
-import com.springboot.inventory.user.dto.SignInResultDto;
-import com.springboot.inventory.user.dto.SignUpResultDto;
-import com.springboot.inventory.user.dto.UserInfoDto;
+import com.springboot.inventory.user.dto.*;
 import com.springboot.inventory.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -150,13 +148,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email);
     }
 
+
+    // 회원 탈퇴
     @Override
     @Transactional
     public void deleteUser(String email, HttpServletRequest request, HttpServletResponse response) {
         userRepository.deleteByEmail(email);
         deleteRefreshToken(email);
         deleteAllCookies(request, response);
-
     }
 
     // 전체 유저 조회(ADMIN용)
@@ -172,6 +171,24 @@ public class UserServiceImpl implements UserService {
             }
         }
         return userDtoList;
+    }
+
+    // 비밀번호 수정
+    @Override
+    public ResponseEntity<String> changePassword(ChangePasswordDto changePasswordDto, User user) {
+        User chUser = userRepository.getByEmail(user.getEmail());
+        chUser.changePassword(passwordEncoder.encode(changePasswordDto.getPassword()));
+        userRepository.save(chUser);
+        return ResponseEntity.ok("비밀번호 변경 완료.");
+    }
+
+    // 회원 정보 수정
+    @Override
+    public ResponseEntity<String> updateUser(UpdateUserDto updateUserDto, User user) {
+        User upUser = userRepository.getByEmail(user.getEmail());
+        upUser.updateUser(updateUserDto.getUsername(), updateUserDto.getTel());
+        userRepository.save(upUser);
+        return ResponseEntity.ok("회원 정보 수정 완료.");
     }
 
     private void deleteRefreshToken(String email) {
@@ -228,5 +245,4 @@ public class UserServiceImpl implements UserService {
             redisRepository.save(refreshToSave);
         }
     }
-
 }
