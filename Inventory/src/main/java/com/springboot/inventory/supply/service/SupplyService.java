@@ -1,15 +1,13 @@
 package com.springboot.inventory.supply.service;
 
-import com.springboot.inventory.common.entity.Team;
 import com.springboot.inventory.common.entity.User;
-import com.springboot.inventory.supply.dto.SupplyDTO;
+import com.springboot.inventory.supply.dto.SupplyDto;
 import com.springboot.inventory.supply.repository.SupplyRepository;
 import com.springboot.inventory.category.repository.CategoryRepository;
 import com.springboot.inventory.common.entity.Category;
 import com.springboot.inventory.common.entity.Supply;
 import com.springboot.inventory.common.enums.LargeCategory;
 import com.springboot.inventory.common.enums.SupplyStatusEnum;
-import com.springboot.inventory.team.repository.TeamRepository;
 import com.springboot.inventory.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,38 +25,43 @@ public class SupplyService {
     private final SupplyRepository supplyRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
-    private final TeamRepository teamRepository;
 
 
     @Transactional
-    public Supply createSupply(SupplyDTO supplyDTO) throws Exception {
+    public Supply createSupply(SupplyDto supplyDto) throws Exception {
         // SupplyDTO에서 필요한 정보 추출
-        String serialNum = supplyDTO.getSerialNum();
-        String modelContent = supplyDTO.getModelContent();
-        int amount = supplyDTO.getAmount();
-        String modelName = supplyDTO.getModelName();
-        SupplyStatusEnum status = supplyDTO.getStatus();
-        LargeCategory largeCategory = supplyDTO.getLargeCategory();
-        String categoryName = supplyDTO.getCategoryName();
-        MultipartFile multipartFile = supplyDTO.getMultipartFile();
+        String serialNum = supplyDto.getSerialNum();
+        String modelContent = supplyDto.getModelContent();
+        int amount = supplyDto.getAmount();
+        String modelName = supplyDto.getModelName();
+        SupplyStatusEnum status = supplyDto.getStatus();
+        LargeCategory largeCategory = supplyDto.getLargeCategory();
+        MultipartFile multipartFile = supplyDto.getMultipartFile();
 
 
-        //image 처리
-        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\image"; //경로설정
-        UUID uuid = UUID.randomUUID(); // 식별자 랜덤설정
-        String imageName = uuid + "_" + multipartFile.getOriginalFilename();
-        File saveImage = new File(projectPath, imageName);
-        multipartFile.transferTo(saveImage);
-        supplyDTO.setImage(imageName);
-        supplyDTO.setImagePath("/image/" + imageName);
+        //image 입력이 될때만 저장
 
-        String image = supplyDTO.getImage();
-        String imagePath = supplyDTO.getImagePath();
+        String image = null;
+        String imagePath = null;
+        if(!multipartFile.isEmpty()) {
+            String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\image"; //경로설정
+            UUID uuid = UUID.randomUUID(); // 식별자 랜덤설정
+            String imageName = uuid + "_" + multipartFile.getOriginalFilename();
+            File saveImage = new File(projectPath, imageName);
+            multipartFile.transferTo(saveImage);
+            supplyDto.setImage(imageName);
+            supplyDto.setImagePath("/image/" + imageName);
 
-
+            image = supplyDto.getImage();
+            imagePath = supplyDto.getImagePath();
+        }
         //카테고리
-        Optional<Category> category = categoryRepository.findByCategoryName(categoryName);
+        String categoryName = supplyDto.getCategoryName();
+        if (categoryName.equals("직접입력")) {
+            categoryName = supplyDto.getDirectCategoryName();
+        }
 
+        Optional<Category> category = categoryRepository.findByCategoryName(categoryName);
         Category newCategory = null;
 
         if (category.isPresent()) {
@@ -66,8 +69,8 @@ public class SupplyService {
         } else {
             // 만약 카테고리가 존재하지 않으면 새로운 카테고리 생성
             newCategory = Category.builder()
-                    .largeCategory(supplyDTO.getLargeCategory())
-                    .categoryName(supplyDTO.getCategoryName())
+                    .largeCategory(supplyDto.getLargeCategory())
+                    .categoryName(categoryName)
                     .deleted(false)
                     .build();
             categoryRepository.save(newCategory);
@@ -75,20 +78,9 @@ public class SupplyService {
 
         //user 사용자 설정
         User user = null;
-        Optional<User> userOptional = userRepository.findByIdAndDeletedFalse(supplyDTO.getUserId());
+        Optional<User> userOptional = userRepository.findByIdAndDeletedFalse(supplyDto.getUserId());
         if (userOptional.isPresent()) {
             user = userOptional.get();
-        } else {
-            throw new RuntimeException("사용자를 찾을 수 없습니다.");
-        }
-
-        //team 설정
-        Team team = null;
-        Optional<Team> teamOptional = teamRepository.findByIdAndDeletedFalse(supplyDTO.getTeamId());
-        if (teamOptional.isPresent()) {
-            team = teamOptional.get();
-        } else {
-            throw new RuntimeException("사용자를 찾을 수 없습니다.");
         }
 
 
@@ -97,79 +89,91 @@ public class SupplyService {
                 .serialNum(serialNum)
                 .modelContent(modelContent)
                 .amount(amount)
+                .modelName(modelName)
                 .image(image)
                 .imagePath(imagePath)
-                .modelName(modelName)
                 .deleted(false)
                 .status(status)
                 .category(newCategory)
                 .user(user)
-                .team(team)
                 .build();
 
         return supplyRepository.save(supply); // 저장 후 그 supply를 리턴
     }
-
+    // 비품 업데이트를 위해 supply 가져오기
+    private Supply getSupply(Long supplyId) {
+        return supplyRepository.findById(supplyId).orElseThrow();
+    }
 
     @Transactional
-    public Supply updateSupply(Long supplyId, SupplyDTO supplyDTO) throws Exception {
+    public Supply updateSupply(Long supplyId, SupplyDto supplyDto) throws Exception {
 
-        Optional<Supply> supplyOptional = supplyRepository.findById(supplyId);
+        Supply supply = getSupply(supplyId);
 
-        if (!supplyOptional.isPresent()) {
-            throw new EntityNotFoundException("Supply not found with ID: " + supplyId);
-        } //id가 없는경우 예외처리
+
+        if(!supplyDto.getSerialNum().equals("")) {
+            supply.setSerialNum(supplyDto.getSerialNum());
+        }
+
+        if(!supplyDto.getModelName().equals("")) {
+            supply.setModelName(supplyDto.getModelName());
+        }
+
+        if(!supplyDto.getModelContent().equals("")) {
+            supply.setModelContent(supplyDto.getModelContent());
+        }
+
+        if(supplyDto.getStatus() != null) {
+            supply.setStatus(supplyDto.getStatus());
+        }
 
         //image 처리
-        MultipartFile multipartFile = supplyDTO.getMultipartFile();
+        if(!supplyDto.getMultipartFile().isEmpty()) {
+            MultipartFile multipartFile = supplyDto.getMultipartFile();
 
-        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\image"; //경로설정
-        UUID uuid = UUID.randomUUID(); // 식별자 랜덤설정
-        String imageName = uuid + "_" + multipartFile.getOriginalFilename();
-        File saveImage = new File(projectPath, imageName);
-        multipartFile.transferTo(saveImage);
-        supplyDTO.setImage(imageName);
-        supplyDTO.setImagePath("/image/" + imageName);
+            String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\image"; //경로설정
+            UUID uuid = UUID.randomUUID(); // 식별자 랜덤설정
+            String imageName = uuid + "_" + multipartFile.getOriginalFilename();
+            File saveImage = new File(projectPath, imageName);
+            multipartFile.transferTo(saveImage);
+            supplyDto.setImage(imageName);
+            supplyDto.setImagePath("/image/" + imageName);
 
+            supply.setImage(supply.getImage());
+            supply.setImagePath(supply.getImagePath());
+        }
         //user 사용자 설정
-        User user = null;
-        Optional<User> userOptional = userRepository.findByIdAndDeletedFalse(supplyDTO.getUserId());
-        if (userOptional.isPresent()) {
-            user = userOptional.get();
+        if(!supplyDto.getUserId().equals("")) {
+            User user = null;
+            user = userRepository.findByIdAndDeletedFalse(supplyDto.getUserId()).orElseThrow();
+            supply.setUser(user);
+        }
+        //카테고리 업데이트 (소분류 중복문제 발생)
+       /* LargeCategory largeCategory = supplyDto.getLargeCategory();
+        String categoryName = supplyDto.getCategoryName();*/
+
+
+        /*if (!supplyDto.getLargeCategory().equals("")) {
+            supply.getCategory().setLargeCategory(supplyDto.getLargeCategory());
+        }
+        if (!supplyDto.getCategoryName().equals("")) {
+            supply.getCategory().setCategoryName(supplyDto.getCategoryName());
+        }*/
+        LargeCategory largeCategory = supplyDto.getLargeCategory();
+        String categoryName = supplyDto.getCategoryName();
+
+        Category existingCategory = categoryRepository.findByLargeCategoryAndCategoryName(largeCategory, categoryName);
+
+        if (existingCategory == null) {
+            // 기존 카테고리가 없으면 새 카테고리 생성
+            Category newCategory = new Category();
+            newCategory.setLargeCategory(largeCategory);
+            newCategory.setCategoryName(categoryName);
+            // 새 카테고리를 supply에 설정
+            supply.setCategory(newCategory);
         } else {
-            throw new RuntimeException("사용자를 찾을 수 없습니다.");
-        }
-
-        //team 설정
-        Team team = null;
-        Optional<Team> teamOptional = teamRepository.findByIdAndDeletedFalse(supplyDTO.getTeamId());
-        if (teamOptional.isPresent()) {
-            team = teamOptional.get();
-        } else {
-            throw new RuntimeException("사용자를 찾을 수 없습니다.");
-        }
-
-        Supply supply = supplyOptional.get(); //supply 엔티티 추출
-
-        supply.setSerialNum(supplyDTO.getSerialNum());
-        supply.setModelContent(supplyDTO.getModelContent());
-        supply.setAmount(supplyDTO.getAmount());
-        supply.setImage(supplyDTO.getImage());
-        supply.setImagePath(supply.getImagePath());
-        supply.setModelName(supplyDTO.getModelName());
-        supply.setStatus(supplyDTO.getStatus());
-        supply.setUser(user);
-        supply.setTeam(team);
-
-
-        LargeCategory largeCategory = supplyDTO.getLargeCategory();
-        String categoryName = supplyDTO.getCategoryName();
-
-        if (largeCategory != null) {
-            supply.getCategory().setLargeCategory(largeCategory);
-        }
-        if (categoryName != null) {
-            supply.getCategory().setCategoryName(categoryName);
+            // 기존 카테고리가 있으면 supply에 설정
+            supply.setCategory(existingCategory);
         }
 
         return supplyRepository.save(supply);
@@ -181,21 +185,21 @@ public class SupplyService {
     }
 
     @Transactional
-    public Map<LargeCategory, List<SupplyDTO>> getSupplyUserByCategory(Long userId) {
+    public Map<LargeCategory, List<SupplyDto>> getSupplyUserByCategory(Long userId) {
         List<Supply> supplyList = supplyRepository.findByUserId(userId);
-        Map<LargeCategory, List<SupplyDTO>> supplyByCategoryMap = new HashMap<>();
+        Map<LargeCategory, List<SupplyDto>> supplyByCategoryMap = new HashMap<>();
 
         // 비품을 largeCategory 별로 분류
         for (Supply supply : supplyList) {
             LargeCategory largeCategory = supply.getCategory().getLargeCategory();
-            SupplyDTO supplyDTO = new SupplyDTO();
-            supplyDTO.setModelName(supply.getModelName());
-            supplyDTO.setStatus(supply.getStatus());
-            supplyDTO.setCategoryName(supply.getCategory().getCategoryName());
-            supplyDTO.setImagePath(supply.getImagePath());
+            SupplyDto supplyDto = new SupplyDto();
+            supplyDto.setModelName(supply.getModelName());
+            supplyDto.setStatus(supply.getStatus());
+            supplyDto.setCategoryName(supply.getCategory().getCategoryName());
+            supplyDto.setImagePath(supply.getImagePath());
 
             // 해당 LargeCategory에 대한 리스트가 이미 있으면 가져오고, 없으면 새로 생성
-            supplyByCategoryMap.computeIfAbsent(largeCategory, k -> new ArrayList<>()).add(supplyDTO);
+            supplyByCategoryMap.computeIfAbsent(largeCategory, k -> new ArrayList<>()).add(supplyDto);
         }
         return supplyByCategoryMap;
     }
@@ -203,21 +207,21 @@ public class SupplyService {
 
     // 비품 재고 현황
     @Transactional
-    public Map<LargeCategory, List<SupplyDTO>> getStockList() {
+    public Map<LargeCategory, List<SupplyDto>> getStockList() {
         List<Supply> all = supplyRepository.findAll();
-        Map<LargeCategory, List<SupplyDTO>> supplyStockMap = new HashMap<>();
+        Map<LargeCategory, List<SupplyDto>> supplyStockMap = new HashMap<>();
 
         for (Supply supply : all) {
 
             if (supply.getStatus() == SupplyStatusEnum.STOCK) {
                 LargeCategory largeCategory = supply.getCategory().getLargeCategory();
-                SupplyDTO supplyDTO = new SupplyDTO();
-                supplyDTO.setModelName(supply.getModelName());
-                supplyDTO.setCategoryName(supply.getCategory().getCategoryName());
-                supplyDTO.setImagePath(supply.getImagePath());
-                supplyDTO.setAmount(supply.getAmount());
+                SupplyDto supplyDto = new SupplyDto();
+                supplyDto.setModelName(supply.getModelName());
+                supplyDto.setCategoryName(supply.getCategory().getCategoryName());
+                supplyDto.setImagePath(supply.getImagePath());
+                supplyDto.setAmount(supply.getAmount());
 
-                supplyStockMap.computeIfAbsent(largeCategory, k -> new ArrayList<>()).add(supplyDTO);
+                supplyStockMap.computeIfAbsent(largeCategory, k -> new ArrayList<>()).add(supplyDto);
             }
         }
         return supplyStockMap;

@@ -48,14 +48,84 @@
         button[type="submit"]:hover {
             background-color: #555;
         }
+        .direct-input {
+            display: none;
+        }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script th:inline="javascript">
+        function loadSubcategories() {
+            var selectedLargeCategory = document.getElementById("largeCategory").value;
+
+            // 대분류 값을 서버로 전달하여 소분류를 가져오는 코드 추가
+            $.ajax({
+                url: "/supply/getSubcategories?largeCategory=" + selectedLargeCategory,
+                type: "GET",
+                //컨트롤러에서 소분류이름 받아옴 (리스트로)
+                success: function (data) {
+                    // 서버로부터 받은 데이터를 사용하여 동적으로 소분류 옵션을 추가하는 코드 작성
+                    var selectSubcategories = document.getElementById("categoryName");
+                    selectSubcategories.innerHTML = ""; // 이전 옵션 제거
+
+                    // "직접입력" 옵션을 추가
+                    var directInputOption = document.createElement("option");
+                    directInputOption.value = "직접입력";
+                    directInputOption.text = "직접입력";
+                    selectSubcategories.appendChild(directInputOption);
+
+                    // data를 이용하여 selectSubcategories에 옵션 추가
+                    for (var i = 0; i < data.length; i++) {
+                        var option = document.createElement("option");
+                        option.value = data[i];
+                        option.text = data[i];
+                        selectSubcategories.appendChild(option);
+                    }
+
+                    // 소분류 선택 상자가 변경됐을 때 직접 입력 상자를 표시 또는 숨김
+                    toggleDirectInput();
+                },
+                error: function (error) {
+                    console.error(error);
+                },
+            });
+        }
+
+        function toggleDirectInput() {
+            var categorySelect = document.getElementById("categoryName");
+            var directInput = document.getElementById("directInput");
+
+            if (categorySelect.value === "직접입력") {
+                directInput.style.display = "block";
+            } else {
+                directInput.style.display = "none";
+            }
+        }
+        // 다른 소분류 선택 상자를 누르면 직접 입력 상자 숨기기
+        document.getElementById("categoryName").addEventListener("change", function () {
+            if (this.value !== "직접입력") {
+                document.getElementById("directInput").style.display = "none";
+            }
+        });
+        //소분류 선택하면 직접입력인경우에만 입력박스나타내기
+        function toggleDirectInputAndInputField() {
+            var categorySelect = document.getElementById("categoryName");
+            var directInput = document.getElementById("directInput");
+
+            if (categorySelect.value === "직접입력") {
+                directInput.style.display = "block";
+            } else {
+                directInput.style.display = "none";
+            }
+        }
+    </script>
 </head>
 <body>
 <h1>Supply 등록</h1>
-<form th:action="@{/supply/create}" method="post" th:object="${supplyDTO}" enctype="multipart/form-data">
+<form th:action="@{/supply/create}" method="post" th:object="${supplyDto}" enctype="multipart/form-data">
     <div>
         <label for="largeCategory">대분류:</label>
-        <select id="largeCategory" name="largeCategory" th:field="*{largeCategory}" required>
+        <select id="largeCategory" name="largeCategory" th:field="*{largeCategory}" required  onchange="loadSubcategories()">
+            <option value="" selected>대분류</option>
             <option value="COMPUTER">컴퓨터</option>
             <option value="DIGITAL">디지털</option>
             <option value="ELECTRONICS">가전제품</option>
@@ -65,7 +135,11 @@
     </div>
     <div>
         <label for="categoryName">소분류:</label>
-        <input type="text" id="categoryName" name="categoryName" th:field="*{categoryName}" required>
+        <select id="categoryName" name="categoryName" required onchange="toggleDirectInputAndInputField()">
+            <option value="" selected>소분류</option>
+            <!-- 여기에 동적으로 소분류 옵션을 추가할 것입니다. -->
+        </select>
+        <input type="text" id="directInput" name="directCategoryName" class="direct-input">
     </div>
     <div>
         <label for="serialNum">시리얼 넘버:</label>
@@ -77,38 +151,28 @@
     </div>
     <div>
         <label for="modelContent">제품 설명:</label>
-        <input type="text" id="modelContent" name="modelContent" th:field="*{modelContent}" required>
-    </div>
-    <div>
-        <label for="amount">수량:</label>
-        <input type="number" id="amount" name="amount" th:field="*{amount}" required>
+        <input type="text" id="modelContent" name="modelContent" th:field="*{modelContent}">
     </div>
     <div>
         <label for="multipartFile">이미지:</label>
-        <input type="file" id="multipartFile" name="multipartFile" accept="image/*" required>
-    </div>
-    <div>
-        <label for="teamId">팀:</label>
-        <select id="teamId" name="teamId" th:field="*{teamId}" required>
-            <option th:each="team : ${teamList}" th:value="${team.id}" th:text="${team.teamName}"></option>
-        </select>
+        <input type="file" id="multipartFile" name="multipartFile" accept="image/*">
     </div>
     <div>
         <label for="userId">사용자:</label>
-        <select id="userId" name="userId" th:field="*{userId}" required>
+        <select id="userId" name="userId" th:field="*{userId}">
+            <option value="">사용자 없음</option>
             <option th:each="user : ${userList}" th:value="${user.id}" th:text="${user.username}"></option>
         </select>
     </div>
     <div>
         <label for="status">상태:</label>
-        <select id="status" name="status" th:field="*{status}" required>
+        <select id="status" name="status" th:field="*{status}">
+            <option value="STOCK">재고</option>
             <option value="USING">사용중</option>
             <option value="REPAIRING">수리중</option>
-            <option value="STOCK">재고</option>
         </select>
     </div>
     <button type="submit">등록</button>
 </form>
-
 </body>
 </html>
