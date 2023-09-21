@@ -145,9 +145,9 @@ public class SupplyService {
         }
         //user 사용자 설정
         if(supplyDto.getUserId() != null) {
-            User user = null;
-            user = userRepository.findByUserIdAndDeletedFalse(supplyDto.getUserId())
-                    .orElseThrow(()-> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
+
+
+            User user = userRepository.findByUserId(supplyDto.getUserId()).orElseThrow(()-> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
             supply.setUser(user);
         }
         //카테고리 업데이트 (소분류 중복문제 발생)
@@ -192,7 +192,7 @@ public class SupplyService {
     @Transactional
     public Map<LargeCategory, List<SupplyDto>> getSupplyUserByCategory(Long userId) {
 
-        User user = userRepository.findById(userId).orElse(null);
+        User user = userRepository.findByUserId(userId).orElse(null);
 
         List<Supply> supplyList = supplyRepository.findByUser(user);
         Map<LargeCategory, List<SupplyDto>> supplyByCategoryMap = new HashMap<>();
