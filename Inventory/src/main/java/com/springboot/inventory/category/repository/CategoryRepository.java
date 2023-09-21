@@ -16,6 +16,13 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     Optional<Category> findByCategoryName(String categoryName);
 
+    boolean existsByLargeCategoryAndDeletedFalse(LargeCategory largeCategory);
+
+    // LargeCategory와 삭제되지 않은 Category 목록을 검색하는 메서드
+    List<Category> findByLargeCategoryAndDeleted(LargeCategory largeCategory, Boolean deleted);
+        @Query("SELECT c.categoryName, COUNT(c.categoryName) FROM Category c WHERE c.deleted = false AND c.largeCategory = :selectedLargeCategory GROUP BY c.categoryName ORDER BY c.categoryName DESC")
+        List<Object[]> countGroupedByLargeCategoryAndCategoryName(@Param("selectedLargeCategory") LargeCategory selectedLargeCategory);
+
     boolean existsByLargeCategory(LargeCategory largeCategory);
 
     List<Category> findByLargeCategory(LargeCategory largeCategory);

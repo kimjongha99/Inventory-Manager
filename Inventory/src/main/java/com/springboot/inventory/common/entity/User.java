@@ -4,6 +4,8 @@ import com.springboot.inventory.common.enums.UserRole;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -13,7 +15,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class User extends Timestamped{
 
-    @Id //기본키 설정
+    @Id //기본키 설정z
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
     private Long id; //Long = mysql 에서 bigint
 
@@ -22,6 +24,9 @@ public class User extends Timestamped{
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Supply> supplies = new ArrayList<>();
 
     private Boolean deleted;
 
