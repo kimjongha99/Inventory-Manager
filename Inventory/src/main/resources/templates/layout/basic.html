@@ -53,10 +53,10 @@
                         <li class="nav-item dropdown" th:if="${#authorization.expression('isAuthenticated()')}">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${#authentication.name}">Dropdown</a>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/MyPage">내 정보</a>
+                                <a class="dropdown-item" href="/checkPassword">내 정보</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="/sign-api/logOut">로그아웃</a>
-                                <a  sec:authorize="hasAnyRole('ADMIN', 'MANAGER') class="dropdown-item" href="/ManagerPage" >관리 페이지</a>
+                                <a  sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="dropdown-item" href="/ManagerPage">관리 페이지</a>
                             </div>
                         </li>
                     </ul>
