@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -50,8 +50,8 @@
                                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${#authentication.name}">Dropdown</a>
                                 <div class='dropdown-menu dropdown-menu-end' aria-labelledby='navbarDropdown'>
                                     <a class='dropdown-item' href='/checkPassword'>내 정보</a>
-                                    <a class='dropdown-item' href="/AdminPage"> Admin Page </a>
-                                    <a class="dropdown-item" href="/ManagerPage"> Manager Page </a>
+                                    <a sec:authorize="hasRole('ADMIN')" class='dropdown-item' href="/AdminPage"> Admin Page </a>
+                                    <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="dropdown-item" href="/ManagerPage"> Manager Page </a>
                                     <div class='dropdown-divider'></div>
                                     <a  clas='dropdown-item'  href='/sign-api/logOut'>로그아웃</a>
                                 </div>
@@ -63,6 +63,7 @@
                 </div>
             </div>
         </nav>
+
         <!-- Page content-->
         <div class="container-fluid" layout:fragment="content">
             <h1 class="mt-4">Simple Sidebar</h1>
