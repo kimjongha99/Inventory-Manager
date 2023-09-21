@@ -114,7 +114,7 @@ function grantRole(email) {
     fetch(`/sign-api/roles/${email}`, { method: 'PUT' })
         .then(function (response) {
             // alert("권한 부여에 성공하였습니다.");
-            window.location.href = '/AdminPage';
+            window.location.href = '/ManagerPage';
         })
         .catch(error => console.error('권한 부여 중 오류 발생:', error));
 }
@@ -123,7 +123,7 @@ function revokeRole(email) {
     fetch(`/sign-api/roles/${email}`, { method: 'PUT' })
         .then(function (response) {
             // alert("권한 뺏기에 성공하였습니다.");
-            window.location.href = '/AdminPage';
+            window.location.href = '/ManagerPage';
         })
         .catch(error => console.error('권한 뺏기 중 오류 발생:', error));
 }
