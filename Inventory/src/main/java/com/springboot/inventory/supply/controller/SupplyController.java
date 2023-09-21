@@ -23,23 +23,29 @@ import java.util.Optional;
 public class SupplyController {
 
     private final SupplyResponseDtoService supplyResponseDtoService;
+    private static final String SUPPLY_LIST_VIEW = "supplyList";
+    private static final String SUPPLY_DETAILS_VIEW = "supplyDetails";
+
+    @Autowired
+    public SupplyController(SupplyResponseDtoService supplyResponseDtoService) {
+        this.supplyResponseDtoService = supplyResponseDtoService;
+    }
 
     @GetMapping("/list")
-    public String getSupplyByStatus(
+    public String getSupplyList(
             @RequestParam(required = false, defaultValue = "all") String selectedStatus,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String keyword ,
+            @RequestParam(required = false) String keyword,
             Model model) {
 
-        System.out.println("Received keyword: " + keyword);
         Pageable pageable = PageRequest.of(page, size);
         Page<SupplyResponseDto> supplyResponseDtosPage;
 
-       List<SupplyStatusEnum> statusList = Arrays.asList(SupplyStatusEnum.values());
         if ("null".equals(keyword)) {
             keyword = "";
         }
+
         if (StringUtils.hasText(keyword)) {
             if (!"all".equals(selectedStatus)) {
                 supplyResponseDtosPage = supplyResponseDtoService.searchByKeywordAndStatus(keyword, SupplyStatusEnum.valueOf(selectedStatus), pageable);
@@ -59,34 +65,24 @@ public class SupplyController {
         model.addAttribute("size", pageable.getPageSize());
         model.addAttribute("totalPages", supplyResponseDtosPage.getTotalPages());
         model.addAttribute("selectedStatus", selectedStatus);
-        model.addAttribute("statusList", statusList);
+        model.addAttribute("statusList", SupplyStatusEnum.values());
         model.addAttribute("keyword", keyword);
-        return "supplyList";
+
+        return SUPPLY_LIST_VIEW;
     }
 
     @GetMapping("/details/{id}")
     public String supplyDetails(@PathVariable("id") Long supplyId, Model model) {
         Optional<SupplyDetailsDto> supplyOptional = supplyResponseDtoService.getSupplyById(supplyId);
-
-        if (supplyOptional.isPresent()) {
-            SupplyDetailsDto supply = supplyOptional.get();
-            model.addAttribute("supply", supply);
-        } else {
-            return "supplyList";
-        }
-        return "supplyDetails"; // 상세 정보를 표시할 뷰 템플릿 이름
+        supplyOptional.ifPresent(supply -> model.addAttribute("supply", supply));
+        return supplyOptional.map(supply -> SUPPLY_DETAILS_VIEW).orElse(SUPPLY_LIST_VIEW);
     }
-    // DELETE 요청을 처리하는 엔드포인트입니다.
-    @PostMapping("/supplies/{supplyId}")
+
+    @PostMapping("/delete/{supplyId}")
     public String deleteSupply(@PathVariable Long supplyId) {
         supplyResponseDtoService.deleteSupply(supplyId);
         return "redirect:/supply/list"; // 삭제 후 공급품 목록 페이지로 리다이렉트합니다. 실제 리다이렉트 경로는 상황에 따라 변경될 수 있습니다.
     }
-    @Autowired
-    public SupplyController(SupplyResponseDtoService supplyResponseDtoService) {
-        this.supplyResponseDtoService = supplyResponseDtoService;
-    }
-
     @GetMapping("/index")
     public String index() {
         return "index";
