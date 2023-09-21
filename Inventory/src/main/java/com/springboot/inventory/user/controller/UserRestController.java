@@ -138,6 +138,7 @@ public class UserRestController {
         List<UserInfoDto> userList = userService.findAllUserForAdmin(userEmail);
         return ResponseEntity.status(HttpStatus.OK).body(userList);
     }
+    
     // 로그인 한 계정의 권한 찾기
     @GetMapping("/get-role")
     public ResponseEntity<UserRoleEnum> getRole(@AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -203,5 +204,12 @@ public class UserRestController {
                 .build();
     }
 
+    @PostMapping("/checkPassword")
+    public ResponseEntity<String> checkPassword(@RequestBody Map<String, String> password,
+                                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        String userEmail = userDetails.getUsername();
+
+        return userService.checkPassword(userEmail, password.get("password"));
+    }
 
 }
