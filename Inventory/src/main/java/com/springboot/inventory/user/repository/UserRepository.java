@@ -1,11 +1,24 @@
 package com.springboot.inventory.user.repository;
 
 import com.springboot.inventory.common.entity.User;
+import com.springboot.inventory.common.enums.UserRoleEnum;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findByIdAndDeletedFalse(Long userId);
+    Optional<User> findByEmail(String email);
+    Optional<User> findByUserId(Long id);
+    boolean existsByEmail (String email);
+    User getByEmail(String email);
+    void deleteByEmail(String email);
+
+    List<User> findByRoles(UserRoleEnum role);
+
+
+    Optional<User> findByUserIdAndDeletedFalse(Long userId);
 }

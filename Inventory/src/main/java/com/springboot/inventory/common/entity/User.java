@@ -1,39 +1,73 @@
 package com.springboot.inventory.common.entity;
 
-import com.springboot.inventory.common.enums.UserRole;
-import lombok.*;
+import com.springboot.inventory.common.enums.UserRoleEnum;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
-@Entity
-@Builder
+@Entity(name = "users")
 @NoArgsConstructor
 @Getter
-@Setter
-@AllArgsConstructor
-public class User extends Timestamped{
+@SQLDelete(sql = "UPDATE users SET deleted = true, tel = null, username = CONCAT('탈퇴한 유저#', userId) WHERE userId = ?")
+public class User {
 
-    @Id //기본키 설정z
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
-    private Long id; //Long = mysql 에서 bigint
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userId;
 
-    @Column(nullable = false , unique = true) // 유니크 제약조건 추가 , 낫널
-    private String username; // 아이디
+    // 아이디
+    @Column(nullable = false, unique = true)
+    private String email;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private String password;
 
-    @OneToMany(mappedBy = "user")
-    private List<Supply> supplies = new ArrayList<>();
+    // 유저 정보
+    private String username;
+    private String tel;
 
+    @Enumerated(value = EnumType.STRING)
+    private UserRoleEnum roles;
+
+    @Column(nullable = true)
+    private Boolean alarm;
+
+    @Column(nullable = true)
+    private String team;
+
+    @Column(nullable = true)
     private Boolean deleted;
 
     @Builder
-    public User(String username, UserRole role, Boolean deleted) {
+    public User(String email, String password, String username, String tel,
+                UserRoleEnum roles, String team, Boolean deleted) {
+        this.email = email;
+        this.password = password;
         this.username = username;
-        this.role = role;
+        this.tel = tel;
+        this.roles = roles;
+        this.team = team;
         this.deleted = deleted;
+    }
+
+    public void updateUser(String username, String tel) {
+        this.username = username;
+        this.tel = tel;
+    }
+
+    public void updateTeam(String team) {
+        this.team = team;
+    }
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
+
+
+    public void changeRole(UserRoleEnum roles) {
+        // 부여하는 권한을 가지고 있는 경우, 권한을 취소할 수 있음
+        this.roles = this.roles == roles ? UserRoleEnum.USER : roles;
     }
 }
