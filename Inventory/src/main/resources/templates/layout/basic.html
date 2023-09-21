@@ -26,7 +26,6 @@
             <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://localhost:8080/user-request">요청하기</a>
             <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://localhost:8080">요청내역</a>
             <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://localhost:8080">재고보기</a>
-
         </div>
     </div>
     <!-- Page content wrapper-->
@@ -40,30 +39,30 @@
                     <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                         <li class="nav-item active"><a class="nav-link" href="/index">Home</a></li>
 
-                        <div th:if="${#authorization.expression('isAnonymous()')}">
-                            <li class="nav-item"><a class="nav-link" href="/LogInPage">로그인</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/signUpPage">회원가입</a></li>
-                        </div>
+                        <li class="nav-item" th:if="${#authorization.expression('isAnonymous()')}">
+                            <a class="nav-link" href="/LogInPage">로그인</a>
+                        </li>
+                        <li class="nav-item" th:if="${#authorization.expression('isAnonymous()')}">
+                            <a class="nav-link" href="/signUpPage">회원가입</a>
+                        </li>
 
-                        <div th:if="${#authorization.expression('isAuthenticated()')}">
-                            <li  class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${#authentication.name}">Dropdown</a>
-                                <div class='dropdown-menu dropdown-menu-end' aria-labelledby='navbarDropdown'>
-                                    <a class='dropdown-item' href='/checkPassword'>내 정보</a>
-                                    <a sec:authorize="hasRole('ADMIN')" class='dropdown-item' href="/AdminPage"> Admin Page </a>
-                                    <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="dropdown-item" href="/ManagerPage"> Manager Page </a>
-                                    <div class='dropdown-divider'></div>
-                                    <a  clas='dropdown-item'  href='/sign-api/logOut'>로그아웃</a>
-                                </div>
-                            </li>
-                        </div>
-                    </ul>
+                        <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
+                            <a class="nav-link" href="/ManagerPage">관리 페이지</a>
+                        </li>
 
+                        <li class="nav-item dropdown" th:if="${#authorization.expression('isAuthenticated()')}">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${#authentication.name}">Dropdown</a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="/MyPage">내 정보</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="/sign-api/logOut">로그아웃</a>
+                                <a  sec:authorize="hasAnyRole('ADMIN', 'MANAGER') class="dropdown-item" href="/ManagerPage" >관리 페이지</a>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
-
         <!-- Page content-->
         <div class="container-fluid" layout:fragment="content">
             <h1 class="mt-4">Simple Sidebar</h1>

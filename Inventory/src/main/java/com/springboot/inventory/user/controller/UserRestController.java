@@ -1,6 +1,7 @@
 package com.springboot.inventory.user.controller;
 
 import com.springboot.inventory.common.entity.User;
+import com.springboot.inventory.common.enums.UserRoleEnum;
 import com.springboot.inventory.common.security.UserDetailsImpl;
 import com.springboot.inventory.user.dto.*;
 import com.springboot.inventory.user.service.UserService;
@@ -136,6 +137,15 @@ public class UserRestController {
         String userEmail = userDetails.getUsername();
         List<UserInfoDto> userList = userService.findAllUserForAdmin(userEmail);
         return ResponseEntity.status(HttpStatus.OK).body(userList);
+    }
+    
+    // 로그인 한 계정의 권한 찾기
+    @GetMapping("/get-role")
+    public ResponseEntity<UserRoleEnum> getRole(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        String email = userDetails.getUsername();
+        System.out.println("RestController: "+ email);
+        User user = userService.getUser(email);
+        return ResponseEntity.ok().body(user.getRoles());
     }
 
     // 이메일 중복확인

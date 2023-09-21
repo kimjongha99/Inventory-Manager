@@ -32,12 +32,8 @@ public class UserController {
 
     @GetMapping("/ManagerPage")
     public String ManagerPage() { return "/ManagerPage"; }
-
     @GetMapping("/MyPage")
     public String MyPage() {return "/MyPage"; }
-
-    @GetMapping("/AdminPage")
-    public String AdminPage(){ return "/AdminPage";}
 
     @GetMapping("/checkPassword")
     public String checkPasswordPage() { return "/CheckPassword"; }
