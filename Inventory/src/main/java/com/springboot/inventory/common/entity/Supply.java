@@ -45,7 +45,7 @@ public class Supply extends Timestamped {
     private User user; //사용자
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "categoryId")
     private Category category; // 분류
 
