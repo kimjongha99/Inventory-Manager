@@ -47,9 +47,9 @@ public class UserServiceImpl implements UserService {
 
         LOGGER.info("[UserServiceImpl - signUp]");
 
-        if (userRepository.existsByEmail(email)) {
-            throw new IllegalStateException("이미 존재하는 이메일입니다.");
-        }
+//        if (userRepository.existsByEmail(email)) {
+//            throw new IllegalStateException("이미 존재하는 이메일입니다.");
+//        }
         User user = User.builder()
                 .email(email)
                 .password(passwordEncoder.encode(password))
@@ -157,9 +157,9 @@ public class UserServiceImpl implements UserService {
     // 이메일 중복 확인
     public boolean doublecheck(String email) {
         // 이메일 중복 확인: 데이터베이스에서 해당 이메일로 사용자를 찾아봄
-        Optional<User> userOptional = userRepository.findByEmail(email);
+        boolean checkemail = userRepository.existsByEmail(email);
 
-        if (userOptional.isPresent()) {
+        if (checkemail) {
             // 이메일이 이미 존재하는 경우
             System.out.println("중복된 값입니다. 다시 입력해주세요.");
             return true;
