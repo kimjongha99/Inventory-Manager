@@ -126,7 +126,12 @@
       <option value="REPAIRING">수리중</option>
     </select>
   </div>
-  <button type="submit">수정</button>
+  <button type="submit" onclick="showSuccessMessage()">수정</button>
 </form>
+<script>
+  function showSuccessMessage() {
+    alert("수정되었습니다!");
+  }
+</script>
 </body>
 </html>

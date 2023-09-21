@@ -62,7 +62,7 @@ public class SupplyCreateUpdateController {
     public String createSupply(
             @ModelAttribute @Valid SupplyDto supplyDto) throws Exception {
         supplyService.createSupply(supplyDto);
-        return "redirect:/supply";
+        return "redirect:/supply/list";
     }
 
     @GetMapping("/mysupply/{userId}")
@@ -114,7 +114,7 @@ public class SupplyCreateUpdateController {
 
          supplyService.updateSupply(supplyId, supplyDto);
 
-        return "redirect:/supply" ;
+        return "redirect:/supply/list" ;
     }
 
 }

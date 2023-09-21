@@ -146,7 +146,8 @@ public class SupplyService {
         //user 사용자 설정
         if(supplyDto.getUserId() != null) {
             User user = null;
-            user = userRepository.findByIdAndDeletedFalse(supplyDto.getUserId()).orElseThrow();
+            user = userRepository.findByIdAndDeletedFalse(supplyDto.getUserId())
+                    .orElseThrow(()-> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
             supply.setUser(user);
         }
         //카테고리 업데이트 (소분류 중복문제 발생)
