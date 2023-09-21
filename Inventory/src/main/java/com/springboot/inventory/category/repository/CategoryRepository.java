@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    Optional<Category> findByCategoryNameAndDeletedFalse(String categoryName);
+    Optional<Category> findByCategoryName(String categoryName);
 
     boolean existsByLargeCategoryAndDeletedFalse(LargeCategory largeCategory);
 
