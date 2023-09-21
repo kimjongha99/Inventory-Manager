@@ -46,9 +46,9 @@ public class UserServiceImpl implements UserService {
 
         LOGGER.info("[UserServiceImpl - signUp]");
 
-        if(userRepository.existsByEmail(email)) {
-            throw new IllegalStateException("이미 존재하는 이메일입니다.");
-        }
+//        if (userRepository.existsByEmail(email)) {
+//            throw new IllegalStateException("이미 존재하는 이메일입니다.");
+//        }
         User user = User.builder()
                 .email(email)
                 .password(passwordEncoder.encode(password))
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
         LOGGER.info("[UserServiceImpl - signIn]");
         User user = userRepository.getByEmail(email);
 
-        if(!passwordEncoder.matches(password, user.getPassword())) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new RuntimeException();
         }       // 로그인 실패 시
 
@@ -107,7 +107,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     // 권한 변경
     @Override
     @Transactional
@@ -127,10 +126,20 @@ public class UserServiceImpl implements UserService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
         }
     }
+
     // USER 찾기
     public List<User> getUsersByUserRole() {
         // 역할(role)이 USER인 사용자만 필터링하여 반환
         return userRepository.findByRoles(UserRoleEnum.USER);
+    }
+
+
+    // 이메일로 유저 찾기
+    public User getUser(String email) {
+        System.out.println("service: " + email);
+        User user = userRepository.getByEmail(email);
+        System.out.println("repository " + user.getRoles());
+        return user;
     }
     @Transactional
     public List<UserInfoDto> findAllUser() { // 모든 USER를 보여준다.(MANAGER,ADMIN)
@@ -147,9 +156,9 @@ public class UserServiceImpl implements UserService {
     // 이메일 중복 확인
     public boolean doublecheck(String email) {
         // 이메일 중복 확인: 데이터베이스에서 해당 이메일로 사용자를 찾아봄
-        Optional<User> userOptional = userRepository.findByEmail(email);
+        boolean checkemail = userRepository.existsByEmail(email);
 
-        if (userOptional.isPresent()) {
+        if (checkemail) {
             // 이메일이 이미 존재하는 경우
             System.out.println("중복된 값입니다. 다시 입력해주세요.");
             return true;

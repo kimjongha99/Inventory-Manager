@@ -53,8 +53,10 @@ dependencies {
     // html parser
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.15.4'
 
-    // https://mvnrepository.com/artifact/javax.validation/validation-api
-    implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+//    // https://mvnrepository.com/artifact/javax.validation/validation-api
+//    implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 
 

@@ -20,6 +20,7 @@ public interface UserService {
     List<UserInfoDto> findAllUser(); // 전체 목록 조회 (MANAGER)
     List<User> getUsersByUserRole(); // 유저 롤로 조회
 
+    User getUser(String email); // 역할 찾기
     boolean doublecheck(String email) ; // 이메일 중복확인
     Optional<User> findByEmail(String email);
     void deleteUser(String email, HttpServletRequest request, HttpServletResponse response);

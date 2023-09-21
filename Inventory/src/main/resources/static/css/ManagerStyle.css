@@ -21,15 +21,14 @@ th, td {
     overflow: auto;
 }
 
-th {
-    background-color: #343a40;
-    color: white;
-}
-
 tr:hover {
     background-color: #e9ecef;
 }
 
 .back-button {
     margin-top: 20px;
+}
+#userTable th {
+    background-color: #343a40; /* Bootstrap toggle색과 같은 색상 */
+    color: white;
 }
