@@ -15,7 +15,10 @@
 <h2 th:text="${selectedCategory}">Selected Category</h2>
 
 <ul>
-    <li th:each="category : ${categories}" th:text="${category.categoryName}">Example Category</li>
+    <li th:each="category : ${categories}">
+        <span th:text="${category.categoryName}">Example Category</span>
+        <a th:href="@{/category/deleteCategoryById(categoryId=${category.categoryId})}" class="delete-button">Delete</a>
+
     </li>
 </ul>
 
