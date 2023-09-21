@@ -28,6 +28,6 @@ public interface UserService {
     List<UserInfoDto> findAllUserForAdmin(String Email);    // 전체 유저 조회(ADMIN)
     ResponseEntity<String> changePassword(ChangePasswordDto changePasswordDto, User user);
     ResponseEntity<String> updateUser(UpdateUserDto updateUserDto, User user);
-
     void updateTeam(String email, String team);  // 팀 업데이트 (MANAGER,ADMIN)
+    ResponseEntity<String> checkPassword(String email, String password);
 }

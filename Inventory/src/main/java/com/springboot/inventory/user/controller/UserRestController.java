@@ -194,5 +194,12 @@ public class UserRestController {
                 .build();
     }
 
+    @PostMapping("/checkPassword")
+    public ResponseEntity<String> checkPassword(@RequestBody Map<String, String> password,
+                                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        String userEmail = userDetails.getUsername();
+
+        return userService.checkPassword(userEmail, password.get("password"));
+    }
 
 }

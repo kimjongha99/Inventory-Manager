@@ -45,15 +45,13 @@
                             <li class="nav-item"><a class="nav-link" href="/signUpPage">회원가입</a></li>
                         </div>
 
-                        <a href="/AdminPage">어드민 페이지</a>
-                        <a href="/ManagerPage">매니저 페이지</a>
-
-
                         <div th:if="${#authorization.expression('isAuthenticated()')}">
                             <li  class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${#authentication.name}">Dropdown</a>
                                 <div class='dropdown-menu dropdown-menu-end' aria-labelledby='navbarDropdown'>
-                                    <a class='dropdown-item' href='/MyPage'>내 정보</a>
+                                    <a class='dropdown-item' href='/checkPassword'>내 정보</a>
+                                    <a class='dropdown-item' href="/AdminPage"> Admin Page </a>
+                                    <a class="dropdown-item" href="/ManagerPage"> Manager Page </a>
                                     <div class='dropdown-divider'></div>
                                     <a  clas='dropdown-item'  href='/sign-api/logOut'>로그아웃</a>
                                 </div>

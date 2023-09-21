@@ -114,16 +114,24 @@
             // 회원 탈퇴 버튼
             const deleteUserButton = document.getElementById("deleteUserButton");
             deleteUserButton.addEventListener("click", function () {
-                axios.delete('/sign-api/MyPage/delete')
-                    .then(function (response) {
-                        alert("회원탈퇴에 성공하였습니다.");
-                        // 회원 탈퇴 성공 시 메인페이지로
-                        window.location.href = '/index';
-                    })
-                    .catch(function (error) {
-                        var errorMsg = new Error('회원 탈퇴 중 오류가 발생했습니다.');
-                        alert(errorMsg.message);
-                    })
+                const confirmation = confirm("회원탈퇴를 진행하시겠습니까?");
+
+                if (confirmation) {
+                    // 사용자가 "확인"을 클릭한 경우
+                    axios.delete('/sign-api/MyPage/delete')
+                        .then(function (response) {
+                            alert("회원탈퇴에 성공하였습니다.");
+                            // 회원 탈퇴 성공 시 메인페이지로
+                            window.location.href = '/index';
+                        })
+                        .catch(function (error) {
+                            var errorMsg = new Error('회원 탈퇴 중 오류가 발생했습니다.');
+                            alert(errorMsg.message);
+                        });
+                } else {
+                    // 사용자가 "취소"를 클릭한 경우
+                    alert("회원탈퇴가 취소되었습니다.");
+                }
             });
         })
         .catch(function(error) {
