@@ -16,9 +16,10 @@
 
 <ul>
     <li th:each="category : ${categories}" th:text="${category.categoryName}">Example Category</li>
+    </li>
 </ul>
 
-</body>
+
 
 <form action="/category/addCategory" method="post">
     <!-- categoryName 입력 필드 -->
@@ -41,4 +42,14 @@
         <button type="submit">Create Category</button>
     </div>
 </form>
+
+<!-- 실패 메시지 출력 -->
+<div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+<!-- 성공 메시지 출력 -->
+<div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+</body>
+
+
 </html>
