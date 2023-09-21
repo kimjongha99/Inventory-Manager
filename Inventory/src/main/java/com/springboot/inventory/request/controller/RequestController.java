@@ -38,21 +38,16 @@ public class RequestController {
     @GetMapping("/request-user/history")
     public  String RequestDetail(@AuthenticationPrincipal
                                  CustomUserDetails userDetails,
-                                 @RequestParam(name = "page", defaultValue = "0") int page,
-                                 @RequestParam(name = "size", defaultValue = "10") int size,
-                                 Model model
+                                 @RequestParam(name = "page", defaultValue = "0") int page, Model model
                                  ) {
 
-        List<Request> requestHistory =
-                requestService.getUserRequestHistory(userDetails.getUser()).getData();
+        Page<?> requestHistory =
+                requestService.getUserRequestHistory(userDetails.getUser(), page).getData();
 
-        Page<?> historyPage = requestService.paging(page, size, requestHistory).getData();
 
-        model.addAttribute("requestHistory", historyPage.getContent());
+        model.addAttribute("requestHistory", requestHistory.getContent());
         model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", historyPage.getTotalPages());
-        model.addAttribute("currentUrl", "/request-user/history");
-
+        model.addAttribute("totalPages", requestHistory.getTotalPages());
 
         return "requests/RequestDetails";
     }
@@ -82,6 +77,7 @@ public class RequestController {
     /* ================================= ADMIN ================================= */
     /* ========================================================================= */
 
+    // 관리자 메인 페이지
     @GetMapping(value = "/admin-main")
     public String requestListPage(Model model) {
 
@@ -97,23 +93,25 @@ public class RequestController {
         return "requests/AdminMainPage";
     }
 
+    // 대여 요청 목록
     @GetMapping(value = "/admin-requestlist/rental")
-    public String rentalInfoPage (@RequestParam(name = "page", defaultValue = "0") int page,
-                                  @RequestParam(name = "size", defaultValue = "10") int size,
-                                  Model model) {
+    public String rentalInfoPage (@RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(name = "category", defaultValue = "") String categoryName, Model model) {
 
-        ArrayList<?> requestList = requestService.getRequestUnhandled(RequestTypeEnum.RENTAL).getData();
 
-        Page<?> rentalReqeustPage = requestService.paging(page, size, requestList).getData();
+           Page<?> requestList =
+                   requestService.getRequestUnhandledByCategory(RequestTypeEnum.RENTAL, categoryName,
+                    page).getData();
 
-        model.addAttribute("requestList", rentalReqeustPage.getContent());
+
+        model.addAttribute("requestList", requestList.getContent());
         model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", rentalReqeustPage.getTotalPages());
-        model.addAttribute("currentUrl", "/admin-requestlist/rental");
+        model.addAttribute("totalPages", requestList.getTotalPages());
+        model.addAttribute("category", categoryName);
 
         return "requests/RentalRequestListPage";
     }
 
+    // 반납 요청 목록
     @GetMapping(value = "/admin-requestlist/return")
     public String returnInfoPage (Model model) {
 
@@ -124,6 +122,7 @@ public class RequestController {
         return "requests/ReturnRequestListPage";
     }
 
+    // 대여 요청 승인
     @GetMapping(value = "/admin-request-accept/rental")
     public String rentalRequestAcceptPage(@RequestParam(name = "requestId", defaultValue = "") String requestId
             , Model model) {

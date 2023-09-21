@@ -56,7 +56,7 @@
             <td th:if="${history.supply == null}"></td>
             <!-- -->
 
-            <td th:text="${history.updated_at}"></td>
+            <td th:text="${history.updated_at == history.created_at ? '' : history.updated_at}"></td>
           </tr>
         </tbody>
       </table>
