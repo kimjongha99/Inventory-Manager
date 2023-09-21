@@ -98,9 +98,11 @@ public class RequestServiceImpl implements RequestService {
         return new ResponseDTO<>(true, null);
     }
 
-    public ResponseDTO<List<Request>> getUserRequestHistory(User user) {
+    public ResponseDTO<Page<?>> getUserRequestHistory(User user, int page) {
 
-        List<Request> requestHistory = requestRepository.findAllByUser(user);
+        Pageable pageable = PageRequest.of(page, 10);
+
+        Page<List<Request>> requestHistory = requestRepository.findAllByUser(user, pageable);
 
         return new ResponseDTO<>(true, requestHistory);
     }
@@ -124,6 +126,7 @@ public class RequestServiceImpl implements RequestService {
         ArrayList<?> requestList = requestRepository.findAllByAcceptAndRequestType(null,
                 type).orElse(new ArrayList<>());
 
+
         return new ResponseDTO<>(true, requestList);
     }
 
@@ -142,6 +145,25 @@ public class RequestServiceImpl implements RequestService {
         data.put("supplyList", supplyList);
 
         return new ResponseDTO<>(true, data);
+    }
+
+    public ResponseDTO<Page<?>> getRequestUnhandledByCategory(RequestTypeEnum type, String categoryName,
+                                                              int page) {
+        Pageable pageable = PageRequest.of(page, 15);
+
+        Category category = categoryRepository.findByCategoryName(categoryName).orElse(null);
+
+        Page<List<Request>> rentalList;
+
+        if(category != null) {
+            rentalList = requestRepository.findAllByAcceptAndRequestTypeAndCategory(null, type, category,
+                        pageable);
+        } else {
+            rentalList = requestRepository.findAllByAcceptAndRequestType(null, type, pageable);
+        }
+
+
+        return new ResponseDTO<>(true, rentalList);
     }
 
     public ResponseDTO<?> approveRequest(ApproveDTO approveDTO, RequestTypeEnum requestTypeEnum) {
@@ -168,8 +190,6 @@ public class RequestServiceImpl implements RequestService {
             requestRepository.save(pastRequest);
         }
 
-
-
         return new ResponseDTO<>(true, null);
     }
 
@@ -190,17 +210,5 @@ public class RequestServiceImpl implements RequestService {
         return new ResponseDTO<>(true, null);
     }
 
-    /* ========================================================================= */
-    /* ================================= ADMIN ================================= */
-    /* ========================================================================= */
-
-    public ResponseDTO<Page<?>> paging(int pages, int size, Object data) {
-        Pageable pageable = PageRequest.of(pages, size);
-
-        Page<Request> page = requestRepository.findAll(pageable);
-
-
-        return new ResponseDTO<>(true, page);
-    }
 
 }

@@ -5,10 +5,21 @@
     <title>요청 상세</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script th:src="@{/js/rentalRequest.js}"></script>
 </head>
 
-<body>
- <h1>관리자 - 대여 요청 목록</h1>
+<body th:object="${category}">
+    <h1>관리자 - 대여 요청 목록</h1>
+
+    <div>
+        <a th:href="@{/admin-main}"><button>메인 페이지</button></a>
+    </div>
+
+    <label for="category">카테고리</label>
+    <select id="category" onchange="onCategoryChangeHandler(event);">
+        <option>-</option>
+        <option value="">전체</option>
+    </select>
 
     <table>
 
@@ -41,11 +52,8 @@
 
     </table>
 
-    <div th:replace="~{/fragments/pagination-fragment :: pagination}"></div>
 
-     <div>
-         <a th:href="@{/admin-main}"><button>메인 페이지</button></a>
-     </div>
+    <div th:replace="~{/fragments/searching_pagination-fragment :: pagination}"></div>
 
 </body>
 

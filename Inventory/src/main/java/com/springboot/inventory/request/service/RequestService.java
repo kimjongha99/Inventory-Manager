@@ -9,6 +9,7 @@ import com.springboot.inventory.request.dto.RentalRejectDTO;
 import com.springboot.inventory.request.dto.RentalRequestDTO;
 import com.springboot.inventory.request.dto.ReturnRequestDTO;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,9 @@ public interface RequestService {
 
     ResponseDTO<ArrayList<?>> getRequestUnhandled(RequestTypeEnum type);
 
+    ResponseDTO<Page<?>> getRequestUnhandledByCategory(RequestTypeEnum type, String categoryName,
+                                                       int page);
+
     ResponseDTO<Map<String, Object>> getRentalRequestInfo(String requestId);
 
     ResponseDTO<?> approveRequest(ApproveDTO approveDTO,
@@ -29,10 +33,8 @@ public interface RequestService {
 
     ResponseDTO<?> rejectRequest(RentalRejectDTO rentalRejectDTO);
 
-    ResponseDTO<List<Request>> getUserRequestHistory(User user);
+    ResponseDTO<Page<?>> getUserRequestHistory(User user, int page);
 
     ResponseDTO<List<Request>> getRentalSupplyByUser(User user);
-
-    ResponseDTO<Page<?>> paging(int page, int size, Object data);
 
 }
