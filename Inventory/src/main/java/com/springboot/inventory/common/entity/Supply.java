@@ -44,16 +44,13 @@ public class Supply extends Timestamped {
     @JoinColumn(name = "userId")
     private User user; //사용자
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "teamId")
-    private Team team; //
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoryId")
     private Category category; // 분류
 
     @Builder
-    public Supply(String serialNum, String modelContent, int amount, String image, String imagePath, String modelName, boolean deleted, SupplyStatusEnum status,User user, Team team, Category category) {
+    public Supply(String serialNum, String modelContent, int amount, String image, String imagePath, String modelName, boolean deleted, SupplyStatusEnum status,User user, Category category) {
         this.serialNum = serialNum;
         this.modelContent = modelContent;
         this.amount = amount;
@@ -63,24 +60,7 @@ public class Supply extends Timestamped {
         this.deleted = deleted;
         this.status = status;
         this.user = user;
-        this.team = team;
         this.category = category;
     }
-
-    public void updateSupply(String serialNum, String modelContent, int amount, String image, String imagePath, String modelName, boolean deleted, SupplyStatusEnum status,User user, Category category) {
-        this.serialNum = serialNum;
-        this.modelContent = modelContent;
-        this.amount = amount;
-        this.image = image;
-        this.imagePath =imagePath;
-        this.modelName = modelName;
-        this.deleted = deleted;
-        this.status = status;
-        this.user = user;
-        this.category = category;
-    }
-
-
-
 
 }

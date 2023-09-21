@@ -8,7 +8,7 @@ import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
-public class SupplyDTO {
+public class SupplyDto {
 
     private String serialNum;
     private String modelContent;
@@ -25,10 +25,10 @@ public class SupplyDTO {
     private Category category;
     private LargeCategory largeCategory;
     private String categoryName;
+    private String directCategoryName; //직접입력받는 소분류
 
     //사용자
     private Long userId;
     private UserRole userRole;
-    private Long teamId;
 
 }
