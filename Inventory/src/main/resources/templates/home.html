@@ -1,15 +1,22 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Home</title>
+  <title>맴버 </title>
 </head>
 <body>
-<h1>Welcome to the Home Page</h1>
-<!-- 등록 버튼 -->
-<a th:href="@{/supply/create}">등록</a>
-<!-- 수정 버튼 -->
-<a th:href="@{/supply/update/1}">수정</a>
-<!--<a th:href="@{'/supply/update/' + ${supplyId}}" class="button">수정</a>-->
+<div layout:fragment="content">
+
+  <h1>Welcome to the Home Page</h1>
+  <!-- 등록 버튼 -->
+  <a th:href="@{/supply/create}">등록</a>
+  <!-- 수정 버튼 -->
+  <a th:href="@{/supply/update/1}">수정</a>
+  <!--<a th:href="@{'/supply/update/' + ${supplyId}}" class="button">수정</a>-->
+
+</div>
+
 </body>
 </html>

@@ -46,7 +46,7 @@
       password: password
     };
 
-    axios.post("/sign-api/custom-login", credentials)
+    axios.post("/user/custom-login", credentials)
             .then(function (res) {
                       alert(res.data);
                       window.location.replace("/index");
