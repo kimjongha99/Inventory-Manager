@@ -80,7 +80,7 @@ public class SupplyService {
 
         //user 사용자 설정
         User user = null;
-        Optional<User> userOptional = userRepository.findByIdAndDeletedFalse(supplyDto.getUserId());
+        Optional<User> userOptional = userRepository.findByUserIdAndDeletedFalse(supplyDto.getUserId());
         if (userOptional.isPresent()) {
             user = userOptional.get();
         }
@@ -146,7 +146,7 @@ public class SupplyService {
         //user 사용자 설정
         if(supplyDto.getUserId() != null) {
             User user = null;
-            user = userRepository.findByIdAndDeletedFalse(supplyDto.getUserId())
+            user = userRepository.findByUserIdAndDeletedFalse(supplyDto.getUserId())
                     .orElseThrow(()-> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
             supply.setUser(user);
         }
@@ -191,7 +191,10 @@ public class SupplyService {
 
     @Transactional
     public Map<LargeCategory, List<SupplyDto>> getSupplyUserByCategory(Long userId) {
-        List<Supply> supplyList = supplyRepository.findByUserId(userId);
+
+        User user = userRepository.findById(userId).orElse(null);
+
+        List<Supply> supplyList = supplyRepository.findByUser(user);
         Map<LargeCategory, List<SupplyDto>> supplyByCategoryMap = new HashMap<>();
 
         // 비품을 largeCategory 별로 분류

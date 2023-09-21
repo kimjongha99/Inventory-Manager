@@ -87,7 +87,7 @@ public class SupplyCreateUpdateController {
     public String updateSupplyForm(@PathVariable Long supplyId, Model model) {
         // Supply 데이터 조회
         Supply supply = supplyService.getSupply(supplyId); // supplyService에서 해당 메서드를 구현해야 합니다.
-        Long userId = (supply.getUser() != null) ? supply.getUser().getId() : null;
+        Long userId = (supply.getUser() != null) ? supply.getUser().getUserId() : null;
 
         // 폼에 사용될 SupplyDto를 생성하고 Supply 데이터로 초기화
         SupplyDto supplyDto = new SupplyDto();
