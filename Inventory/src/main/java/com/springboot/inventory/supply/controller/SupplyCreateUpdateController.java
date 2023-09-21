@@ -4,6 +4,7 @@ import com.springboot.inventory.category.dto.CategoryDto;
 import com.springboot.inventory.category.repository.CategoryRepository;
 import com.springboot.inventory.category.service.CategoryService;
 import com.springboot.inventory.common.entity.Category;
+import com.springboot.inventory.common.entity.Supply;
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.LargeCategory;
 import com.springboot.inventory.supply.dto.SupplyDto;
@@ -52,8 +53,6 @@ public class SupplyCreateUpdateController {
     public String createSupplyForm(Model model) {
         SupplyDto supplyDto = new SupplyDto(); // SupplyDTO 객체 생성
         List<User> userList = userRepository.findAll();
-        List<LargeCategory> largeCategories = supplyService.getLargeCategories();
-        model.addAttribute("largeCategories", largeCategories);
         model.addAttribute("userList", userList);
         model.addAttribute("supplyDto", supplyDto); // 모델에 supplyDto 추가
         return "supplyCreate"; // supplyCreate.html 템플릿을 렌더링
@@ -63,24 +62,6 @@ public class SupplyCreateUpdateController {
     public String createSupply(
             @ModelAttribute @Valid SupplyDto supplyDto) throws Exception {
         supplyService.createSupply(supplyDto);
-        return "redirect:/supply";
-    }
-
-    @GetMapping("/update/{supplyId}")
-    public String updateSupplyForm(@PathVariable Long supplyId , Model model) {
-        SupplyDto supplyDto = new SupplyDto(); // SupplyDTO 객체 생성
-        List<User> userList = userRepository.findAll();
-        model.addAttribute("userList", userList);
-        model.addAttribute("supplyDto", supplyDto); // 모델에 supplyDTO 추가
-        model.addAttribute("supplyId", supplyId); // 모델에 supplyId 추가
-        return "supplyUpdate"; // supplyUpdate.html 템플릿을 렌더링
-    }
-
-    @PostMapping("/update/{supplyId}")
-    public String updateSupply (
-            @PathVariable("supplyId") Long supplyId,
-            @ModelAttribute @Valid SupplyDto supplyDto) throws Exception {
-       supplyService.updateSupply(supplyId, supplyDto) ;
         return "redirect:/supply";
     }
 
@@ -100,6 +81,40 @@ public class SupplyCreateUpdateController {
         model.addAttribute("largeCategories", largeCategories);
         model.addAttribute("supplyByCategoryMap", supplyStockMap);
         return "stock";
+    }
+
+    @GetMapping("/update/{supplyId}")
+    public String updateSupplyForm(@PathVariable Long supplyId, Model model) {
+        // Supply 데이터 조회
+        Supply supply = supplyService.getSupply(supplyId); // supplyService에서 해당 메서드를 구현해야 합니다.
+        Long userId = (supply.getUser() != null) ? supply.getUser().getId() : null;
+
+        // 폼에 사용될 SupplyDto를 생성하고 Supply 데이터로 초기화
+        SupplyDto supplyDto = new SupplyDto();
+        supplyDto.setLargeCategory(supply.getCategory().getLargeCategory());
+        supplyDto.setCategoryName(supply.getCategory().getCategoryName());
+        supplyDto.setSerialNum(supply.getSerialNum());
+        supplyDto.setModelName(supply.getModelName());
+        supplyDto.setModelContent(supply.getModelContent());
+        supplyDto.setUserId(userId);
+        supplyDto.setStatus(supply.getStatus());
+
+        // 사용자 목록 조회 (사용자 선택 필드를 위해)
+        List<User> userList = userRepository.findAll(); // userService에서 해당 메서드를 구현해야 합니다.
+
+        // 모델에 데이터를 추가하여 Thymeleaf에서 사용할 수 있도록 함
+        model.addAttribute("supplyDto", supplyDto);
+        model.addAttribute("userList", userList);
+
+        return "supplyUpdate"; // 수정 폼 템플릿의 이름으로 수정해야 합니다.
+    }
+
+    @PostMapping("/update/{supplyId}")
+    public String updateSupply(@ModelAttribute("supplyDto") SupplyDto supplyDto, @PathVariable Long supplyId) throws Exception {
+
+         supplyService.updateSupply(supplyId, supplyDto);
+
+        return "redirect:/supply" ;
     }
 
 }

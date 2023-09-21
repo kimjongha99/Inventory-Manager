@@ -13,7 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.util.*;
@@ -101,7 +103,7 @@ public class SupplyService {
         return supplyRepository.save(supply); // 저장 후 그 supply를 리턴
     }
     // 비품 업데이트를 위해 supply 가져오기
-    private Supply getSupply(Long supplyId) {
+    public Supply getSupply(Long supplyId) {
         return supplyRepository.findById(supplyId).orElseThrow();
     }
 
@@ -109,7 +111,6 @@ public class SupplyService {
     public Supply updateSupply(Long supplyId, SupplyDto supplyDto) throws Exception {
 
         Supply supply = getSupply(supplyId);
-
 
         if(!supplyDto.getSerialNum().equals("")) {
             supply.setSerialNum(supplyDto.getSerialNum());
@@ -143,25 +144,26 @@ public class SupplyService {
             supply.setImagePath(supply.getImagePath());
         }
         //user 사용자 설정
-        if(!supplyDto.getUserId().equals("")) {
+        if(supplyDto.getUserId() != null) {
             User user = null;
             user = userRepository.findByIdAndDeletedFalse(supplyDto.getUserId()).orElseThrow();
             supply.setUser(user);
         }
         //카테고리 업데이트 (소분류 중복문제 발생)
-       /* LargeCategory largeCategory = supplyDto.getLargeCategory();
-        String categoryName = supplyDto.getCategoryName();*/
 
-
-        /*if (!supplyDto.getLargeCategory().equals("")) {
-            supply.getCategory().setLargeCategory(supplyDto.getLargeCategory());
-        }
-        if (!supplyDto.getCategoryName().equals("")) {
-            supply.getCategory().setCategoryName(supplyDto.getCategoryName());
-        }*/
         LargeCategory largeCategory = supplyDto.getLargeCategory();
         String categoryName = supplyDto.getCategoryName();
 
+        if(largeCategory == null) {
+            largeCategory = supply.getCategory().getLargeCategory();
+        }
+        if(categoryName.equals("")) {
+            categoryName = supply.getCategory().getCategoryName();
+        }
+
+        if (categoryName.equals("직접입력")) {
+            categoryName = supplyDto.getDirectCategoryName();
+        }
         Category existingCategory = categoryRepository.findByLargeCategoryAndCategoryName(largeCategory, categoryName);
 
         if (existingCategory == null) {
@@ -169,14 +171,16 @@ public class SupplyService {
             Category newCategory = new Category();
             newCategory.setLargeCategory(largeCategory);
             newCategory.setCategoryName(categoryName);
-            // 새 카테고리를 supply에 설정
+            // 새 카테고리를 supply에 설정하기전 db에 저장
+            categoryRepository.save(newCategory);
             supply.setCategory(newCategory);
         } else {
             // 기존 카테고리가 있으면 supply에 설정
             supply.setCategory(existingCategory);
         }
 
-        return supplyRepository.save(supply);
+         supplyRepository.save(supply);
+        return supply;
     }
 
     @Transactional

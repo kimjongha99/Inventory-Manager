@@ -139,15 +139,15 @@
             <option value="" selected>소분류</option>
             <!-- 여기에 동적으로 소분류 옵션을 추가할 것입니다. -->
         </select>
-        <input type="text" id="directInput" name="directCategoryName" class="direct-input">
+        <input type="text" id="directInput" name="directCategoryName" placeholder="직접 입력하세요" class="direct-input">
     </div>
     <div>
         <label for="serialNum">시리얼 넘버:</label>
-        <input type="text" id="serialNum" name="serialNum" th:field="*{serialNum}" required>
+        <input type="text" id="serialNum" name="serialNum" th:field="*{serialNum}" placeholder="시리얼 넘버를 입력해주세요" required>
     </div>
     <div>
         <label for="modelName">제품명:</label>
-        <input type="text" id="modelName" name="modelName" th:field="*{modelName}" required>
+        <input type="text" id="modelName" name="modelName" th:field="*{modelName}" placeholder="제품명을 입력해주세요" required>
     </div>
     <div>
         <label for="modelContent">제품 설명:</label>
