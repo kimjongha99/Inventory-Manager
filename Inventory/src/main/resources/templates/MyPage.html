@@ -31,7 +31,7 @@
 <script layout:fragment="script" th:inline="javascript">
     // Axios를 사용하여 JSON 데이터 가져오기
 
-    axios.get('/sign-api/MyPage')
+    axios.get('/user/MyPage')
         .then(function(response) {
 
             var user = response.data;
@@ -77,11 +77,11 @@
             // 비밀번호 저장 버튼 클릭 이벤트
             passwordSaveButton.addEventListener("click", function () {
                 var newPassword = document.getElementById("userPassword").value;
-                axios.put('/sign-api/MyPage/changePassword', { password: newPassword })
+                axios.put('/user/MyPage/changePassword', { password: newPassword })
                     .then(function (response) {
                         alert("비밀번호 수정에 성공하였습니다. 다시 로그인 해주세요.");
                         // 로그아웃을 호출하고, 성공할 경우 다시 로그인 화면으로 이동
-                        axios.get('/sign-api/logOut')
+                        axios.get('/user/logOut')
                             .then(function (logoutResponse) {
                                 window.location.href = '/index'; // 로그인 페이지로 이동
                             })
@@ -99,7 +99,7 @@
                 var newUsername = document.getElementById("userName").value;
                 var newTel = document.getElementById("userTel").value;
                 // 회원정보 수정 요청
-                axios.put('sign-api/MyPage/updateUser', { username : newUsername, tel : newTel})
+                axios.put('user/MyPage/updateUser', { username : newUsername, tel : newTel})
                     .then(function (response) {
                         alert("회원 정보 수정이 완료되었습니다.");
                         // 회원 정보 수정 성공 시 메인페이지로
@@ -118,7 +118,7 @@
 
                 if (confirmation) {
                     // 사용자가 "확인"을 클릭한 경우
-                    axios.delete('/sign-api/MyPage/delete')
+                    axios.delete('/user/MyPage/delete')
                         .then(function (response) {
                             alert("회원탈퇴에 성공하였습니다.");
                             // 회원 탈퇴 성공 시 메인페이지로

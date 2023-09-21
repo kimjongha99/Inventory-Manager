@@ -3,7 +3,7 @@ const tableBody = document.getElementById('userTableBody');
 
 async function fetchUserData() {
     try {
-        const response = await axios.get('/sign-api/allUserListForAdmin');
+        const response = await axios.get('/user/allUserListForAdmin');
         const users = response.data;
 
         users.forEach(user => {
@@ -87,7 +87,7 @@ async function fetchUserData() {
             cell8.appendChild(grantRoleButton);
 
             const infoLink = document.createElement('a');
-            infoLink.href = `/sign-api/manager/userinfo?email=${user.email}`;
+            infoLink.href = `/user/manager/userinfo?email=${user.email}`;
             infoLink.textContent = '정보 보기';
             cell7.appendChild(infoLink);
         });
@@ -100,7 +100,7 @@ async function fetchUserData() {
 
 async function sendTeamToServer(email, selectedTeam) {
     try {
-        const response = await axios.post('/sign-api/updateteam', {
+        const response = await axios.post('/user/updateteam', {
             email: email,
             team: selectedTeam
         });
@@ -111,7 +111,7 @@ async function sendTeamToServer(email, selectedTeam) {
 }
 
 function grantRole(email) {
-    fetch(`/sign-api/roles/${email}`, { method: 'PUT' })
+    fetch(`/user/roles/${email}`, { method: 'PUT' })
         .then(function (response) {
             // alert("권한 부여에 성공하였습니다.");
             window.location.href = '/ManagerPage';
@@ -120,7 +120,7 @@ function grantRole(email) {
 }
 
 function revokeRole(email) {
-    fetch(`/sign-api/roles/${email}`, { method: 'PUT' })
+    fetch(`/user/roles/${email}`, { method: 'PUT' })
         .then(function (response) {
             // alert("권한 뺏기에 성공하였습니다.");
             window.location.href = '/ManagerPage';
