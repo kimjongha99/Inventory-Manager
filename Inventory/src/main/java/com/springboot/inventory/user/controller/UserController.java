@@ -35,4 +35,7 @@ public class UserController {
     @GetMapping("/MyPage")
     public String MyPage() {return "/MyPage"; }
 
+    @GetMapping("/checkPassword")
+    public String checkPasswordPage() { return "/CheckPassword"; }
+
 }

@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -101,10 +100,10 @@ public class UserServiceImpl implements UserService {
     // 로그아웃
     @Override
     @Transactional
-    public ResponseEntity<String> logOut(String email, HttpServletRequest request, HttpServletResponse response) {
+    public void logOut(String email, HttpServletRequest request, HttpServletResponse response) {
         deleteAllCookies(request, response);
         deleteRefreshToken(email);
-        return ResponseEntity.ok("로그아웃 성공");
+        ResponseEntity.ok("로그아웃 성공");
     }
 
 
@@ -207,6 +206,8 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+
+
     // 전체 유저 조회(ADMIN용)
     @Override
     public List<UserInfoDto> findAllUserForAdmin(String adminEmail) {
@@ -238,6 +239,17 @@ public class UserServiceImpl implements UserService {
         upUser.updateUser(updateUserDto.getUsername(), updateUserDto.getTel());
         userRepository.save(upUser);
         return ResponseEntity.ok("회원 정보 수정 완료.");
+    }
+
+    @Override
+    public ResponseEntity<String> checkPassword(String email, String password) {
+        User user = userRepository.getByEmail(email);
+
+        if(passwordEncoder.matches(password, user.getPassword())) {
+            return ResponseEntity.ok("비밀번호 체크 성공");
+        } else {
+            return ResponseEntity.badRequest().body("Error");
+        }
     }
 
     private void deleteRefreshToken(String email) {

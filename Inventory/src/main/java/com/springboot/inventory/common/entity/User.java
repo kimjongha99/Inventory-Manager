@@ -11,12 +11,12 @@ import javax.persistence.*;
 @Entity(name = "users")
 @NoArgsConstructor
 @Getter
-@SQLDelete(sql = "UPDATE users SET deleted = true, tel = null, username = CONCAT('탈퇴한 유저#', user_id) WHERE user_id = ?")
+@SQLDelete(sql = "UPDATE users SET deleted = true, tel = null, username = CONCAT('탈퇴한 유저#', userId) WHERE userId = ?")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long user_id;
+    private Long userId;
 
     // 아이디
     @Column(nullable = false, unique = true)
