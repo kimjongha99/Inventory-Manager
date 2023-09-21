@@ -23,10 +23,9 @@ public class DataInit implements CommandLineRunner {
     private void initializeCategories() {
         for (LargeCategory largeCategory : LargeCategory.values()) {
             // 이미 존재하는 카테고리인지 확인
-            if (!categoryRepository.existsByLargeCategory(largeCategory)) {
+            if (!categoryRepository.existsByLargeCategoryAndDeletedFalse(largeCategory)) {
                 Category category = new Category();
                 category.setLargeCategory(largeCategory);
-                category.setCategoryName(largeCategory.getKorean());
                 categoryRepository.save(category);
             }
         }

@@ -1,63 +1,94 @@
 package com.springboot.inventory.supply.controller;
 
+import com.springboot.inventory.common.entity.Supply;
+import com.springboot.inventory.common.enums.SupplyStatusEnum;
+import com.springboot.inventory.supply.dto.SupplyDetailsDto;
 import com.springboot.inventory.supply.dto.SupplyResponseDto;
 import com.springboot.inventory.supply.service.SupplyResponseDtoService;
-import com.springboot.inventory.common.enums.SupplyStatusEnum;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
-@Transactional
-@RequestMapping("/")
+@RequestMapping("/supply")
 public class SupplyController {
 
     private final SupplyResponseDtoService supplyResponseDtoService;
-    @GetMapping("/getSupplyByStatus")
-    public String getSupplyByStatus(@RequestParam("selectedStatus") String selectedStatus, Model model) {
-        // 선택된 상태에 따라 Supply 조회 로직을 수행
-        System.out.println("selectedStatus: " + selectedStatus);
-        if(selectedStatus.equals("all")){
-            System.out.println(selectedStatus);
-            return "redirect:/supply/admin/list";
 
-        } else {
-            List<SupplyResponseDto> supplyResponseDtos = supplyResponseDtoService.findDistinctByStatusAndDeletedFalse(SupplyStatusEnum.valueOf(selectedStatus));
-            List<SupplyStatusEnum> statusList = Arrays.asList(SupplyStatusEnum.values());
+    @GetMapping("/list")
+    public String getSupplyByStatus(
+            @RequestParam(required = false, defaultValue = "all") String selectedStatus,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String keyword ,
+            Model model) {
 
-            model.addAttribute("selectedStatus", selectedStatus); // 선택된 상태를 모델에 추가
-            model.addAttribute("supplyResponseDtos", supplyResponseDtos);
-            model.addAttribute("statusList", statusList);
-            return "supplyList"; // Supply 목록을 표시하는 템플릿 이름
+        System.out.println("Received keyword: " + keyword);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<SupplyResponseDto> supplyResponseDtosPage;
+
+       List<SupplyStatusEnum> statusList = Arrays.asList(SupplyStatusEnum.values());
+        if ("null".equals(keyword)) {
+            keyword = "";
         }
+        if (StringUtils.hasText(keyword)) {
+            if (!"all".equals(selectedStatus)) {
+                supplyResponseDtosPage = supplyResponseDtoService.searchByKeywordAndStatus(keyword, SupplyStatusEnum.valueOf(selectedStatus), pageable);
+            } else {
+                supplyResponseDtosPage = supplyResponseDtoService.searchByKeyword(keyword, pageable);
+            }
+        } else {
+            if ("all".equals(selectedStatus)) {
+                supplyResponseDtosPage = supplyResponseDtoService.findAllByDeletedFalse(pageable);
+            } else {
+                supplyResponseDtosPage = supplyResponseDtoService.findDistinctByStatusAndDeletedFalse(SupplyStatusEnum.valueOf(selectedStatus), pageable);
+            }
+        }
+
+        model.addAttribute("supplyResponseDtos", supplyResponseDtosPage.getContent());
+        model.addAttribute("page", pageable.getPageNumber());
+        model.addAttribute("size", pageable.getPageSize());
+        model.addAttribute("totalPages", supplyResponseDtosPage.getTotalPages());
+        model.addAttribute("selectedStatus", selectedStatus);
+        model.addAttribute("statusList", statusList);
+        model.addAttribute("keyword", keyword);
+        return "supplyList";
+    }
+
+    @GetMapping("/details/{id}")
+    public String supplyDetails(@PathVariable("id") Long supplyId, Model model) {
+        Optional<SupplyDetailsDto> supplyOptional = supplyResponseDtoService.getSupplyById(supplyId);
+
+        if (supplyOptional.isPresent()) {
+            SupplyDetailsDto supply = supplyOptional.get();
+            model.addAttribute("supply", supply);
+        } else {
+            return "supplyList";
+        }
+        return "supplyDetails"; // 상세 정보를 표시할 뷰 템플릿 이름
+    }
+    // DELETE 요청을 처리하는 엔드포인트입니다.
+    @PostMapping("/supplies/{supplyId}")
+    public String deleteSupply(@PathVariable Long supplyId) {
+        supplyResponseDtoService.deleteSupply(supplyId);
+        return "redirect:/supply/list"; // 삭제 후 공급품 목록 페이지로 리다이렉트합니다. 실제 리다이렉트 경로는 상황에 따라 변경될 수 있습니다.
     }
     @Autowired
     public SupplyController(SupplyResponseDtoService supplyResponseDtoService) {
         this.supplyResponseDtoService = supplyResponseDtoService;
     }
-    @GetMapping("/")
+
+    @GetMapping("/index")
     public String index() {
-        return "index"; // Thymeleaf 템플릿의 이름을 반환합니다. 여기서는 "index.html"을 찾을 것입니다.
+        return "index";
     }
-
-    @GetMapping("supply/admin/list")
-    public String getAllSupplyDetails(Model model) {
-        List<SupplyResponseDto> supplyResponseDtos = supplyResponseDtoService.findByDeletedFalse();
-        List<SupplyStatusEnum> statusList = Arrays.asList(SupplyStatusEnum.values());
-
-        model.addAttribute("supplyResponseDtos", supplyResponseDtos);
-        model.addAttribute("statusList", statusList);
-        model.addAttribute("selectedStatus", "USING"); // 초기 상태를 "all"로 설정
-        return "supplyList"; // Supply 목록을 표시하는 Thymeleaf 템플릿 파일 이름
-    }
-
-
-
-
 }

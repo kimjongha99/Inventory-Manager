@@ -1,12 +1,10 @@
 package com.springboot.inventory.category.dto;
 
 import com.springboot.inventory.common.enums.LargeCategory;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

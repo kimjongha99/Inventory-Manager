@@ -40,10 +40,9 @@ public class Supply extends Timestamped {
     private SupplyStatusEnum status; // 비품 상태
 
 
-    @ManyToOne(fetch = FetchType.LAZY) // 지연로딩
-    @JoinColumn(name = "userId")
-    private User user; //사용자
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "categoryId")
