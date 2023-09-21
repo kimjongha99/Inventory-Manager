@@ -6,10 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+<<<<<<< HEAD
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+=======
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+>>>>>>> origin/seunghyeok
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,9 +23,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+<<<<<<< HEAD
 @EnableGlobalMethodSecurity(prePostEnabled = true) // PreAuthorize 쓰기위해 추가
 
 public class SecurityConfig   {
+=======
+public class SecurityConfig {
+>>>>>>> origin/seunghyeok
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -28,6 +37,7 @@ public class SecurityConfig   {
     public SecurityConfig(@Lazy JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
+<<<<<<< HEAD
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -35,6 +45,10 @@ public class SecurityConfig   {
 
     @Bean
 
+=======
+
+    @Bean
+>>>>>>> origin/seunghyeok
     public SecurityFilterChain condefaultSecurityFilterChainfigure(HttpSecurity http) throws Exception {
         http
                 .csrf()
@@ -50,14 +64,22 @@ public class SecurityConfig   {
                 .antMatchers("/assets/**").permitAll()
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/js/**").permitAll()
+<<<<<<< HEAD
                 .antMatchers("/board/**","/replies/**").hasAnyAuthority("ADMIN","USER")
+=======
+
+>>>>>>> origin/seunghyeok
 
                 .antMatchers("/master/**").hasAuthority("MASTER")
                 .antMatchers("/admin/**", "/admin-main", "/admin-requestlist/**", "/register" +
                         "-supply/**", "/admin-request-accept/rental").hasAuthority(
                         "ADMIN")
                 .antMatchers("/user/**", "/request-user/**", "/request-api/user-request/**",
+<<<<<<< HEAD
                         "/request-user/history/**" ).hasAuthority(
+=======
+                        "/request-user/history/**").hasAuthority(
+>>>>>>> origin/seunghyeok
                         "USER")
 
 
@@ -68,5 +90,12 @@ public class SecurityConfig   {
         return http.build();
     }
 
+<<<<<<< HEAD
+=======
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+>>>>>>> origin/seunghyeok
 
 }
