@@ -2,15 +2,16 @@ package com.springboot.inventory.category.service;
 
 import com.springboot.inventory.category.dto.categoryCountDto;
 import com.springboot.inventory.category.dto.categoryServiceDto;
+import com.springboot.inventory.category.dto.CategoryDto;
 import com.springboot.inventory.category.repository.CategoryRepository;
 import com.springboot.inventory.common.entity.Category;
 import com.springboot.inventory.common.enums.LargeCategory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,4 +63,11 @@ public class CategoryService {
 
         return categoryCounts;
     }
+    public List<Category> findByLargeCategory(LargeCategory largeCategory) {
+        return categoryRepository.findByLargeCategory(largeCategory);
+    }
+
+
+
+
 }

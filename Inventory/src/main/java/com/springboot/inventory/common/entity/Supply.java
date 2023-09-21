@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 
@@ -50,7 +49,7 @@ public class Supply extends Timestamped {
     private Category category; // 분류
 
     @Builder
-    public Supply(String serialNum, String modelContent, int amount, String image, String imagePath, String modelName, boolean deleted, User user, SupplyStatusEnum status, Category category) {
+    public Supply(String serialNum, String modelContent, int amount, String image, String imagePath, String modelName, boolean deleted, SupplyStatusEnum status,User user, Category category) {
         this.serialNum = serialNum;
         this.modelContent = modelContent;
         this.amount = amount;
@@ -62,21 +61,5 @@ public class Supply extends Timestamped {
         this.user = user;
         this.category = category;
     }
-
-    public void updateSupply(String serialNum, String modelContent, int amount, String image, String imagePath, String modelName, boolean deleted, SupplyStatusEnum status, Category category) {
-        this.serialNum = serialNum;
-        this.modelContent = modelContent;
-        this.amount = amount;
-        this.image = image;
-        this.imagePath =imagePath;
-        this.modelName = modelName;
-        this.deleted = deleted;
-        this.status = status;
-//        this.user = user;
-        this.category = category;
-    }
-
-
-
 
 }

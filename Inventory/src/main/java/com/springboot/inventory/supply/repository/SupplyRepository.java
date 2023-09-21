@@ -1,6 +1,8 @@
 package com.springboot.inventory.supply.repository;
 
 import com.springboot.inventory.common.entity.Supply;
+import com.springboot.inventory.common.entity.User;
+import com.springboot.inventory.common.enums.LargeCategory;
 import com.springboot.inventory.common.enums.SupplyStatusEnum;
 import com.springboot.inventory.supply.dto.SupplyResponseDto;
 import org.springframework.data.domain.Page;
@@ -43,6 +45,9 @@ public interface SupplyRepository extends JpaRepository<Supply, Long> {
             "s.status = :status AND " +
             "s.deleted = false")
     Page<Supply> searchByKeywordAndStatus(@Param("keyword") String keyword, @Param("status") SupplyStatusEnum status, Pageable pageable);
+    List<Supply> findDistinctByStatusAndDeletedFalse(SupplyStatusEnum status);
+
+    List<Supply> findByUserId(Long userId);
 
 }
 

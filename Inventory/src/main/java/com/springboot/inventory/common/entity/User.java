@@ -28,4 +28,12 @@ public class User extends Timestamped{
     @OneToMany(mappedBy = "user")
     private List<Supply> supplies = new ArrayList<>();
 
+    private Boolean deleted;
+
+    @Builder
+    public User(String username, UserRole role, Boolean deleted) {
+        this.username = username;
+        this.role = role;
+        this.deleted = deleted;
+    }
 }

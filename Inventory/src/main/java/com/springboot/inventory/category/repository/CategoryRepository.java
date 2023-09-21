@@ -1,5 +1,6 @@
 package com.springboot.inventory.category.repository;
 
+import com.springboot.inventory.category.dto.CategoryDto;
 import com.springboot.inventory.common.entity.Category;
 import com.springboot.inventory.common.enums.LargeCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,4 +23,10 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
         @Query("SELECT c.categoryName, COUNT(c.categoryName) FROM Category c WHERE c.deleted = false AND c.largeCategory = :selectedLargeCategory GROUP BY c.categoryName ORDER BY c.categoryName DESC")
         List<Object[]> countGroupedByLargeCategoryAndCategoryName(@Param("selectedLargeCategory") LargeCategory selectedLargeCategory);
 
+    boolean existsByLargeCategory(LargeCategory largeCategory);
+
+    List<Category> findByLargeCategory(LargeCategory largeCategory);
+
+
+    Category findByLargeCategoryAndCategoryName(LargeCategory largeCategory, String categoryName);
 }
