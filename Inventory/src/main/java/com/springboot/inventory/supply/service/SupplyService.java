@@ -68,7 +68,7 @@ public class SupplyService {
 
 
         //카테고리
-        Optional<Category> category = categoryRepository.findByCategoryName(categoryName);
+        Optional<Category> category = categoryRepository.findByCategoryNameAndDeletedFalse(categoryName);
 
         Category newCategory = null;
 

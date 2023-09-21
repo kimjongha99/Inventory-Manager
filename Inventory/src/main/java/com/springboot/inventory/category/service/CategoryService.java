@@ -1,12 +1,16 @@
 package com.springboot.inventory.category.service;
 
+import com.springboot.inventory.category.dto.categoryCountDto;
 import com.springboot.inventory.category.dto.categoryServiceDto;
 import com.springboot.inventory.category.repository.CategoryRepository;
 import com.springboot.inventory.common.entity.Category;
 import com.springboot.inventory.common.enums.LargeCategory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,5 +44,22 @@ public class CategoryService {
                 .categoryName(category.getCategoryName())
                 .largeCategory(category.getLargeCategory())
                 .build();
+    }
+    @Transactional
+    public void deleteCategoryById(Long categoryId) {
+        // 카테고리를 삭제합니다.
+        categoryRepository.deleteById(categoryId);
+    }
+    public List<categoryCountDto> getCategoryCountsByLargeCategory(LargeCategory selectedLargeCategory) {
+        List<Object[]> results = categoryRepository.countGroupedByLargeCategoryAndCategoryName(selectedLargeCategory);
+
+        List<categoryCountDto> categoryCounts = new ArrayList<>();
+        for (Object[] result : results) {
+            String categoryName = (String) result[0];
+            Long count = (Long) result[1];
+            categoryCounts.add(new categoryCountDto(categoryName, count));
+        }
+
+        return categoryCounts;
     }
 }

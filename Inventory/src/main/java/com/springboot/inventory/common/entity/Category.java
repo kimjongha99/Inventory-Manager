@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,19 +16,20 @@ import java.util.List;
 @Setter
 @Entity
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE category SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE category SET deleted = true WHERE category_id = ?")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "category_id")
     private Long categoryId;
 
-    @Column(unique = true)
+
     private String categoryName;
 
     @Enumerated(EnumType.STRING)
     private LargeCategory largeCategory;
 
-    private Boolean deleted;
+    private Boolean deleted= false;
 
     @OneToMany(mappedBy = "category")
     private List<Supply> supplies = new ArrayList<>();
