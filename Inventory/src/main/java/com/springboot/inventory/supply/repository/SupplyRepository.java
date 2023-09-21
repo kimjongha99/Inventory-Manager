@@ -17,7 +17,6 @@ import java.util.List;
 @Repository
 public interface SupplyRepository extends JpaRepository<Supply, Long> {
 
-    Page<Supply> findByStatusAndDeletedFalse(SupplyStatusEnum status, Pageable pageable);
     Page<Supply> findAllByDeletedFalse(Pageable pageable);
 
     Page<Supply> findDistinctByStatusAndDeletedFalse(@Param("status") SupplyStatusEnum status, Pageable pageable);
@@ -45,8 +44,6 @@ public interface SupplyRepository extends JpaRepository<Supply, Long> {
             "s.status = :status AND " +
             "s.deleted = false")
     Page<Supply> searchByKeywordAndStatus(@Param("keyword") String keyword, @Param("status") SupplyStatusEnum status, Pageable pageable);
-    List<Supply> findDistinctByStatusAndDeletedFalse(SupplyStatusEnum status);
-
     List<Supply> findByUserId(Long userId);
 
 }

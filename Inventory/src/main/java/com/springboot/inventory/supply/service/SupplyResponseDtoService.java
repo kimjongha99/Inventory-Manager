@@ -30,41 +30,34 @@ public class SupplyResponseDtoService {
     }
 
     @Transactional
-    public Page<SupplyResponseDto> findDistinctByStatusAndDeletedFalse(SupplyStatusEnum status, Pageable pageable){
+    public Page<SupplyResponseDto> findDistinctByStatusAndDeletedFalse(SupplyStatusEnum status, Pageable pageable) {
         Page<Supply> supplies = supplyRepository.findDistinctByStatusAndDeletedFalse(status, pageable);
         return convertToDtoPage(supplies);
-    }
-
-    // 중복되는 Entity에서 DTO로의 변환 로직을 이 메서드로 분리
-    private Page<SupplyResponseDto> convertToDtoPage(Page<Supply> supplies) {
-        return supplies.map(SupplyResponseDto::fromSupply);
     }
 
     @Transactional
     public Page<SupplyResponseDto> searchByKeyword(String keyword, Pageable pageable) {
         Page<Supply> supplies = supplyRepository.searchByKeyword(keyword, pageable);
-        System.out.println("Search results: " + supplies.getContent());
         return convertToDtoPage(supplies);
     }
 
-    // Supply ID를 사용하여 특정 Supply 엔티티 조회
     @Transactional
     public Optional<SupplyDetailsDto> getSupplyById(Long supplyId) {
-        return supplyRepository.findById(supplyId)
-                .map(SupplyDetailsDto::fromSupplyDetails);
+        return supplyRepository.findById(supplyId).map(SupplyDetailsDto::fromSupplyDetails);
     }
+
     @Transactional
     public Page<SupplyResponseDto> searchByKeywordAndStatus(String keyword, SupplyStatusEnum status, Pageable pageable) {
         Page<Supply> supplies = supplyRepository.searchByKeywordAndStatus(keyword, status, pageable);
         return convertToDtoPage(supplies);
     }
 
+    @Transactional
     public void deleteSupply(Long id) {
-        // Soft Delete: deleted 필드를 true로 설정
-        Supply supply = supplyRepository.findById(id).orElse(null);
-        if (supply != null) {
-            supply.setDeleted(true);
-            supplyRepository.save(supply);
-        }
+        supplyRepository.deleteById(id);
+    }
+
+    private Page<SupplyResponseDto> convertToDtoPage(Page<Supply> supplies) {
+        return supplies.map(SupplyResponseDto::fromSupply);
     }
 }
