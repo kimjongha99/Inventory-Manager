@@ -35,6 +35,7 @@ public class BoardController {
         model.addAttribute("responseDTO", responseDTO);
     }
 
+
     @GetMapping("/register")
     public void registerGET() {
 
