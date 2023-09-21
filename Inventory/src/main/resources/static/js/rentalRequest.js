@@ -53,3 +53,10 @@ const onSubmitRentalRequest = (event) => {
     })
 }
 
+// 대여 요청 카테고리
+function onCategoryChangeHandler(e) {
+    let category = e.target.value;
+
+    window.location.replace("/admin-requestlist/rental?category=" + category);
+}
+
