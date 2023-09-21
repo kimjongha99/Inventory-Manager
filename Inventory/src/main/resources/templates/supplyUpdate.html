@@ -115,7 +115,7 @@
     <label for="userId">사용자:</label>
     <select id="userId" name="userId" th:field="*{userId}">
       <option value="">사용자 없음</option>
-      <option th:each="user : ${userList}" th:value="${user.id}" th:text="${user.username}"></option>
+      <option th:each="user : ${userList}" th:value="${user.userId}" th:text="${user.username}"></option>
     </select>
   </div>
   <div>
