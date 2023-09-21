@@ -40,8 +40,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     @Query("SELECT r FROM Request r WHERE r.user = :user AND r.requestType = :requestType AND " +
             " r.supply IS NOT NULL AND (r.returnAvailable = true OR r.returnAvailable IS NULL)")
     List<Request> findAllByUserAndRequestTypeAndSupplyIsNotNullAndReturnAvailableIsTrue(@Param(
-            "user") User user,
-                                                                       @Param("requestType") RequestTypeEnum requestType);
+            "user") User user, @Param("requestType") RequestTypeEnum requestType);
 
 
 
