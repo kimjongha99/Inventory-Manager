@@ -15,7 +15,7 @@ public interface UserService {
 
     SignUpResultDto signUp(String email, String password, String name, String tel, String team);
     SignInResultDto signIn(String email, String password) throws RuntimeException;
-    ResponseEntity<String> logOut(String email, HttpServletRequest request, HttpServletResponse response);
+    void logOut(String email, HttpServletRequest request, HttpServletResponse response);
     ResponseEntity<String> grantRole(String email, UserRoleEnum roles);
     List<UserInfoDto> findAllUser(); // 전체 목록 조회 (MANAGER)
     List<User> getUsersByUserRole(); // 유저 롤로 조회

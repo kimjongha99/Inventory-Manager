@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -101,10 +100,10 @@ public class UserServiceImpl implements UserService {
     // 로그아웃
     @Override
     @Transactional
-    public ResponseEntity<String> logOut(String email, HttpServletRequest request, HttpServletResponse response) {
+    public void logOut(String email, HttpServletRequest request, HttpServletResponse response) {
         deleteAllCookies(request, response);
         deleteRefreshToken(email);
-        return ResponseEntity.ok("로그아웃 성공");
+        ResponseEntity.ok("로그아웃 성공");
     }
 
 
