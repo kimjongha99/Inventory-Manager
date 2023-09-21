@@ -25,4 +25,5 @@ public class UserRequestDto {
 //            message = "8~16자, 최소 하나의 문자, 하나의 숫자, 하나의 특수 문자, 공백 없음")
     @Pattern(regexp = "^[0-9]*${6}", message = "6자리 숫자를 입력해 주세요.")
     private String password;
+    private String team;
 }

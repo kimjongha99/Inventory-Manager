@@ -39,5 +39,7 @@ public class UserController {
     @GetMapping("/AdminPage")
     public String AdminPage(){ return "/AdminPage";}
 
+    @GetMapping("/checkPassword")
+    public String checkPasswordPage() { return "/CheckPassword"; }
 
 }
