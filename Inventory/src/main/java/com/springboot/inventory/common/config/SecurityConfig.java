@@ -19,7 +19,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true) // PreAuthorize 쓰기위해 추가
-public class SecurityConfig  {
+
+public class SecurityConfig   {
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -33,6 +34,7 @@ public class SecurityConfig  {
     }
 
     @Bean
+
     public SecurityFilterChain condefaultSecurityFilterChainfigure(HttpSecurity http) throws Exception {
         http
                 .csrf()
