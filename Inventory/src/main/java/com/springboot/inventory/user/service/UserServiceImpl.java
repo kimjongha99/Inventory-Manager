@@ -56,6 +56,7 @@ public class UserServiceImpl implements UserService {
                 .tel(tel)
                 .team(team)
                 .roles(UserRoleEnum.USER)
+                .deleted(false)
                 .build();
 
         User savedUser = userRepository.save(user);

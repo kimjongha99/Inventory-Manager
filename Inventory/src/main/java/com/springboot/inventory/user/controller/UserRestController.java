@@ -86,7 +86,8 @@ public class UserRestController {
 
     // 로그아웃
     @GetMapping("/logout")
-    public ResponseEntity<Void> logOut(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<Void> logout(@AuthenticationPrincipal UserDetailsImpl userDetails,
+
                                        HttpServletRequest request,
                                        HttpServletResponse response) throws IOException, URISyntaxException {
         userService.logOut(userDetails.getUsername(), request, response);

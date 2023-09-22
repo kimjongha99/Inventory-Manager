@@ -81,7 +81,9 @@
                     .then(function (response) {
                         alert("비밀번호 수정에 성공하였습니다. 다시 로그인 해주세요.");
                         // 로그아웃을 호출하고, 성공할 경우 다시 로그인 화면으로 이동
-                        axios.get('/user/logOut')
+
+                        axios.get('/user/logout')
+
                             .then(function (logoutResponse) {
                                 window.location.href = '/index'; // 로그인 페이지로 이동
                             })
