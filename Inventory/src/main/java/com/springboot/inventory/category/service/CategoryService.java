@@ -4,6 +4,7 @@ import com.springboot.inventory.category.dto.categoryCountDto;
 import com.springboot.inventory.category.dto.categoryServiceDto;
 import com.springboot.inventory.category.dto.CategoryDto;
 import com.springboot.inventory.category.repository.CategoryRepository;
+import com.springboot.inventory.common.dto.ResponseDTO;
 import com.springboot.inventory.common.entity.Category;
 import com.springboot.inventory.common.enums.LargeCategory;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,23 @@ public class CategoryService {
                 .largeCategory(category.getLargeCategory())
                 .build();
     }
+
+    // request part category
+    public ResponseDTO<List<Category>> getCategoryList() {
+
+        System.out.println("서비스 진입");
+
+        System.out.println("카테고리 서칭");
+        List<Category> categoryList = categoryRepository.findAll();
+
+        System.out.println("카테고리 서칭 완료");
+        System.out.println(categoryList.get(0));
+        System.out.println(categoryList.get(1));
+        System.out.println(categoryList.get(2));
+
+        return new ResponseDTO<>(true, categoryList);
+    }
+
     @Transactional
     public void deleteCategoryById(Long categoryId) {
         // 카테고리를 삭제합니다.

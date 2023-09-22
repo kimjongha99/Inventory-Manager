@@ -1,8 +1,10 @@
 package com.springboot.inventory.supply.repository;
 
+import com.springboot.inventory.common.entity.Category;
 import com.springboot.inventory.common.entity.Supply;
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.LargeCategory;
+import com.springboot.inventory.common.enums.RequestTypeEnum;
 import com.springboot.inventory.common.enums.SupplyStatusEnum;
 import com.springboot.inventory.supply.dto.SupplyResponseDto;
 import org.springframework.data.domain.Page;
@@ -12,7 +14,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SupplyRepository extends JpaRepository<Supply, Long> {
@@ -43,9 +47,19 @@ public interface SupplyRepository extends JpaRepository<Supply, Long> {
             "u.username LIKE %:keyword%) AND " +
             "s.status = :status AND " +
             "s.deleted = false")
+
     Page<Supply> searchByKeywordAndStatus(@Param("keyword") String keyword, @Param("status") SupplyStatusEnum status, Pageable pageable);
 
     List<Supply> findByUser(User user);
+
+    /* ====================================Request========================================*/
+
+    @Query("SELECT s FROM Supply s WHERE s.category = :category AND (s.state IS NULL OR s.state " +
+            "<> :requestType)")
+    ArrayList<Supply> findAllByCategoryAndStateIsNot(@Param("category")Category category, @Param(
+            "requestType")RequestTypeEnum requestTypeEnum);
+
+    Optional<Supply> findBySupplyId(Long supId);
 
 }
 

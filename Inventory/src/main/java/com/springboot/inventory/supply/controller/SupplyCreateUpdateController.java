@@ -1,6 +1,5 @@
 package com.springboot.inventory.supply.controller;
 
-import com.springboot.inventory.category.dto.CategoryDto;
 import com.springboot.inventory.category.repository.CategoryRepository;
 import com.springboot.inventory.category.service.CategoryService;
 import com.springboot.inventory.common.entity.Category;

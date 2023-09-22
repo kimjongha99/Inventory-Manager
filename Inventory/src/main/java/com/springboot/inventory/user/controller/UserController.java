@@ -16,7 +16,7 @@ public class UserController {
 
     @GetMapping("/LoginPage")
     public String LogInPage() {
-        return "LoginPage";
+        return "users/LoginPage";
     }
 
     @GetMapping("/signUpPage")

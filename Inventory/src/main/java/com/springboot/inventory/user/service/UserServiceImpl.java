@@ -78,6 +78,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public SignInResultDto signIn(String email, String password) throws RuntimeException {
         LOGGER.info("[UserServiceImpl - signIn]");
+
+
+
         User user = userRepository.getByEmail(email);
 
         if (!passwordEncoder.matches(password, user.getPassword())) {

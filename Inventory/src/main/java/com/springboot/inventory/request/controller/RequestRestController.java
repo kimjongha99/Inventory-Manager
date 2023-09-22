@@ -3,7 +3,7 @@ package com.springboot.inventory.request.controller;
 //
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.RequestTypeEnum;
-import com.springboot.inventory.common.userDetails.CustomUserDetails;
+import com.springboot.inventory.common.security.UserDetailsImpl;
 import com.springboot.inventory.request.dto.*;
 import com.springboot.inventory.request.service.RequestService;
 
@@ -30,7 +30,7 @@ public class RequestRestController {
 
     @PostMapping(value = "/user-rental")
     public ResponseEntity<?> rentalRequest(@RequestBody RentalRequestDTO requestDTO,
-                                              @AuthenticationPrincipal CustomUserDetails userDetails) {
+                                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         User user = userDetails.getUser();
         requestService.registerRentalRequest(requestDTO, user);
@@ -40,7 +40,7 @@ public class RequestRestController {
 
     @PostMapping(value = "/user-return")
     public ResponseEntity<?> returnRequest(@RequestBody ReturnRequestDTO returnRequestDTO,
-                                           @AuthenticationPrincipal CustomUserDetails userDetails) {
+                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         User user = userDetails.getUser();
         requestService.registerReturnRequest(returnRequestDTO, user);
