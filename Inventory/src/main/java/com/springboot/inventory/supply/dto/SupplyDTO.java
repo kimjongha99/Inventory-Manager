@@ -4,6 +4,10 @@ import com.springboot.inventory.common.entity.Category;
 import com.springboot.inventory.common.enums.LargeCategory;
 import com.springboot.inventory.common.enums.SupplyStatusEnum;
 import com.springboot.inventory.common.enums.UserRole;
+import com.springboot.inventory.common.entity.User;
+import com.springboot.inventory.common.enums.LargeCategory;
+import com.springboot.inventory.common.enums.SupplyStatusEnum;
+import com.springboot.inventory.common.enums.UserRoleEnum;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,7 +32,9 @@ public class SupplyDto {
     private String directCategoryName; //직접입력받는 소분류
 
     //사용자
+    private User user;
     private Long userId;
-    private UserRole userRole;
+    private String username;
+    private UserRoleEnum userRole;
 
 }
