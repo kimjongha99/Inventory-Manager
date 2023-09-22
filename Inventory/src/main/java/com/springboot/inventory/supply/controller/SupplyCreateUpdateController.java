@@ -55,7 +55,7 @@ public class SupplyCreateUpdateController {
         List<User> userList = userRepository.findByRoles(UserRoleEnum.USER);
         model.addAttribute("userList", userList);
         model.addAttribute("supplyDto", supplyDto); // 모델에 supplyDto 추가
-        return "supplyCreate"; // supplyCreate.html 템플릿을 렌더링
+        return "/supply/supplyCreate"; // supplyCreate.html 템플릿을 렌더링
     }
 
     @PostMapping("/create")
@@ -71,7 +71,7 @@ public class SupplyCreateUpdateController {
         Map<LargeCategory, List<SupplyDto>> supplyByCategoryMap = supplyService.getSupplyUserByCategory(userId);
         model.addAttribute("largeCategories", largeCategories);
         model.addAttribute("supplyByCategoryMap", supplyByCategoryMap);
-        return "mySupply";
+        return "/supply/mySupply";
     }
 
     @GetMapping("/stock")
@@ -80,7 +80,7 @@ public class SupplyCreateUpdateController {
         Map<LargeCategory, List<SupplyDto>> supplyStockMap = supplyService.getStockList();
         model.addAttribute("largeCategories", largeCategories);
         model.addAttribute("supplyByCategoryMap", supplyStockMap);
-        return "stock";
+        return "/supply/stock";
     }
 
     @GetMapping("/update/{supplyId}")
@@ -106,7 +106,7 @@ public class SupplyCreateUpdateController {
         model.addAttribute("supplyDto", supplyDto);
         model.addAttribute("userList", userList);
 
-        return "supplyUpdate"; // 수정 폼 템플릿의 이름으로 수정해야 합니다.
+        return "/supply/supplyUpdate"; // 수정 폼 템플릿의 이름으로 수정해야 합니다.
     }
 
     @PostMapping("/update/{supplyId}")
@@ -114,7 +114,7 @@ public class SupplyCreateUpdateController {
 
          supplyService.updateSupply(supplyId, supplyDto);
 
-        return "redirect:/supply/list" ;
+        return "redirect:/supply/details/{supplyId}" ;
     }
 
 }

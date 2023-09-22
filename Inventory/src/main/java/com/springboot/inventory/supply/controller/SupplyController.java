@@ -23,8 +23,8 @@ import java.util.Optional;
 public class SupplyController {
 
     private final SupplyResponseDtoService supplyResponseDtoService;
-    private static final String SUPPLY_LIST_VIEW = "supplyList";
-    private static final String SUPPLY_DETAILS_VIEW = "supplyDetails";
+    private static final String SUPPLY_LIST_VIEW = "/supply/supplyList";
+    private static final String SUPPLY_DETAILS_VIEW = "/supply/supplyDetails";
 
     @Autowired
     public SupplyController(SupplyResponseDtoService supplyResponseDtoService) {
