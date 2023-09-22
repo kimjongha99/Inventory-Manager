@@ -7,6 +7,7 @@ import com.springboot.inventory.common.entity.Category;
 import com.springboot.inventory.common.entity.Supply;
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.LargeCategory;
+import com.springboot.inventory.common.enums.UserRoleEnum;
 import com.springboot.inventory.supply.dto.SupplyDto;
 import com.springboot.inventory.supply.service.SupplyService;
 import com.springboot.inventory.user.repository.UserRepository;
@@ -52,7 +53,7 @@ public class SupplyCreateUpdateController {
     @GetMapping("/create")
     public String createSupplyForm(Model model) {
         SupplyDto supplyDto = new SupplyDto(); // SupplyDTO 객체 생성
-        List<User> userList = userRepository.findAll();
+        List<User> userList = userRepository.findByRoles(UserRoleEnum.USER);
         model.addAttribute("userList", userList);
         model.addAttribute("supplyDto", supplyDto); // 모델에 supplyDto 추가
         return "supplyCreate"; // supplyCreate.html 템플릿을 렌더링
@@ -100,7 +101,7 @@ public class SupplyCreateUpdateController {
         supplyDto.setStatus(supply.getStatus());
 
         // 사용자 목록 조회 (사용자 선택 필드를 위해)
-        List<User> userList = userRepository.findAll(); // userService에서 해당 메서드를 구현해야 합니다.
+        List<User> userList = userRepository.findByRoles(UserRoleEnum.USER); // userService에서 해당 메서드를 구현해야 합니다.
 
         // 모델에 데이터를 추가하여 Thymeleaf에서 사용할 수 있도록 함
         model.addAttribute("supplyDto", supplyDto);
