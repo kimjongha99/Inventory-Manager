@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+<style>
+  .nav-tabs-vertical {
+    border-right: 1px solid #ddd; /* 왼쪽 선 스타일링 */
+  }
+
+  .nav-tabs-vertical .nav-item {
+    margin-bottom: 10px; /* 각 항목의 하단 마진 조정 */
+  }
+</style>
+<head>
+  <title>메인 대시보드 </title>
+</head>
+
+<div layout:fragment="content">
+
+  <ul class="nav nav-tabs flex-column nav-tabs-vertical">
+    <li class="nav-item">
+      <a class="nav-link" href="request-detail">요청내역</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/request-user/history">전체요청내역</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/request-user/rental">비품 요청하기</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/request-user/return">반납 요청하기</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/request-user/repair">수리 요청하기</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/request-user/buy">구매 요청하기</a>
+    </li>
+  </ul>
+
+</div>
+
+
+<script layout:fragment="script" th:inline="javascript">
+
+</script>
+
+</html>
