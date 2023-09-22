@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 <div class="container">
@@ -34,7 +34,7 @@
     </tr>
     </tbody>
 </table>
-<form th:action="@{/supply/supplies/{supplyId}(supplyId=${supply.supplyId})}" method="POST" id="deleteForm">
+<form th:action="@{/supply/delete/{supplyId}(supplyId=${supply.supplyId})}" method="POST" id="deleteForm">
     <button type="button" onclick="confirmDelete()">삭제</button>
 </form>
 <a th:href="@{'/supply/update/' + ${supply.supplyId}}">
