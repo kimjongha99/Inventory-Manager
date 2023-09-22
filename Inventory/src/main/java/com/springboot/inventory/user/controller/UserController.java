@@ -8,34 +8,31 @@ public class UserController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() {
-        return "index";
+        return "/index";
     }
 
     @GetMapping("/index")
-    public String mainPage() { return "index"; }
+    public String mainPage() { return "/index"; }
 
     @GetMapping("/LoginPage")
     public String LogInPage() {
-        return "users/LoginPage";
+        return "/users/LoginPage";
     }
 
     @GetMapping("/signUpPage")
     public String signUpPage() {
-        return "signUpPage";
+        return "/users/signUpPage";
     }
-
-    @GetMapping("/LandingPage")
-    public String LandingPage() { return "LandingPage"; }
 
     @GetMapping("/logout")
     public String logOug() { return "/index"; }
 
     @GetMapping("/ManagerPage")
-    public String ManagerPage() { return "/ManagerPage"; }
+    public String ManagerPage() { return "/users/ManagerPage"; }
     @GetMapping("/MyPage")
-    public String MyPage() {return "/MyPage"; }
+    public String MyPage() {return "/users/MyPage"; }
 
     @GetMapping("/checkPassword")
-    public String checkPasswordPage() { return "/CheckPassword"; }
+    public String checkPasswordPage() { return "/users/CheckPassword"; }
 
 }
