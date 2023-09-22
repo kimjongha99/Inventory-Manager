@@ -3,7 +3,7 @@ package com.springboot.inventory.supply.dto;
 import com.springboot.inventory.common.entity.Category;
 import com.springboot.inventory.common.enums.LargeCategory;
 import com.springboot.inventory.common.enums.SupplyStatusEnum;
-import com.springboot.inventory.common.enums.UserRole;
+import com.springboot.inventory.common.enums.UserRoleEnum;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +29,6 @@ public class SupplyDto {
 
     //사용자
     private Long userId;
-    private UserRole userRole;
+    private UserRoleEnum userRole;
 
 }

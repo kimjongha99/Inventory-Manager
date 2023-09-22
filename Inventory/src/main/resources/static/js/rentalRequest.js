@@ -8,6 +8,7 @@ $(document).ready(() => {
     }).done((res, status, xhr) => {
         renderCategoryList(res);
     }).fail((res, status, xhr) => {
+
         alert("목록을 불러오는데 실패했습니다.");
     });
 

@@ -3,7 +3,7 @@ package com.springboot.inventory.request.controller;
 import com.springboot.inventory.common.entity.Request;
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.RequestTypeEnum;
-import com.springboot.inventory.common.userDetails.CustomUserDetails;
+import com.springboot.inventory.common.security.UserDetailsImpl;
 import com.springboot.inventory.request.service.RequestService;
 
 //
@@ -37,7 +37,7 @@ public class RequestController {
     // 전체요청내역
     @GetMapping("/request-user/history")
     public  String RequestDetail(@AuthenticationPrincipal
-                                 CustomUserDetails userDetails,
+                                     UserDetailsImpl userDetails,
                                  @RequestParam(name = "page", defaultValue = "0") int page, Model model
                                  ) {
 
@@ -60,7 +60,7 @@ public class RequestController {
 
     // 반납요청
     @GetMapping("/request-user/return")
-    public  String ReturnRequest(@AuthenticationPrincipal CustomUserDetails userDetails,
+    public  String ReturnRequest(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                  Model model) {
 
         User user = userDetails.getUser();
