@@ -176,22 +176,25 @@ public class RequestServiceImpl implements RequestService {
 
         User user = request.getUser();
 
-        supply.setUser(user);
         supply.setState(requestTypeEnum);
         request.setSupply(supply);
         request.setAccept(true);
 
-        requestRepository.save(request);
-
-        supplyRepository.save(supply);
+        supply.setUser(user);
 
         if (requestTypeEnum == RequestTypeEnum.RETURN) {
             Request pastRequest =  request.getRequest();
+
+            supply.setUser(null);
 
             pastRequest.setReturnAvailable(false);
 
             requestRepository.save(pastRequest);
         }
+
+        requestRepository.save(request);
+
+        supplyRepository.save(supply);
 
         return new ResponseDTO<>(true, null);
     }
