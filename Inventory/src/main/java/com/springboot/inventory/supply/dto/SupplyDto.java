@@ -1,6 +1,7 @@
 package com.springboot.inventory.supply.dto;
 
 import com.springboot.inventory.common.entity.Category;
+import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.LargeCategory;
 import com.springboot.inventory.common.enums.SupplyStatusEnum;
 import com.springboot.inventory.common.enums.UserRole;
@@ -28,7 +29,9 @@ public class SupplyDto {
     private String directCategoryName; //직접입력받는 소분류
 
     //사용자
+    private User user;
     private Long userId;
+    private String username;
     private UserRole userRole;
 
 }
