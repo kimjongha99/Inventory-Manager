@@ -4,7 +4,6 @@ buildscript {
     }
 }
 
-
 plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.15'
@@ -17,6 +16,8 @@ version = '0.0.1-SNAPSHOT'
 java {
     sourceCompatibility = '11'
 }
+apply plugin: "com.ewerk.gradle.plugins.querydsl"
+
 apply plugin: "com.ewerk.gradle.plugins.querydsl"
 
 configurations {
