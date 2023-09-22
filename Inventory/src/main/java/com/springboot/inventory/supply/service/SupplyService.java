@@ -142,8 +142,8 @@ public class SupplyService {
             supplyDto.setImage(imageName);
             supplyDto.setImagePath("/image/" + imageName);
 
-            supply.setImage(supply.getImage());
-            supply.setImagePath(supply.getImagePath());
+            supply.setImage(supplyDto.getImage());
+            supply.setImagePath(supplyDto.getImagePath());
         }
         //user 사용자 설정
         if(supplyDto.getUserId() != null) {
