@@ -33,13 +33,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/", "/resources/**", "/static/**", "/js/**",  "/css/**", "/scripts/**", "/fonts/**", "/plugin/**").permitAll()
-                .antMatchers("/user/**/**").permitAll()
-                .antMatchers("/signUpPage").permitAll()
-                .antMatchers( "/","/index", "/LandingPage", "/LoginPage", "/logout").permitAll()
-                .antMatchers("/supply/**/**").permitAll()
+
+                // board
+                .antMatchers("/board/**","/replies/**").hasAnyRole("MANAGER","USER")
+
+                // users
+                .antMatchers( "/index", "/LoginPage", "/logout", "/signUpPage").permitAll()
                 .antMatchers("/ManagerPage").hasAnyRole("MANAGER", "ADMIN")
-                .antMatchers("/AdminPage").hasRole("ADMIN")
+                .antMatchers("/user/sign-up", "/user/sign-in").permitAll()
+
+                // supply
+                .antMatchers("/supply/mySupply", "/supply/stock").hasRole("USER")
+                .antMatchers("/supply/supplyList", "/supply/supplyDetails",
+                        "/supply/supplyCreate", "/supply/supplyUpdate").hasRole(
+                        "MANAGER")
+
+                // request
+                .antMatchers("/category-api/**", "/request-api/**").permitAll()
+                .antMatchers("/request-user/**").hasRole("USER")
+                .antMatchers("/admin-requestlist/**", "/admin-request-accept/rental").hasRole("MANAGER")
+
+                // resources
+                .antMatchers("/resources/**", "/static/**", "/js/**",  "/css/**", "/scripts/**", "/fonts/**", "/plugin/**").permitAll()
+
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);

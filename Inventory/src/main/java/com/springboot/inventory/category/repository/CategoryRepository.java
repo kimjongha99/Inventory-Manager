@@ -1,6 +1,5 @@
 package com.springboot.inventory.category.repository;
 
-import com.springboot.inventory.category.dto.CategoryDto;
 import com.springboot.inventory.common.entity.Category;
 import com.springboot.inventory.common.enums.LargeCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,6 +23,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
         List<Object[]> countGroupedByLargeCategoryAndCategoryName(@Param("selectedLargeCategory") LargeCategory selectedLargeCategory);
 
     boolean existsByLargeCategory(LargeCategory largeCategory);
+
+    List<Category> findAll();
 
     List<Category> findByLargeCategory(LargeCategory largeCategory);
 
