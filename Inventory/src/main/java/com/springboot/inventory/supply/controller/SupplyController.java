@@ -1,5 +1,6 @@
 package com.springboot.inventory.supply.controller;
 
+import com.springboot.inventory.common.entity.Supply;
 import com.springboot.inventory.common.enums.SupplyStatusEnum;
 import com.springboot.inventory.supply.dto.SupplyDetailsDto;
 import com.springboot.inventory.supply.dto.SupplyResponseDto;
@@ -13,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Controller

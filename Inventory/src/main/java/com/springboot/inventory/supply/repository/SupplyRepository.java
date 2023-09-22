@@ -47,7 +47,6 @@ public interface SupplyRepository extends JpaRepository<Supply, Long> {
             "u.username LIKE %:keyword%) AND " +
             "s.status = :status AND " +
             "s.deleted = false")
-
     Page<Supply> searchByKeywordAndStatus(@Param("keyword") String keyword, @Param("status") SupplyStatusEnum status, Pageable pageable);
 
     List<Supply> findByUser(User user);
