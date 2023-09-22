@@ -4,7 +4,7 @@ import com.springboot.inventory.common.entity.Category;
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.LargeCategory;
 import com.springboot.inventory.common.enums.SupplyStatusEnum;
-import com.springboot.inventory.common.enums.UserRole;
+import com.springboot.inventory.common.enums.UserRoleEnum;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,6 +32,6 @@ public class SupplyDto {
     private User user;
     private Long userId;
     private String username;
-    private UserRole userRole;
+    private UserRoleEnum userRole;
 
 }
