@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum UserRole {
-    USER("학생"),
-    ADMIN("매니저"),
+    USER("사용자"),
+    ADMIN("관리자"),
     MASTER("마스터");
 
     private final String korean;

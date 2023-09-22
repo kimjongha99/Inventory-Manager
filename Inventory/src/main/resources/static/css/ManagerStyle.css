@@ -1,0 +1,34 @@
+/* styles.css */
+
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    width: 12.5%; /* 각 셀의 너비를 균일하게 설정 */
+    max-width: 12.5%;
+    border: 1px solid #dee2e6;
+    padding: 12px;
+    text-align: left;
+    word-wrap: break-word;
+    overflow: auto;
+}
+
+tr:hover {
+    background-color: #e9ecef;
+}
+
+.back-button {
+    margin-top: 20px;
+}
+#userTable th {
+    background-color: #343a40; /* Bootstrap toggle색과 같은 색상 */
+    color: white;
+}
