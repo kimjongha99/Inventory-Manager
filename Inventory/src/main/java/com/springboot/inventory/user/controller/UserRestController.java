@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/sign-api/")
+@RequestMapping("/user/")
 public class UserRestController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(UserRestController.class);
@@ -85,7 +85,7 @@ public class UserRestController {
     }
 
     // 로그아웃
-    @GetMapping("/logOut")
+    @GetMapping("/logout")
     public ResponseEntity<Void> logOut(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                        HttpServletRequest request,
                                        HttpServletResponse response) throws IOException, URISyntaxException {

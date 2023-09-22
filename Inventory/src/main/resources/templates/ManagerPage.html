@@ -45,7 +45,7 @@
     // script.src = '/js/ManagerPage.js';
     // document.head.appendChild(script);
     function fetchUserRole() {
-        axios.get('/sign-api/get-role')
+        axios.get('/user/get-role')
             .then(function(response) {
                 const roleEnum = response.data;
                 console.log('User role:', roleEnum);

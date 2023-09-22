@@ -14,9 +14,9 @@ public class UserController {
     @GetMapping("/index")
     public String mainPage() { return "index"; }
 
-    @GetMapping("/LogInPage")
+    @GetMapping("/LoginPage")
     public String LogInPage() {
-        return "LogInPage";
+        return "LoginPage";
     }
 
     @GetMapping("/signUpPage")
@@ -27,7 +27,7 @@ public class UserController {
     @GetMapping("/LandingPage")
     public String LandingPage() { return "LandingPage"; }
 
-    @GetMapping("/logOut")
+    @GetMapping("/logout")
     public String logOug() { return "/index"; }
 
     @GetMapping("/ManagerPage")
