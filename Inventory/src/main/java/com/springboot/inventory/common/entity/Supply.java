@@ -1,5 +1,6 @@
 package com.springboot.inventory.common.entity;
 
+import com.springboot.inventory.common.enums.RequestTypeEnum;
 import com.springboot.inventory.common.enums.SupplyStatusEnum;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,13 +9,14 @@ import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @SQLDelete(sql = "UPDATE supply SET deleted = true WHERE supply_Id = ?")
-public class Supply extends Timestamped {
+public class Supply extends Timestamped implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,12 +41,14 @@ public class Supply extends Timestamped {
     @Enumerated(EnumType.STRING)
     private SupplyStatusEnum status; // 비품 상태
 
+    @Enumerated(value = EnumType.STRING)
+    private RequestTypeEnum state;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoryId")
     private Category category; // 분류
 

@@ -1,9 +1,14 @@
+buildscript {
+    dependencies {
+        classpath("gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:1.0.10")
+    }
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.15'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
-def queryDslSrcDir = 'src/main/generated'
 
 group = 'com.springboot'
 version = '0.0.1-SNAPSHOT'
@@ -11,6 +16,8 @@ version = '0.0.1-SNAPSHOT'
 java {
     sourceCompatibility = '11'
 }
+apply plugin: "com.ewerk.gradle.plugins.querydsl"
+
 
 configurations {
     compileOnly {
@@ -66,6 +73,12 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+    // QueryDSL
+    implementation 'com.querydsl:querydsl-jpa'
+    annotationProcessor 'com.querydsl:querydsl-apt'
+
+    // ModelMapper
+    implementation 'org.modelmapper:modelmapper:2.4.4'
 
 
     //aws 의존성
@@ -78,4 +91,27 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+    library = "com.querydsl:querydsl-apt"
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java', querydslDir]
+        }
+    }
+}
+
+compileQuerydsl{
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+    querydsl.extendsFrom compileClasspath
 }

@@ -80,7 +80,9 @@ public class SupplyService {
 
         //user 사용자 설정
         User user = null;
-        Optional<User> userOptional = userRepository.findByUserIdAndDeletedFalse(supplyDto.getUserId());
+
+        Optional<User> userOptional = userRepository.findByUserId(supplyDto.getUserId());
+        System.out.println("supplyDto.getUserId()= " + supplyDto.getUserId());
         if (userOptional.isPresent()) {
             user = userOptional.get();
         }
@@ -140,14 +142,17 @@ public class SupplyService {
             supplyDto.setImage(imageName);
             supplyDto.setImagePath("/image/" + imageName);
 
-            supply.setImage(supply.getImage());
-            supply.setImagePath(supply.getImagePath());
+            supply.setImage(supplyDto.getImage());
+            supply.setImagePath(supplyDto.getImagePath());
         }
         //user 사용자 설정
         if(supplyDto.getUserId() != null) {
-
+            System.out.println(supplyDto.getUserId());
 
             User user = userRepository.findByUserId(supplyDto.getUserId()).orElseThrow(()-> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
+
+            System.out.println(user.getUsername());
+
             supply.setUser(user);
         }
         //카테고리 업데이트 (소분류 중복문제 발생)

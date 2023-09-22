@@ -1,0 +1,22 @@
+<!-- Paging Fragments -->
+
+<!DOCTYPE html>
+
+<div th:fragment="pagination" th:if="${totalPages > 1}">
+
+    <div th:fragment="pagination" th:if="${totalPages > 1}">
+        <ul class="pagination">
+            <li th:if="${currentPage != 0}">
+                <a th:href="@{'?page=' +  ${(currentPage - 1)}}">Previous</a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:if="${currentPage != i}">
+                <a th:href="@{'?page=' +  ${i}}"
+                   th:text="${i + 1}"></a>
+            </li>
+            <li th:if="${currentPage < totalPages - 1}" >
+                <a th:href="@{'?page=' +  ${(currentPage + 1)}}">Next</a>
+            </li>
+        </ul>
+    </div>
+
+</div>

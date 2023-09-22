@@ -6,7 +6,7 @@
     async function fetchUserData() {
     try {
     // Axios를 사용하여 서버에 GET 요청
-    const response = await axios.get('/sign-api/allUserlist');
+    const response = await axios.get('/user/allUserlist');
     const users = response.data;  // 받아온 데이터: 사용자 목록
 
     // 각 사용자에 대해 테이블에 행 추가
@@ -90,7 +90,7 @@
 
     // 변경: "정보 보기" 링크 생성
     const infoLink = document.createElement('a');
-    infoLink.href = `/sign-api/manager/userinfo?email=${user.email}`;
+    infoLink.href = `/user/manager/userinfo?email=${user.email}`;
     infoLink.textContent = '정보 보기';
     cell7.appendChild(infoLink);
 });
@@ -105,7 +105,7 @@
 
     async function sendTeamToServer(email, selectedTeam) {
     try {
-    const response = await axios.post('/sign-api/updateteam', {
+    const response = await axios.post('/user/updateteam', {
     email: email,
     team: selectedTeam
 });
@@ -118,7 +118,7 @@
     // 추가: 사용자 삭제 함수
     async function deleteUser(email, row) {
     try {
-    const response = await axios.delete(`/sign-api/delete/${email}`);
+    const response = await axios.delete(`/user/delete/${email}`);
     console.log(response.data);
     // 삭제 성공 시 해당 행 삭제
     row.remove();
