@@ -9,6 +9,9 @@ import org.hibernate.annotations.SQLDelete;
 import javax.persistence.*;
 import java.io.Serializable;
 
+import java.util.Date;
+
+
 @Entity(name = "users")
 @NoArgsConstructor
 @Getter
