@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // users
                 .antMatchers( "/index", "/LoginPage", "/logout", "/signUpPage").permitAll()
                 .antMatchers("/ManagerPage").hasAnyRole("MANAGER", "ADMIN")
-                .antMatchers("/user/sign-up", "/user/sign-in").permitAll()
+                .antMatchers("/user/sign-up", "/user/sign-in", "/user/**/**").permitAll()
 
                 // supply
                 .antMatchers("/supply/mySupply", "/supply/stock").hasRole("USER")
@@ -54,7 +54,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin-requestlist/**", "/admin-request-accept/rental").hasRole("MANAGER")
 
                 // resources
-                .antMatchers("/resources/**", "/static/**", "/js/**",  "/css/**", "/scripts/**", "/fonts/**", "/plugin/**").permitAll()
+                .antMatchers("/", "/resources/**", "/static/**", "/js/**",  "/css/**", "/scripts" +
+                        "/**", "/fonts/**", "/plugin/**").permitAll()
 
                 .anyRequest().authenticated()
                 .and()
