@@ -11,7 +11,7 @@
 <body>
 <div layout:fragment="content">
 
-    <form id="signupForm" th:action="@{/sign-api/sign-up}" method="post">
+    <form id="signupForm" th:action="@{/user/sign-up}" method="post">
         <div>
             <label for="email">이메일:</label>
             <input type="email" id="email" name="email" oninput="checkValidity('email')" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
@@ -107,7 +107,7 @@
         var emailValid = document.getElementById('emailStatus');
         emailValid.innerText = "";  // 초기화
 
-        axios.get("/sign-api/check-email?email=" + email)
+        axios.get("/user/check-email?email=" + email)
             .then(function (response) {
                 var message = response.data;
                 emailValid.innerText = message;

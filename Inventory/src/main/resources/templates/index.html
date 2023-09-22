@@ -4,21 +4,14 @@
       layout:decorate="~{layout/basic.html}">
 
 <head>
-    <title>맴버 회원가입</title>
+    <title>맴버 </title>
 </head>
-
 <body>
 <div layout:fragment="content">
 
-<!--    &lt;!&ndash; Include LoginPage.html &ndash;&gt;-->
-<!--    <div th:replace="/LogInPage"></div>-->
+    <a th:href="@{/supply/list}" class="btn btn-primary">
+        <button type="button">비품 목록</button>
 
-    <h1> 대시 보드 </h1>
-    <h1> 요청 현황 </h1>
-    <h1> 비품 목록 </h1>
 </div>
-<script layout:fragment="script" th:inline="javascript">
-
-</script>
 </body>
 </html>
