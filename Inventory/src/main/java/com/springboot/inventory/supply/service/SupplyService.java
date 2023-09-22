@@ -80,7 +80,9 @@ public class SupplyService {
 
         //user 사용자 설정
         User user = null;
-        Optional<User> userOptional = userRepository.findByUserIdAndDeletedFalse(supplyDto.getUserId());
+
+        Optional<User> userOptional = userRepository.findByUserId(supplyDto.getUserId());
+        System.out.println("supplyDto.getUserId()= " + supplyDto.getUserId());
         if (userOptional.isPresent()) {
             user = userOptional.get();
         }
