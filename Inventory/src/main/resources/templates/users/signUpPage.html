@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>맴버</title>
+    <!-- 부트스트랩 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        .card {
+            width: 50%;
+            margin: 0 auto;
+        }
+        .btn-register {
+            background-color: #28A745;
+            color: #fff;
+        }
+        .message {
+            color: red;
+            display: inline-block; /* Display inline */
+            margin-top: 5px;
+            margin-left: 10px; /* Add margin to separate from the button */
+        }
+    </style>
+</head>
+
+<body>
+<div class="card">
+    <div class="card-body">
+        <h2 class="text-center">회원가입</h2>
+        <form id="signupForm" th:action="@{/user/sign-up}" method="post">
+            <div class="form-group">
+                <label for="email">이메일:</label>
+                <div class="d-flex align-items-center"> <!-- Align items in a row -->
+                    <input type="email" class="form-control" id="email" name="email" oninput="checkValidity('email')" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                    <div><button type="button" onclick="checkEmailDuplication()" class="btn btn-primary ml-2">중복 확인</button></div>
+                </div>
+                <small id="emailValid" class="message"></small>
+                <div id="emailStatus" class="message"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">비밀번호:</label>
+                <input type="password" class="form-control" id="password" name="password" oninput="checkValidity('password')" required pattern="^[0-9]{4,20}$" title="4자리 이상 20자리 이하의 숫자를 입력해 주세요.">
+                <small id="passwordValid" class="message"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="tel">전화번호:</label>
+                <input type="tel" class="form-control" id="tel" name="tel" oninput="checkValidity('tel')" required pattern="^[0-9]{10,11}$" title="10~11자리의 숫자를 입력해 주세요.">
+                <small id="telValid" class="message"></small>
+            </div>
+
+            <input type="hidden" name="team" value="미정">
+
+            <div class="form-group">
+                <label for="username">유저이름:</label>
+                <input type="text" class="form-control" id="username" name="username" oninput="checkValidity('username')" required>
+                <small id="usernameValid" class="message"></small>
+            </div>
+
+            <div class="form-group text-center">
+                <button type="button" onclick="submitForm()" id="submitBtn" disabled class="btn btn-register">회원가입</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    var emailChecked = false;  // 이메일 중복 확인 여부
+
+    function validateEmail(email) {
+        var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailPattern.test(email);
+    }
+
+    function validatePassword(password) {
+        var passwordPattern = /^[0-9]{4,20}$/;
+        return passwordPattern.test(password);
+    }
+
+    function validateTel(tel) {
+        var telPattern = /^[0-9]{10,11}$/;
+        return telPattern.test(tel);
+    }
+
+    function validateUsername(username) {
+        return username.length >= 1;
+    }
+
+    function checkValidity(field) {
+        var value = document.getElementById(field).value;
+        var validationMessage = document.getElementById(field + 'Valid');
+        validationMessage.innerText = "";  // 초기화
+
+        var isValid = false;
+        if (field === 'email') {
+            isValid = validateEmail(value);
+            validationMessage.innerText = isValid ? '이메일 형식이 올바릅니다.' : '올바른 이메일 형식이 아닙니다.';
+        } else if (field === 'password') {
+            isValid = validatePassword(value);
+            validationMessage.innerText = isValid ? '비밀번호 형식이 올바릅니다.' : '4자리 이상 20자리 이하의 숫자를 입력해 주세요.';
+        } else if (field === 'tel') {
+            isValid = validateTel(value);
+            validationMessage.innerText = isValid ? '전화번호 형식이 올바릅니다.' : '10~11자리의 숫자를 입력해 주세요.';
+        } else if (field === 'username') {
+            isValid = validateUsername(value);
+            validationMessage.innerText = isValid ? '유저이름 형식이 올바릅니다.' : '최소 1글자 이상이어야 합니다.';
+        }
+
+        validationMessage.style.color = isValid ? 'green' : 'red';
+        checkAllFieldsValidity();
+    }
+
+    function resetEmailValidityCheck() {
+        document.getElementById('emailStatus').innerText = "중복 확인을 해주세요.";  // 중복 확인 요청 메시지
+        emailChecked = false;  // 이메일 중복 확인 초기화
+        checkValidity('email');  // 유효성 체크
+    }
+
+    function checkEmailDuplication() {
+        resetEmailValidityCheck();  // 유효성 체크 및 중복 확인 초기화
+        var email = document.getElementById('email').value;
+        var emailValid = document.getElementById('emailStatus');
+        emailValid.innerText = "";  // 초기화
+
+        axios.get("/user/check-email?email=" + email)
+            .then(function (response) {
+                var message = response.data;
+                emailValid.innerText = message;
+                emailValid.style.color = response.status === 409 ? "red" : "blue";
+                emailChecked = response.status !== 409;  // 중복 확인 완료 시 true 설정
+                checkAllFieldsValidity();  // 중복 확인 후 모든 필드 유효성 체크
+            })
+            .catch(function (error) {
+                console.error(error);
+                emailValid.innerText = "서버 오류: 중복 확인에 실패했습니다.";
+                emailValid.style.color = "red";
+                emailChecked = false;  // 중복 확인 실패 시 false 설정
+                checkAllFieldsValidity();  // 중복 확인 후 모든 필드 유효성 체크
+            });
+    }
+
+    function submitForm() {
+        // 유효성 체크 및 중복 확인
+        checkAllFieldsValidity();
+
+        // 모든 필드가 유효하면 회원가입 API 호출
+        var allFieldsValid = !document.getElementById('submitBtn').disabled;
+        if (allFieldsValid) {
+            alert('회원가입 폼이 유효합니다. 회원가입 API를 호출하면 됩니다.');
+            document.getElementById('signupForm').submit();
+        }
+    }
+
+    function checkAllFieldsValidity() {
+        var allFieldsValid = validateEmail(document.getElementById('email').value) &&
+            validatePassword(document.getElementById('password').value) &&
+            validateTel(document.getElementById('tel').value) &&
+            validateUsername(document.getElementById('username').value);
+
+        // 이메일 중복 확인 여부도 확인
+        if (!emailChecked) {
+            allFieldsValid = false;
+        }
+
+        // 회원가입 버튼 활성화/비활성화
+        document.getElementById('submitBtn').disabled = !allFieldsValid;
+    }
+
+    document.getElementById('email').addEventListener('input', function () {
+        resetEmailValidityCheck();  // 유효성 체크 및 중복 확인 초기화
+    });
+
+    document.getElementById('password').addEventListener('input', function () {
+        checkValidity('password');
+    });
+
+    document.getElementById('tel').addEventListener('input', function () {
+        checkValidity('tel');
+    });
+
+    document.getElementById('username').addEventListener('input', function () {
+        checkValidity('username');
+    });
+
+</script>
+</body>
+
+</html>

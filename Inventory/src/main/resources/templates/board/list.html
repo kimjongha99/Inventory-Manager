@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/basic.html}">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+<div layout:fragment="content">
+
+    <div class="row mt-3">
+        <form action="/board/list" method="get">
+            <div class="col">
+                <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <select class="form-select" name="type">
+                            <option value="">---</option>
+                            <option value="t" th:selected="${pageRequestDTO.type =='t'}">제목</option>
+                            <option value="c" th:selected="${pageRequestDTO.type =='c'}">내용</option>
+                            <option value="w" th:selected="${pageRequestDTO.type =='w'}">작성자</option>
+                            <option value="tc" th:selected="${pageRequestDTO.type =='tc'}">제목 내용</option>
+                            <option value="tcw" th:selected="${pageRequestDTO.type =='tcw'}">제목 내용 작성자</option>
+                        </select>
+                    </div>
+                    <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary searchBtn" type="submit">Search</button>
+                        <button class="btn btn-outline-secondary clearBtn" type="button">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="row mt-3">
+        <div class="col">
+
+            <div class="card">
+                <div class="card-header">
+                    비품 구매 요청 하기
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">비품 구매 요청 </h5>
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Bno</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Writer</th>
+                            <th scope="col">RegDate</th>
+                            <th scope="col">Status</th>
+
+                        </tr>
+                        </thead>
+
+                        <tbody th:with="link = ${pageRequestDTO.getLink()}">
+                        <tr th:each="dto:${responseDTO.dtoList}">
+                            <th scope="row"><span th:text="${dto.bno}"></span></th>
+                            <td>
+                                <a th:href="|@{/board/read(bno=${dto.bno})}&${link}|" class="text-decoration-none">
+                                    <span th:text="${dto.title}"></span>
+                                </a>
+                                <span class="badge progress-bar-success" style="background-color: #0a53be"
+                                      th:text="${dto.replyCount}"></span>
+                            </td>
+                            <td><span th:text="${dto.writer}"></span></td>
+                            <td><span th:text="${#temporals.format(dto.created_at, 'yyyy-MM-dd')}"></span></td>
+
+                            <td>
+                                <span th:text="${dto.status}"></span>
+                                <div sec:authorize="hasAnyRole('MANAGER')">
+                                    <button class="btn btn-outline-secondary changeStatusBtn" th:data-bno="${dto.bno}">Change Status</button>
+                                </div>
+                            </td>
+
+                        </tr>
+                        </tbody>
+
+                    </table>
+
+                    <div class="float-end">
+                        <ul class="pagination flex-wrap">
+
+                            <li class="page-item" th:if="${responseDTO.prev}">
+                                <a class="page-link" th:data-num="${responseDTO.start -1}">Previous</a>
+                            </li>
+
+                            <th:block th:each="i: ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                                <li th:class="${responseDTO.page == i}?'page-item active':'page-item'">
+                                    <a class="page-link" th:data-num="${i}">[[${i}]]</a>
+                                </li>
+                            </th:block>
+
+                            <li class="page-item" th:if="${responseDTO.next}">
+                                <a class="page-link" th:data-num="${responseDTO.end + 1}">Next</a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </div><!--end card body-->
+            </div><!--end card-->
+        </div><!-- end col-->
+    </div><!-- end row-->
+
+    <div class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="statusModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Change Status</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <select id="newStatusSelect" class=form-select>
+                        <option value="">--- Select Status ---</option>
+                        <option value='APPROVED'>APPROVED</option>
+                        <option value='REJECTED'>REJECTED</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type=button id='saveChangesBtn' data-bs-dismiss=modal>Save changes</button>
+                    <!-- 위의 button 태그에 있는 data-bs-dismiss 속성은 버튼 클릭 시 모달 창이 닫히게 합니다. -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>board
+
+
+<script layout:fragment="script" th:inline="javascript">
+
+    document.querySelector(".pagination").addEventListener("click", function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        const target = e.target
+
+        if (target.tagName !== 'A') {
+            return
+        }
+
+        const num = target.getAttribute("data-num")
+
+        const formObj = document.querySelector("form")
+
+        formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`
+
+        formObj.submit();
+
+    }, false)
+
+    document.querySelector(".clearBtn").addEventListener("click", function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        self.location = '/board/list'
+
+    }, false)
+
+    //show modal
+    const result = [[${result}]]
+
+    const modal = new bootstrap.Modal(document.querySelector(".modal"))
+
+    if (result) {
+        modal.show()
+    }
+
+
+    document.querySelectorAll(".changeStatusBtn").forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
+            e.preventDefault()
+            e.stopPropagation()
+
+            const bno = this.getAttribute("data-bno")
+
+            // Save the bno to the saveChangesBtn for later use.
+            document.getElementById('saveChangesBtn').setAttribute('data-bno', bno)
+
+            // Show the modal.
+            const modal = new bootstrap.Modal(document.getElementById('statusModal'))
+            modal.show()
+        }, false)
+    })
+
+    document.getElementById('saveChangesBtn').addEventListener("click", function (e) {
+        e.preventDefault()
+
+        const bno = this.getAttribute("data-bno")
+
+        // Get the selected status from the select element.
+        const newStatus = document.getElementById('newStatusSelect').value
+
+        if (!newStatus || (newStatus !== "APPROVED" && newStatus !== "REJECTED")) {
+            alert("Invalid status")
+            return
+        }
+
+        fetch(`/board/status/${bno}`, {
+            method: "PUT",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newStatus)
+        }).then(response => {
+            if (!response.ok) throw new Error("HTTP error " + response.status)
+
+            // If the response is successful, refresh the page.
+            location.reload()
+        }).catch(console.error)
+    }, false)
+</script>
+</html>
+
+

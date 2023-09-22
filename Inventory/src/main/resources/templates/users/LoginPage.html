@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+<head>
+  <title>맴버 </title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div layout:fragment="content">
+
+  <section class="login-form">
+    <h1>LOGIN</h1>
+    <form id="loginForm" onsubmit="submitLoginForm(event);">
+      <div class="int-area">
+        <input type="text" name="username" id="id" autocomplete="off" required>
+        <label for="id">E-mail</label>
+      </div>
+      <div class="int-area">
+        <input type="password" name="password" id="pw" autocomplete="off" required>
+        <label for="pw">PASSWORD</label>
+      </div>
+
+      <button id="btn" type="submit">LOGIN</button>
+
+    </form>
+  </section>
+
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+  function submitLoginForm(e) {
+    e.preventDefault();
+
+    var username = document.getElementById("id").value;
+    var password = document.getElementById("pw").value;
+
+    if (!username || !password) {
+      alert("이메일, 패스워드를 입력해주세요.");
+      return;
+    }
+
+    var credentials = {
+      username: username,
+      password: password
+    };
+
+    axios.post("/user/custom-login", credentials)
+            .then(function (res) {
+                      alert(res.data);
+                      window.location.replace("/dashboard");
+                    }
+            )
+            .catch(function (error) {
+              // 로그인 실패 처리
+              alert("이메일 또는 패스워드를 다시 확인해주세요.");
+            });
+  }
+</script>
+</body>
+</html>

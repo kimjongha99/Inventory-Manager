@@ -1,19 +1,88 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/basic.html}">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>로그인</title>
+    <!-- 부트스트랩 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- 커스텀 CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* 원하는 폰트로 변경하세요 */
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .btn-login {
+            background-color: #007BFF; /* 원하는 색상으로 변경하세요 */
+            color: #fff;
+        }
+        .btn-register {
+            background-color: #28A745; /* 원하는 색상으로 변경하세요 */
+            color: #fff;
+        }
+    </style>
 </head>
+
 <body>
-<div layout:fragment="content">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-center">로그인</h2>
+                    <form id="loginForm" onsubmit="submitLoginForm(event);">
+                        <div class="form-group">
+                            <label for="id">E-mail</label>
+                            <input type="text" class="form-control" name="username" id="id" autocomplete="off" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pw">Password</label>
+                            <input type="password" class="form-control" name="password" id="pw" autocomplete="off" required>
+                        </div>
 
-    <!-- Add the desired link here -->
-    <a th:href="@{/supply/list}" class="btn btn-primary">Supply List</a>
+                        <button type="submit" class="btn btn-login">로그인</button>
+                        <a href="/signUpPage" class="btn btn-register ml-2">회원가입</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-</body>
-<script layout:fragment="script" th:inline="javascript">
 
+<!-- 부트스트랩 JavaScript 및 Axios -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+    function submitLoginForm(e) {
+        e.preventDefault();
+
+        var username = document.getElementById("id").value;
+        var password = document.getElementById("pw").value;
+
+        if (!username || !password) {
+            alert("이메일, 패스워드를 입력해주세요.");
+            return;
+        }
+
+        var credentials = {
+            username: username,
+            password: password
+        };
+
+        axios.post("/user/custom-login", credentials)
+            .then(function (res) {
+                alert(res.data);
+                window.location.replace("/dashboard");
+            })
+            .catch(function (error) {
+                alert("이메일 또는 패스워드를 다시 확인해주세요.");
+            });
+    }
 </script>
+</body>
+
 </html>

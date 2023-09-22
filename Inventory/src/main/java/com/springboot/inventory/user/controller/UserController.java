@@ -9,33 +9,32 @@ public class UserController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() {
         return "index";
-    }
+    } // 기본 페이지
 
     @GetMapping("/index")
-    public String mainPage() { return "index"; }
+    public String mainPage() { return "index"; } // 인덱스 페이지 GET
 
-    @GetMapping("/LogInPage")
+    @GetMapping("/LoginPage")
     public String LogInPage() {
-        return "LogInPage";
-    }
+        return "users/LoginPage";
+    } // 로그인 페이지
+
+    @GetMapping("/dashboard")
+    public String dashBoard(){return "dashboard/maindashboard";}
 
     @GetMapping("/signUpPage")
     public String signUpPage() {
-        return "signUpPage";
-    }
-
-    @GetMapping("/LandingPage")
-    public String LandingPage() { return "LandingPage"; }
-
-    @GetMapping("/logOut")
-    public String logOug() { return "/index"; }
+        return "users/signUpPage";
+    } // 회원가입 페이지
+    @GetMapping("/logout")
+    public String logOug() { return "index"; } // 로그아웃
 
     @GetMapping("/ManagerPage")
-    public String ManagerPage() { return "/ManagerPage"; }
+    public String ManagerPage() { return "users/ManagerPage"; } // 어드민, 관리자 페이지
     @GetMapping("/MyPage")
-    public String MyPage() {return "/MyPage"; }
+    public String MyPage() {return "users/MyPage"; } // 마이페이지
 
     @GetMapping("/checkPassword")
-    public String checkPasswordPage() { return "/CheckPassword"; }
+    public String checkPasswordPage() { return "users/CheckPassword"; } // 비밀번호 확인
 
 }
