@@ -22,6 +22,5 @@ public interface SupplyRepository extends JpaRepository<Supply, Long> {
 
     Optional<Supply> findBySupplyId(Long supplyId);
 
-    Integer countByCategoryAndStateIsNot(Category category, RequestTypeEnum requestTypeEnum);
 
 }
