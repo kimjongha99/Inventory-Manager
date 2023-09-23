@@ -17,7 +17,7 @@ import java.util.Date;
 @Getter
 @SQLDelete(sql = "UPDATE users SET deleted = true, tel = null, username = CONCAT('탈퇴한 유저#', " +
         "user_id) WHERE user_id = ?")
-public class User implements Serializable {
+public class User extends Timestamped implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
