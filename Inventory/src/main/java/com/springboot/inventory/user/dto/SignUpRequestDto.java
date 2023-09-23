@@ -8,8 +8,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Data
-public class SigunUpRequestDto {
-
+public class SignUpRequestDto {
 
     @NotBlank(message = "이메일은 필수 입력 항목입니다.")
     @Email(message = "올바른 이메일 형식이어야 합니다.")
@@ -24,9 +23,7 @@ public class SigunUpRequestDto {
     private String tel;
 
     @NotBlank(message = "이름은 필수 입력 항목입니다.")
+    @Size(max = 20, message = "이름은 최대 20글자까지 입력 가능합니다.")
     private String username;
-
     private String team;
-
-
 }

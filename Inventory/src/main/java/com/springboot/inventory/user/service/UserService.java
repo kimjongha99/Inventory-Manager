@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface UserService {
 
 
-    SignUpResultDto signUp(String email, String password, String name, String tel, String team);
+    SignUpResultDto signUp(SignUpRequestDto signUpRequestDto);
     SignInResultDto signIn(String email, String password) throws RuntimeException;
     void logOut(String email, HttpServletRequest request, HttpServletResponse response);
     ResponseEntity<String> grantRole(String email, UserRoleEnum roles);
