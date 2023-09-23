@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     // 회원가입
     @Transactional
     @Override
-    public SignUpResultDto signUp(String email, String password, String name, String tel, String team) {
+    public SignUpResultDto signUp(SignUpRequestDto signUpRequestDto) {
 
         LOGGER.info("[UserServiceImpl - signUp]");
 
@@ -50,11 +50,11 @@ public class UserServiceImpl implements UserService {
 //            throw new IllegalStateException("이미 존재하는 이메일입니다.");
 //        }
         User user = User.builder()
-                .email(email)
-                .password(passwordEncoder.encode(password))
-                .username(name)
-                .tel(tel)
-                .team(team)
+                .email(signUpRequestDto.getEmail())
+                .password(passwordEncoder.encode(signUpRequestDto.getPassword()))
+                .username(signUpRequestDto.getUsername())
+                .tel(signUpRequestDto.getTel())
+                .team(signUpRequestDto.getTeam())
                 .roles(UserRoleEnum.USER)
                 .deleted(false)
                 .build();

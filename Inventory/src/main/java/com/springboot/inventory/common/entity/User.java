@@ -42,8 +42,8 @@ public class User implements Serializable {
     @Column(nullable = true)
     private String team;
 
-    @Column(nullable = true)
-    private Boolean deleted;
+    @Column(nullable = false)
+    private Boolean deleted = false;
 
     @Builder
     public User(String email, String password, String username, String tel,

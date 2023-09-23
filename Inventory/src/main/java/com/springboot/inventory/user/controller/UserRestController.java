@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -62,28 +63,36 @@ public class UserRestController {
 
 
     @PostMapping(value = "/sign-up")
-    public SignUpResultDto signUp(@ApiParam(value = "Email", required = true) @RequestParam String email,
-                                  @ApiParam(value = "비밀번호", required = true) @RequestParam String password,
-                                  @ApiParam(value = "이름", required = true) @RequestParam String username,
-                                  @ApiParam(value = "전화번호", required = true) @RequestParam String tel,
-                                  @ApiParam(value = "팀 이름", required = true) @RequestParam String team,
+    public SignUpResultDto signUp(@Valid @RequestBody SignUpRequestDto signUpRequestDto,
                                   HttpServletResponse response) {
-        LOGGER.info("[UserRestController - signUp]");
-        SignUpResultDto signUpResultDto = userService.signUp(email, password, username, tel,team);
-        LOGGER.info("[UserRestController - signUp 완료.]");
+        try {
+            // 유효성 검사 통과 시 처리
+            signUpRequestDto.setTeam("미정");
 
-        // 회원가입이 성공한 경우, 메인 페이지로 리다이렉트
-        if (signUpResultDto.isSuccess()) {
-            try {
-                response.sendRedirect("/index");
-            } catch (IOException e) {
-                // 리다이렉션 실패 시 처리
-                e.printStackTrace();
+            LOGGER.info("[UserRestController - signUp]");
+            SignUpResultDto signUpResultDto = userService.signUp(signUpRequestDto);
+            LOGGER.info("[UserRestController - signUp 완료.]");
+
+            // 회원가입이 성공한 경우, 메인 페이지로 리다이렉트
+            if (signUpResultDto.isSuccess()) {
+                try {
+                    response.sendRedirect("/index");
+                } catch (IOException e) {
+                    // 리다이렉션 실패 시 처리
+                    e.printStackTrace();
+                }
             }
+            return signUpResultDto;
+        } catch (Exception e) {
+            throw new YourCustomValidationException("유효성 검사 실패");
         }
-        return signUpResultDto;
     }
-
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public static class YourCustomValidationException extends RuntimeException {
+        public YourCustomValidationException(String message) {
+            super(message);
+        }
+    }
     // 로그아웃
     @GetMapping("/logout")
     public ResponseEntity<Void> logout(@AuthenticationPrincipal UserDetailsImpl userDetails,
