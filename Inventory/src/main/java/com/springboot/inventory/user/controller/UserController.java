@@ -30,7 +30,10 @@ public class UserController {
     public String logOug() { return "index"; } // 로그아웃
 
     @GetMapping("/ManagerPage")
-    public String ManagerPage() { return "users/ManagerPage"; } // 어드민, 관리자 페이지
+    public String ManagerPage() { return "users/ManagerPage"; } // 관리자 페이지
+
+    @GetMapping("/AdminPage")
+    public String AdminPage(){ return "users/AdminPage";} // 어드민 권한 페이지
     @GetMapping("/MyPage")
     public String MyPage() {return "users/MyPage"; } // 마이페이지
 
