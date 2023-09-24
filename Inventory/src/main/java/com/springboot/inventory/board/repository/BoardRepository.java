@@ -9,5 +9,6 @@ import java.util.List;
 public interface BoardRepository extends JpaRepository<Board, Long>, BoardSearch {
 
     List<Board> findByIsNoticeTrue();
+    List<Board> findByWriter(String username);
 
 }

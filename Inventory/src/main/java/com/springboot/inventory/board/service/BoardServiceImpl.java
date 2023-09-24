@@ -2,6 +2,7 @@ package com.springboot.inventory.board.service;
 
 
 import com.springboot.inventory.board.dto.BoardDTO;
+import com.springboot.inventory.board.dto.BoardPreviewDTO;
 import com.springboot.inventory.board.dto.PageRequestDTO;
 import com.springboot.inventory.board.dto.PageResponseDTO;
 import com.springboot.inventory.board.repository.BoardRepository;
@@ -11,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -146,5 +149,13 @@ public class BoardServiceImpl implements BoardService{
                 .collect(Collectors.toList());
 
         return dtoList;
+    }
+
+    @Override
+    public List<BoardPreviewDTO> getTop10Boards() {
+        return boardRepository.findAll(PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC,"bno")))
+                .stream()
+                .map(board -> new BoardPreviewDTO(board.getTitle(), board.getWriter()))
+                .collect(Collectors.toList());
     }
 }
