@@ -67,7 +67,8 @@
                                       th:text="${dto.replyCount}"></span>
                             </td>
                             <td><span th:text="${dto.writer}"></span></td>
-                            <td><span th:text="${#temporals.format(dto.created_at, 'yyyy-MM-dd')}"></span></td>
+
+                            <td><span th:text="${#temporals.format(dto.createdAt, 'yyyy-MM-dd')}"></span></td>
 
                             <td>
                                 <span th:text="${dto.status}"></span>
