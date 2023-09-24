@@ -35,5 +35,4 @@ public class UserController {
 
     @GetMapping("/checkPassword")
     public String checkPasswordPage() { return "users/CheckPassword"; }
-
 }

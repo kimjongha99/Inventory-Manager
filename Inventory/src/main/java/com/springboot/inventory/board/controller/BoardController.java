@@ -127,4 +127,8 @@ public class BoardController {
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
 
+    @GetMapping("/dashboard")
+    public String dash(){
+        return "dashboard/maindashboard";
+    }
 }

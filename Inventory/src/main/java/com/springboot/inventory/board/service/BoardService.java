@@ -2,6 +2,7 @@ package com.springboot.inventory.board.service;
 
 
 import com.springboot.inventory.board.dto.BoardDTO;
+import com.springboot.inventory.board.dto.BoardPreviewDTO;
 import com.springboot.inventory.board.dto.PageRequestDTO;
 import com.springboot.inventory.board.dto.PageResponseDTO;
 import com.springboot.inventory.common.enums.PostStatus;
@@ -25,4 +26,6 @@ public interface BoardService {
     void changeStatus(Long bno, PostStatus status);
 
     List<BoardDTO> listNotices();
+
+    List<BoardPreviewDTO> getTop10Boards();
 }
