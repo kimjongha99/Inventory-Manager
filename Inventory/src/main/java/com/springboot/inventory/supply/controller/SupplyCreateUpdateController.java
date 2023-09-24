@@ -52,7 +52,7 @@ public class SupplyCreateUpdateController {
     @GetMapping("/create")
     public String createSupplyForm(Model model) {
         SupplyDto supplyDto = new SupplyDto(); // SupplyDTO 객체 생성
-        List<User> userList = userRepository.findByRoles(UserRoleEnum.USER);
+        List<User> userList =  userRepository.findByRolesAndDeleted(UserRoleEnum.USER, false);
         model.addAttribute("userList", userList);
         model.addAttribute("supplyDto", supplyDto); // 모델에 supplyDto 추가
         return "/supply/supplyCreate"; // supplyCreate.html 템플릿을 렌더링
@@ -115,6 +115,13 @@ public class SupplyCreateUpdateController {
          supplyService.updateSupply(supplyId, supplyDto);
 
         return "redirect:/supply/details/{supplyId}" ;
+    }
+
+    @GetMapping("/checkDuplicateSerialNumber")
+    @ResponseBody
+    public boolean checkDuplicateSerialNumber(String serialNumber) {
+        boolean isDuplicate = supplyService.isSerialNumberDuplicate(serialNumber);
+        return isDuplicate;
     }
 
 }
