@@ -4,7 +4,8 @@
       layout:decorate="~{layout/basic.html}">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+    <link th:href="@{/css/list.css}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="/css/list.css" />
 </head>
 <div layout:fragment="content">
 
@@ -47,17 +48,37 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th scope="col">Bno</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Writer</th>
-                            <th scope="col">RegDate</th>
-                            <th scope="col">Status</th>
+                            <th scope="col">글 번호</th>
+                            <th scope="col">제목</th>
+                            <th scope="col">작성자</th>
+                            <th scope="col">등록 일시</th>
+                            <th scope="col">처리 상태</th>
 
                         </tr>
                         </thead>
 
                         <tbody th:with="link = ${pageRequestDTO.getLink()}">
-                        <tr th:each="dto:${responseDTO.dtoList}">
+                        <!-- Notice 표시 -->
+
+                        <!-- 공지사항 내용 반복 -->
+                        <tr th:each="notice:${notices}">
+                            <td><strong><span>공지사항</span></strong></td>
+
+                            <!-- Title 출력 (Notice라는 표시 추가) -->
+                            <td>
+                                <a th:href="@{/board/read(bno=${notice.bno})}" class="text-decoration-none">
+                                    <strong><span th:text="${notice.title}"></span></strong>
+                                </a>
+                            </td>
+
+                            <!-- Writer 출력 -->
+                            <td><strong><span th:text="${notice.writer}"></span></strong></td>
+
+                            <!-- RegDate 출력 (날짜 형식 지정)-->
+                            <td><strong><span th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}"></span></strong></td>
+                        </tr>
+
+                        <tr th:each="dto:${responseDTO.dtoList}" >
                             <th scope="row"><span th:text="${dto.bno}"></span></th>
                             <td>
                                 <a th:href="|@{/board/read(bno=${dto.bno})}&${link}|" class="text-decoration-none">
@@ -70,10 +91,10 @@
 
                             <td><span th:text="${#temporals.format(dto.createdAt, 'yyyy-MM-dd')}"></span></td>
 
-                            <td>
-                                <span th:text="${dto.status}"></span>
+                            <td  th:classappend="'status-' + ${dto.status}">
+                                <span class="status" th:text="${dto.status.label}"></span>
                                 <div sec:authorize="hasAnyRole('MANAGER')">
-                                    <button class="btn btn-outline-secondary changeStatusBtn" th:data-bno="${dto.bno}">Change Status</button>
+                                    <button class="btn btn-outline-secondary changeStatusBtn" th:data-bno="${dto.bno}">상태 처리</button>
                                 </div>
                             </td>
 
@@ -107,36 +128,19 @@
         </div><!-- end col-->
     </div><!-- end row-->
 
-    <div class="modal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Modal body text goes here.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="modal" id="statusModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Change Status</h5>
+                    <h5 class="modal-title">상태 처리</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <select id="newStatusSelect" class=form-select>
-                        <option value="">--- Select Status ---</option>
-                        <option value='APPROVED'>APPROVED</option>
-                        <option value='REJECTED'>REJECTED</option>
+                        <option value="">--- 상태 처리 ---</option>
+                        <option value='APPROVED'>승인</option>
+                        <option value='REJECTED'>거부</option>
                     </select>
                 </div>
                 <div class="modal-footer">
@@ -148,7 +152,7 @@
     </div>
 
 
-</div>board
+</div>
 
 
 <script layout:fragment="script" th:inline="javascript">
@@ -181,14 +185,7 @@
 
     }, false)
 
-    //show modal
-    const result = [[${result}]]
 
-    const modal = new bootstrap.Modal(document.querySelector(".modal"))
-
-    if (result) {
-        modal.show()
-    }
 
 
     document.querySelectorAll(".changeStatusBtn").forEach(function (btn) {
@@ -231,6 +228,10 @@
             location.reload()
         }).catch(console.error)
     }, false)
+
+
+
+
 </script>
 </html>
 

@@ -12,43 +12,43 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    Board Modify
+                    글 수정하기
                 </div>
                 <div class="card-body">
                     <form th:action="@{/board/modify}" method="post" id="f1">
                         <div class="input-group mb-3">
-                            <span class="input-group-text">Bno</span>
+                            <span class="input-group-text">글번호</span>
                             <input type="text" class="form-control" th:value="${dto.bno}" name="bno" readonly>
                         </div>
                         <div class="input-group mb-3">
-                            <span class="input-group-text">Title</span>
+                            <span class="input-group-text">글제목</span>
                             <input type="text" class="form-control" name="title" th:value="${dto.title}">
                         </div>
 
                         <div class="input-group mb-3">
-                            <span class="input-group-text">Content</span>
+                            <span class="input-group-text">글내용</span>
                             <textarea class="form-control col-sm-5" rows="5" name="content">[[${dto.content}]]</textarea>
                         </div>
 
                         <div class="input-group mb-3">
-                            <span class="input-group-text">Writer</span>
+                            <span class="input-group-text">작성자</span>
                             <input type="text" class="form-control" th:value="${dto.writer}" name="writer" readonly>
                         </div>
 
                         <div class="input-group mb-3">
-                            <span class="input-group-text">RegDate</span>
+                            <span class="input-group-text">등록일시</span>
                             <input type="text" class="form-control" th:value="${#temporals.format(dto.createdAt, 'yyyy-MM-dd HH:mm:ss')}" readonly>
                         </div>
                         <div class="input-group mb-3">
-                            <span class="input-group-text">ModDate</span>
+                            <span class="input-group-text">수정일시</span>
                             <input type="text" class="form-control" th:value="${#temporals.format(dto.modifiedAt, 'yyyy-MM-dd HH:mm:ss')}" readonly>
                         </div>
 
                         <div class="my-4">
                             <div class="float-end">
-                                <button type="button" class="btn btn-primary listBtn">List</button>
-                                <button type="button" class="btn btn-secondary modBtn">Modify</button>
-                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                <button type="button" class="btn btn-primary listBtn">리스트</button>
+                                <button type="button" class="btn btn-secondary modBtn">수정하기</button>
+                                <button type="button" class="btn btn-danger removeBtn">삭제하기</button>
                             </div>
                         </div>
                     </form>
