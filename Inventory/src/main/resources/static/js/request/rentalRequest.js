@@ -5,9 +5,13 @@ $(document).ready(() => {
         type: "GET",
         url: "/category-api/categorylist",
         dataType: "json",
-    }).done((res, status, xhr) => {
+    }).done((res) => {
         renderCategoryList(res);
+<<<<<<< Updated upstream:Inventory/src/main/resources/static/js/rentalRequest.js
     }).fail((res, status, xhr) => {
+=======
+    }).fail(() => {
+>>>>>>> Stashed changes:Inventory/src/main/resources/static/js/request/rentalRequest.js
         alert("목록을 불러오는데 실패했습니다.");
     });
 
@@ -44,11 +48,11 @@ const onSubmitRentalRequest = (event) => {
         url: "/request-api/user-rental",
         data: JSON.stringify(data),
         dataType: 'text',
-        contentType: 'application/json',
-    }).done((res, status, xhr) => {
+        contentType: 'application/json; charset=UTF-8',
+    }).done((res) => {
         alert(res);
         window.location.replace("/request-user/rental");
-    }).fail((res, status, xhr) => {
+    }).fail(() => {
         alert("요청 실패");
     })
 }

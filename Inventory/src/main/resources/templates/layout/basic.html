@@ -24,6 +24,41 @@
             <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://localhost:8080/main/dashboard">대시보드</a>
             <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://localhost:8080">재고보기</a>
 
+<<<<<<< Updated upstream
+=======
+          <!-- USER tabs -->
+          <a class="list-group-item list-group-item-action list-group-item-light p-3"
+             href="/admin-requestInfo" sec:authorize="hasRole('MANAGER')" >요청 현황</a>
+          <a href="/supply/create"
+             class="list-group-item list-group-item-action list-group-item-light p-3"
+             sec:authorize="hasRole('MANAGER')"
+          >비품 등록</a>
+          <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#"
+             sec:authorize="hasRole('MANAGER')"
+          >비품 관리</a>
+          <a
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+                  href="http://localhost:8080/supply/stock"
+                  sec:authorize="hasRole('MANAGER')"
+          >재고 확인</a
+          >
+
+          <!-- MANAGER tabs -->
+          <a class="list-group-item list-group-item-action list-group-item-light p-3"
+             sec:authorize="hasRole('USER')" href="/request-user/rental" >대여 신청</a>
+          <a class="list-group-item list-group-item-action list-group-item-light p-3"
+             sec:authorize="hasRole('USER')" href="/request-user/return" >반납 신청</a>
+          <a class="list-group-item list-group-item-action list-group-item-light p-3"
+             sec:authorize="hasRole('USER')" href="/request-user/history" >요청 내역</a>
+          <a
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+                  href="http://localhost:8080/supply/list"
+                  sec:authorize="hasRole('USER')"
+          >재고 보기</a
+          >
+
+
+>>>>>>> Stashed changes
         </div>
     </div>
     <!-- Page content wrapper-->
@@ -42,6 +77,7 @@
                             <li class="nav-item"><a class="nav-link" href="http://localhost:8080/signup">회원가입</a></li>
                         </div>
 
+<<<<<<< Updated upstream
                         <div th:if="${#authorization.expression('isAuthenticated()')}">
                             <li  class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${#authentication.name}">Dropdown</a>
@@ -56,6 +92,45 @@
 
                     </ul>
                 </div>
+=======
+                <li
+                  class="nav-item"
+                  th:if="${#authorization.expression('isAuthenticated()')}"
+                >
+                  <a
+                          sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"
+                          class="dropdown-item"
+                          href="/ManagerPage"
+                  >관리 페이지</a
+                  >
+                </li>
+
+                <li
+                  class="nav-item dropdown"
+                  th:if="${#authorization.expression('isAuthenticated()')}"
+                >
+                  <a
+                    class="nav-link dropdown-toggle"
+                    id="navbarDropdown"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    th:text="${#authentication.name}"
+                    >Dropdown</a
+                  >
+                  <div
+                    class="dropdown-menu dropdown-menu-end"
+                    aria-labelledby="navbarDropdown"
+                  >
+                    <a class="dropdown-item" href="/checkPassword">내 정보</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/user/logout">로그아웃</a>
+                  </div>
+                </li>
+              </ul>
+>>>>>>> Stashed changes
             </div>
         </nav>
         <!-- Page content-->

@@ -1,0 +1,44 @@
+#request_form {
+    width: 100%;
+    height: 100%;
+}
+
+.form_div1 {
+    width: 100%;
+    height: 10%;
+}
+
+.form_div1 select {
+    margin-left: 2rem;
+    padding: 0.5rem;
+    font-weight: bold;
+}
+
+.form_div2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 80%;
+    box-sizing: border-box;
+    margin-top: 2rem;
+}
+
+.form_div2 textarea {
+    width: 70%;
+    height: 50%;
+    margin: 3rem 0 3rem 0;
+}
+
+.form_div3 {
+    display: flex;
+    width: 100%;
+    height: 10%;
+    justify-content: center;
+}
+
+.form_div3 button {
+    padding: 0 2rem 0 2rem;
+}
+
