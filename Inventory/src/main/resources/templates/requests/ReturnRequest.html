@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/basic.html}"
+>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/returnRequest.js}"></script>
+    <title>유저 - 반납 요청 페이지</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1 id="header" th:value="return">유저 - 반납 요청 페이지</h1>
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>카테고리</th>
+                <th>상품명</th>
+                <th>대여 일시</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="requestId" th:each="rentalList : ${rentalRequestList}"
+                th:value="${rentalList.requestId}">
+
+                <td class="category" th:text="${rentalList.category.categoryName}"></td>
+
+                <td class="supplyId" th:value="${rentalList.supply.getSupplyId()}"
+                    th:text="${rentalList.supply.getModelName()}"></td>
+
+                <td th:text="${rentalList.updated_at}"></td>
+
+                <td><button th:text="${rentalList.returnAvailable == true ? '반납 대기' : '반납 신청'}"
+                            th:disabled="${rentalList.returnAvailable == true}"
+                            onclick="onReturnRequestHandler(event)">
+                    </button></td>
+
+            </tr>
+        </tbody>
+    </table>
+
+
+    <div>
+        <a th:href="@{/}"><button>메인 페이지</button></a>
+    </div>
+</div>
+
+<script layout:fragment="script" th:inline="javascript"></script>
+</body>
+</html>
