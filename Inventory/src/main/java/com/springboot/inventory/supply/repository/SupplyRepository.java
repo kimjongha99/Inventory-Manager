@@ -60,6 +60,9 @@ public interface SupplyRepository extends JpaRepository<Supply, Long> {
 
     Optional<Supply> findBySupplyId(Long supId);
 
+    boolean existsBySerialNum(String serialNumber);
+
+    List<Supply> findByStatusAndDeletedFalse(SupplyStatusEnum status) ;
 }
 
 
