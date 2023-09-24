@@ -1,12 +1,10 @@
-.status-APPROVED {
+.status.APPROVED {
     color: green;
 }
-
-.status-PENDING {
+.status.PENDING {
     color: orange;
 }
-
-.status-REJECTED {
+.status.REJECTED {
     color: red;
 }
 
@@ -21,4 +19,18 @@
     border-radius: 0.25rem;
     height: 1.8125rem;
     border: 1px solid ;
+}
+
+.status-ps {
+    display: flex;
+    justify-content: space-between; /* Adds space between the status and buttons */
+    align-items: center;
+    width: 87%;
+    border-radius: 0.25rem;
+    height: 1.8125rem;
+}
+
+.button-group {
+    display:flex; /* Aligns the buttons in a row */
+    gap:10px; /* Adds space between the buttons */
 }

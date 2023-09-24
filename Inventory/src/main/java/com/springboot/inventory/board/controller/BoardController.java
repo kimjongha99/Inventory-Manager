@@ -120,13 +120,11 @@ public class BoardController {
         return "redirect:/board/list";
 
     }
-
     @PutMapping("/status/{bno}")
-    public ResponseEntity<String> changeStatus(@PathVariable Long bno, @RequestBody PostStatus status) {
-        boardService.changeStatus(bno, status);
+    public ResponseEntity<String> changeStatus(@PathVariable Long bno, @RequestBody String status) {
+        boardService.changeStatus(bno, PostStatus.valueOf(status.replace("\"", ""))); // remove quotes from the status string before converting it to enum
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
-
     @GetMapping("/dashboard")
     public String dash(){
         return "dashboard/maindashboard";
