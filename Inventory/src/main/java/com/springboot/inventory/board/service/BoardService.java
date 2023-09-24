@@ -6,6 +6,8 @@ import com.springboot.inventory.board.dto.PageRequestDTO;
 import com.springboot.inventory.board.dto.PageResponseDTO;
 import com.springboot.inventory.common.enums.PostStatus;
 
+import java.util.List;
+
 public interface BoardService {
 
     Long register(BoardDTO boardDTO);
@@ -21,4 +23,6 @@ public interface BoardService {
 
 
     void changeStatus(Long bno, PostStatus status);
+
+    List<BoardDTO> listNotices();
 }

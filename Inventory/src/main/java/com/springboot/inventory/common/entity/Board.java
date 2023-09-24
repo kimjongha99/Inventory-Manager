@@ -28,6 +28,10 @@ public class Board extends Timestamped{
     @Enumerated(EnumType.STRING)
     private PostStatus status;
 
+    @Column(nullable = false) // 공지사항 여부. 필요에 따라서 null 허용 여부를 변경하세요.
+    private Boolean isNotice ;
+
+
     public void change(String title, String content){
         this.title = title;
         this.content = content;
@@ -50,4 +54,10 @@ public class Board extends Timestamped{
     public void setWriter(String writer) {
         this.writer=writer;
     }
+
+    public void setIsNotice(Boolean isNotice){
+        this.isNotice=isNotice;
+    }
+
+
 }

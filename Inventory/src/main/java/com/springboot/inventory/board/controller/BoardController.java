@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-
+import java.util.List;
 @Controller
 @RequestMapping("/board")
 @Log4j2
@@ -29,8 +29,14 @@ public class BoardController {
     @GetMapping("/list")
     public void list(PageRequestDTO pageRequestDTO, Model model) {
         PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
+        List<BoardDTO> notices = boardService.listNotices();  // 공지사항 목록 가져오기
+
         log.info(responseDTO);
+        log.info(notices);
+
         model.addAttribute("responseDTO", responseDTO);
+        model.addAttribute("notices", notices);  // 모델에 공지사항 목록 추가
+
     }
 
 
