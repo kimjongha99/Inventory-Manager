@@ -47,6 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/supply/supplyList", "/supply/supplyDetails",
                         "/supply/supplyCreate", "/supply/supplyUpdate").hasRole(
                         "MANAGER")
+                .antMatchers("/image/**").permitAll()
 
                 // request
                 .antMatchers("/category-api/**", "/request-api/**").permitAll()
@@ -65,6 +66,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity webSecurity) {
         webSecurity.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html",
-                "/swagger-ui/*","/webjars/**", "/swagger/**", "/resources/**", "/static/**", "/static/css/**", "/js/**", "/imgs/**");
+                "/swagger-ui/*","/webjars/**", "/swagger/**", "/resources/**", "/static/**", "/static/css/**", "/js/**", "/imgs/**","/img/**", "/image/**");
     }
 }
