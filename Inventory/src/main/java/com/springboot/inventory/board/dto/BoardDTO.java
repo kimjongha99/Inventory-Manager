@@ -30,9 +30,9 @@ public class BoardDTO {
 
     private PostStatus status; // 게시물 상태
 
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
-    private LocalDateTime updated_at;
+    private LocalDateTime modifiedAt;
 
     private Long replyCount;
 

@@ -37,11 +37,11 @@
 
                         <div class="input-group mb-3">
                             <span class="input-group-text">RegDate</span>
-                            <input type="text" class="form-control" th:value="${#temporals.format(dto.created_at, 'yyyy-MM-dd HH:mm:ss')}" readonly>
+                            <input type="text" class="form-control" th:value="${#temporals.format(dto.createdAt, 'yyyy-MM-dd HH:mm:ss')}" readonly>
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">ModDate</span>
-                            <input type="text" class="form-control" th:value="${#temporals.format(dto.created_at, 'yyyy-MM-dd HH:mm:ss')}" readonly>
+                            <input type="text" class="form-control" th:value="${#temporals.format(dto.modifiedAt, 'yyyy-MM-dd HH:mm:ss')}" readonly>
                         </div>
 
                         <div class="my-4">
