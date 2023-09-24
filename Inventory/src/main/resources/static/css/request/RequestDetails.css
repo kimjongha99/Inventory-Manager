@@ -1,0 +1,8 @@
+.page-header {
+    margin-bottom: 2rem;
+    box-sizing: content-box;
+}
+
+.table-body :nth-child(3) {
+    width: 20%;
+}

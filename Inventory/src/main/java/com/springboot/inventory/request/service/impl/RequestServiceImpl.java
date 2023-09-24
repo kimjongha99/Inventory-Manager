@@ -36,6 +36,7 @@ public class RequestServiceImpl implements RequestService {
     private final SupplyRepository supplyRepository;
     private final ModelMapper modelMapper;
 
+
     @Autowired
     public RequestServiceImpl(RequestRepository requestRepository, CategoryRepository categoryRepository,
                               SupplyRepository supplyRepository, ModelMapper modelMapper) {
@@ -70,6 +71,7 @@ public class RequestServiceImpl implements RequestService {
         return new ResponseDTO<>(true, null);
     }
 
+
     public ResponseDTO<?> registerReturnRequest(ReturnRequestDTO returnRequestDTO, User user) {
 
         Request returnRequest = new Request();
@@ -98,6 +100,7 @@ public class RequestServiceImpl implements RequestService {
         return new ResponseDTO<>(true, null);
     }
 
+
     public ResponseDTO<Page<?>> getUserRequestHistory(User user, int page) {
 
         Pageable pageable = PageRequest.of(page, 10);
@@ -106,6 +109,7 @@ public class RequestServiceImpl implements RequestService {
 
         return new ResponseDTO<>(true, requestHistory);
     }
+
 
     public ResponseDTO<List<Request>> getRentalSupplyByUser(User user) {
 
@@ -130,6 +134,7 @@ public class RequestServiceImpl implements RequestService {
         return new ResponseDTO<>(true, requestList);
     }
 
+
     public ResponseDTO<Map<String, Object>> getRentalRequestInfo(String requestId) {
 
         Request request = requestRepository.findByRequestId(Long.parseLong(requestId)).orElse(null);
@@ -147,6 +152,7 @@ public class RequestServiceImpl implements RequestService {
         return new ResponseDTO<>(true, data);
     }
 
+
     public ResponseDTO<Page<?>> getRequestUnhandledByCategory(RequestTypeEnum type, String categoryName,
                                                               int page) {
         Pageable pageable = PageRequest.of(page, 15);
@@ -162,9 +168,9 @@ public class RequestServiceImpl implements RequestService {
             rentalList = requestRepository.findAllByAcceptAndRequestType(null, type, pageable);
         }
 
-
         return new ResponseDTO<>(true, rentalList);
     }
+
 
     public ResponseDTO<?> approveRequest(ApproveDTO approveDTO, RequestTypeEnum requestTypeEnum) {
 
@@ -192,6 +198,7 @@ public class RequestServiceImpl implements RequestService {
 
         return new ResponseDTO<>(true, null);
     }
+
 
     public ResponseDTO<?> rejectRequest(RentalRejectDTO rentalRejectDTO) {
 
