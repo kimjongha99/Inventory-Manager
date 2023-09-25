@@ -19,8 +19,8 @@ public class UserController {
         return "users/LoginPage";
     } // 로그인 페이지
 
-    @GetMapping("/dashboard")
-    public String dashBoard(){return "dashboard/maindashboard";}
+//    @GetMapping("/dashboard")
+//    public String dashBoard(){return "dashboard/maindashboard";}
 
     @GetMapping("/signUpPage")
     public String signUpPage() {

@@ -1,0 +1,12 @@
+.page-header {
+    height: 20%;
+}
+
+.page-header  button {
+    margin-top: 1rem;
+}
+
+.page-body {
+    padding: 0 2rem 0 2rem;
+    justify-content: flex-start;
+}

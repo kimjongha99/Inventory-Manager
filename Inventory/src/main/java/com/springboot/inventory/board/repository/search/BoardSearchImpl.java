@@ -3,6 +3,7 @@ package com.springboot.inventory.board.repository.search;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
 import com.springboot.inventory.common.entity.Board;
+import com.springboot.inventory.common.entity.QBoard;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

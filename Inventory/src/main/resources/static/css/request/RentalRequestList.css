@@ -1,0 +1,40 @@
+.page-header {
+    height: auto;
+    margin-bottom: 1.5rem;
+    box-sizing: content-box;
+}
+
+.page-header  button {
+    margin-top: 1.5rem;
+}
+
+.page-body {
+    padding: 0 2rem 0 2rem;
+    justify-content: flex-start;
+}
+
+.page-body div {
+    width: 100%;
+}
+
+.list_div1 {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    margin-bottom: 2rem;
+}
+
+.list_div1 select {
+    margin-left: 2rem;
+    padding: 0.5rem;
+    font-weight: bold;
+}
+
+.list_div1-pagination {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.list_div1-pagination div {
+    width: auto;
+}

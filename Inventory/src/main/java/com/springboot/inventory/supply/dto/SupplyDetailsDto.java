@@ -36,6 +36,7 @@ public class SupplyDetailsDto {
         dto.setImagePath(supply.getImagePath());
         dto.setModelName(supply.getModelName());
         dto.setDeleted(supply.isDeleted());
+        dto.setCategoryName(supply.getCategory().getCategoryName());
 
         if (supply.getUser() != null && supply.getUser().getUsername() != null) {
             dto.setUsername(supply.getUser().getUsername());

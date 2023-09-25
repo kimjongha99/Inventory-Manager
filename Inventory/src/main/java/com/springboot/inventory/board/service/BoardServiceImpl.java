@@ -2,6 +2,7 @@ package com.springboot.inventory.board.service;
 
 
 import com.springboot.inventory.board.dto.BoardDTO;
+import com.springboot.inventory.board.dto.BoardPreviewDTO;
 import com.springboot.inventory.board.dto.PageRequestDTO;
 import com.springboot.inventory.board.dto.PageResponseDTO;
 import com.springboot.inventory.board.repository.BoardRepository;
@@ -11,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -39,6 +42,14 @@ public class BoardServiceImpl implements BoardService{
         board.setContent(boardDTO.getContent());
         board.setWriter(boardDTO.getWriter());
         board.changeStatus(PostStatus.PENDING);
+
+        // If isNotice is null, set it to false
+        if (boardDTO.getIsNotice() == null) {
+            board.setIsNotice(false);
+        } else {
+            board.setIsNotice(boardDTO.getIsNotice());
+        }
+
         Long bno = boardRepository.save(board).getBno();
 
         return bno;
@@ -118,6 +129,33 @@ public class BoardServiceImpl implements BoardService{
         }
 
 
+    @Override
+    public List<BoardDTO> listNotices() {
+        List<Board> result = boardRepository.findByIsNoticeTrue();
 
+        List<BoardDTO> dtoList = result.stream()
+                .map(board -> {
+                    // 직접 엔티티를 DTO로 변환합니다.
+                    BoardDTO dto = new BoardDTO();
+                    dto.setBno(board.getBno());
+                    dto.setTitle(board.getTitle());
+                    dto.setContent(board.getContent());  // 게시글 내용 설정
+                    dto.setWriter(board.getWriter());  // 작성자 설정
+                    dto.setCreatedAt(board.getCreatedAt());  // 등록 날짜 설정
+                    dto.setModifiedAt(board.getModifiedAt());  // 수정 날짜 설정
 
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        return dtoList;
+    }
+
+    @Override
+    public List<BoardPreviewDTO> getTop10Boards() {
+        return boardRepository.findAll(PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC,"bno")))
+                .stream()
+                .map(board -> new BoardPreviewDTO(board.getTitle(), board.getWriter()))
+                .collect(Collectors.toList());
+    }
 }

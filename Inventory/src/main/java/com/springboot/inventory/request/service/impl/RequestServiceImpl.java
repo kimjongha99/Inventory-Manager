@@ -27,6 +27,7 @@ import org.springframework.data.domain.Pageable;
 //
 import java.util.*;
 import org.modelmapper.ModelMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RequestServiceImpl implements RequestService {
@@ -35,6 +36,7 @@ public class RequestServiceImpl implements RequestService {
     private final CategoryRepository categoryRepository;
     private final SupplyRepository supplyRepository;
     private final ModelMapper modelMapper;
+
 
     @Autowired
     public RequestServiceImpl(RequestRepository requestRepository, CategoryRepository categoryRepository,
@@ -51,6 +53,7 @@ public class RequestServiceImpl implements RequestService {
     /* ========================================================================= */
 
 
+    @Transactional
     public ResponseDTO<?> registerRentalRequest(RentalRequestDTO rentalRequestDTO,
                                                           User user) {
 
@@ -70,6 +73,8 @@ public class RequestServiceImpl implements RequestService {
         return new ResponseDTO<>(true, null);
     }
 
+
+    @Transactional
     public ResponseDTO<?> registerReturnRequest(ReturnRequestDTO returnRequestDTO, User user) {
 
         Request returnRequest = new Request();
@@ -98,6 +103,7 @@ public class RequestServiceImpl implements RequestService {
         return new ResponseDTO<>(true, null);
     }
 
+
     public ResponseDTO<Page<?>> getUserRequestHistory(User user, int page) {
 
         Pageable pageable = PageRequest.of(page, 10);
@@ -106,6 +112,7 @@ public class RequestServiceImpl implements RequestService {
 
         return new ResponseDTO<>(true, requestHistory);
     }
+
 
     public ResponseDTO<List<Request>> getRentalSupplyByUser(User user) {
 
@@ -130,6 +137,7 @@ public class RequestServiceImpl implements RequestService {
         return new ResponseDTO<>(true, requestList);
     }
 
+
     public ResponseDTO<Map<String, Object>> getRentalRequestInfo(String requestId) {
 
         Request request = requestRepository.findByRequestId(Long.parseLong(requestId)).orElse(null);
@@ -147,6 +155,7 @@ public class RequestServiceImpl implements RequestService {
         return new ResponseDTO<>(true, data);
     }
 
+
     public ResponseDTO<Page<?>> getRequestUnhandledByCategory(RequestTypeEnum type, String categoryName,
                                                               int page) {
         Pageable pageable = PageRequest.of(page, 15);
@@ -162,10 +171,11 @@ public class RequestServiceImpl implements RequestService {
             rentalList = requestRepository.findAllByAcceptAndRequestType(null, type, pageable);
         }
 
-
         return new ResponseDTO<>(true, rentalList);
     }
 
+
+    @Transactional
     public ResponseDTO<?> approveRequest(ApproveDTO approveDTO, RequestTypeEnum requestTypeEnum) {
 
         Long requestId = Long.parseLong(approveDTO.getRequestId());
@@ -199,6 +209,8 @@ public class RequestServiceImpl implements RequestService {
         return new ResponseDTO<>(true, null);
     }
 
+
+    @Transactional
     public ResponseDTO<?> rejectRequest(RentalRejectDTO rentalRejectDTO) {
 
         String reqId = rentalRejectDTO.getRequestId();
