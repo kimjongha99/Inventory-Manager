@@ -1,6 +1,7 @@
 .page-header {
-    height: 10%;
-    margin-bottom: 2rem;
+    height: auto;
+    margin-bottom: 1.5rem;
+    box-sizing: content-box;
 }
 
 .page-header  button {

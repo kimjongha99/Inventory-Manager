@@ -49,7 +49,7 @@
                 <td class="supplyId" th:value="${rentalList.supply.getSupplyId()}"
                     th:text="${rentalList.supply.getModelName()}"></td>
 
-                <td th:text="${rentalList.updated_at}"></td>
+                <td th:text="${#temporals.format(rentalList.modifiedAt, 'yyyy-MM-dd')}"></td>
 
                 <td><button class="btn btn-outline-primary"
                             th:text="${rentalList.returnAvailable == true ? '반납 대기' : '반납 신청'}"

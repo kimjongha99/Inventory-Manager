@@ -25,7 +25,8 @@
             <h1>관리자 - 대여 품목 선택</h1>
 
             <div class="header_div1">
-                <h4 id="requestId" th:text="'요청 ID : ' + ${requestId}">
+                <h4>요청 ID : </h4>
+                <h4 id="requestId" th:text="${requestId}">
                 </h4>
 
                 <button class="btn btn-outline-danger" onclick="onRejectBtnClickHandler();">거절
@@ -33,7 +34,8 @@
             </div>
 
             <div>
-                <a th:href="@{/admin-requestInfo}"><button class="btn btn-outline-secondary">메인 페이지</button></a>
+                <a th:href="@{/admin-requestinfo}"><button class="btn btn-outline-secondary">메인
+                    페이지</button></a>
             </div>
 
         </div>

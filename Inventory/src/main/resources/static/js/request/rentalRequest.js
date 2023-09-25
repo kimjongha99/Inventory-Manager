@@ -7,11 +7,7 @@ $(document).ready(() => {
         dataType: "json",
     }).done((res) => {
         renderCategoryList(res);
-<<<<<<< Updated upstream:Inventory/src/main/resources/static/js/rentalRequest.js
-    }).fail((res, status, xhr) => {
-=======
     }).fail(() => {
->>>>>>> Stashed changes:Inventory/src/main/resources/static/js/request/rentalRequest.js
         alert("목록을 불러오는데 실패했습니다.");
     });
 
