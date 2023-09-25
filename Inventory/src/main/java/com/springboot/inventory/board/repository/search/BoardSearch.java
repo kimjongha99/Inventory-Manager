@@ -2,14 +2,15 @@ package com.springboot.inventory.board.repository.search;
 
 
 import com.springboot.inventory.common.entity.Board;
+import com.springboot.inventory.common.enums.BoardType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface BoardSearch {
 
-    Page<Board> search1(Pageable pageable);
+    // Add BoardType parameter to search1 method.
+    Page<Board> search1(BoardType boardType, Pageable pageable);
 
-    Page<Board> searchAll(String[] types, String keyword, Pageable pageable);
-
-
+    // Add BoardType parameter to searchAll method.
+    Page<Board> searchAll(BoardType boardType, String[] types, String keyword, Pageable pageable);
 }

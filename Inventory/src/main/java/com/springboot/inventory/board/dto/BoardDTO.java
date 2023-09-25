@@ -1,5 +1,6 @@
 package com.springboot.inventory.board.dto;
 
+import com.springboot.inventory.common.enums.BoardType;
 import com.springboot.inventory.common.enums.PostStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,6 +42,10 @@ public class BoardDTO {
 
     private Long replyCount;
 
+
+    // Add board type.
+    private BoardType boardType;
+
     public Boolean getIsNotice() {
         return isNotice;
     }
@@ -48,5 +53,12 @@ public class BoardDTO {
     public void setIsNotice(Boolean isNotice) {
         this.isNotice = Optional.ofNullable(isNotice).orElse(false);
     }
+    // Add getter and setter for the new field.
+    public BoardType getBoardType() {
+        return boardType;
+    }
 
+    public void setBoardType(BoardType boardType) {
+        this.boardType = boardType;
+    }
 }

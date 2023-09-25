@@ -49,10 +49,10 @@
 
                     <div class="my-4" th:with="user=${#authentication.principal}">
                         <div class="float-end" th:with="link = ${pageRequestDTO.getLink()}">
-                            <a th:href="|@{/board/list}?${link}|" class="text-decoration-none">
+                            <a th:href="|@{/board/purchase/list}?${link}|" class="text-decoration-none">
                                 <button type="button" class="btn btn-primary">리스트</button>
                             </a>
-                            <a th:if="${user != null && user.user.username == dto.writer}" th:href="|@{/board/modify(bno=${dto.bno})}&${link}|" class="text-decoration-none">
+                            <a th:if="${user != null && user.user.username == dto.writer}" th:href="|@{/board/purchase/modify(bno=${dto.bno})}&${link}|" class="text-decoration-none">
                                 <button type="button" class="btn btn-secondary">수정하기</button>
                             </a>
                         </div>
