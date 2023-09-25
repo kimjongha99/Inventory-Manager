@@ -6,6 +6,7 @@
 >
 <head>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/request/requestCount.js}"></script>
 
     <link th:href="@{/css/board-dash.css}" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="/css/board-dash.css"/>
@@ -21,6 +22,19 @@
 </head>
 
 <div layout:fragment="content">
+<!-- 요청 대시보드 -->
+
+    <div>
+        <span>대여 요청</span>
+        <a class="rental-link" th:href="@{/admin-requestlist/rental}"></a>
+    </div>
+
+    <div>
+        <span>반납 요청</span>
+        <a class="return-link" th:href="@{/admin-requestlist/return}"></a>
+    </div>
+
+<!-- 게시판 -->
     <div class="board-dash">
         <h4>비품요청 게시판</h4>
         <h6 class="fw-bold">top-10</h6>
