@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class SupplyDto {
-
+    private Long supplyId;
     private String serialNum;
     private String modelContent;
     private int amount;
