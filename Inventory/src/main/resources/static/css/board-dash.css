@@ -1,0 +1,19 @@
+.board-dash {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 16.25rem;
+    min-height: 9.25rem;
+    width: 100%;
+    height: 100%;
+    box-shadow: rgba(0, 0, 0, 0.1) 0.1888rem 0.1888rem 0.944rem;
+    border-radius: .5rem;
+    padding:.3125rem;
+    background-color:white;
+    border:.0625rem solid rgb(227,227,227);
+    pointer-events:auto; }
+#board-list {
+    list-style-type:none;
+    padding-left :0px ;
+}
