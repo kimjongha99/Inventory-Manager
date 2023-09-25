@@ -1,6 +1,6 @@
 package com.springboot.inventory.supply.controller;
 
-import com.springboot.inventory.common.entity.Supply;
+import com.springboot.inventory.common.enums.LargeCategory;
 import com.springboot.inventory.common.enums.SupplyStatusEnum;
 import com.springboot.inventory.supply.dto.SupplyDetailsDto;
 import com.springboot.inventory.supply.dto.SupplyResponseDto;
@@ -14,9 +14,11 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/supply")
@@ -71,12 +73,19 @@ public class SupplyController {
         return SUPPLY_LIST_VIEW;
     }
 
-    @GetMapping("/details/{id}")
-    public String supplyDetails(@PathVariable("id") Long supplyId, Model model) {
+    @GetMapping("/details/{supplyId}")
+    public String supplyDetails(@PathVariable("supplyId") Long supplyId, Model model) {
         Optional<SupplyDetailsDto> supplyOptional = supplyResponseDtoService.getSupplyById(supplyId);
-        supplyOptional.ifPresent(supply -> model.addAttribute("supply", supply));
-        return supplyOptional.map(supply -> SUPPLY_DETAILS_VIEW).orElse(SUPPLY_LIST_VIEW);
+        if (supplyOptional.isPresent()) {
+            model.addAttribute("supply", supplyOptional.get());
+            return "/supply/supplyDetailsFragment"; // 실제 템플릿 파일명으로 교체하세요.
+        } else {
+            // 여기에 오류 페이지로 리다이렉트하거나 오류 메시지를 보낼 수 있습니다.
+            return "redirect:/supply/list"; // 적절한 리다이렉트 URL로 교체하세요.
+        }
     }
+
+
 
     @PostMapping("/delete/{supplyId}")
     public String deleteSupply(@PathVariable Long supplyId) {
@@ -84,7 +93,22 @@ public class SupplyController {
         return "redirect:/supply/list"; // 삭제 후 공급품 목록 페이지로 리다이렉트합니다. 실제 리다이렉트 경로는 상황에 따라 변경될 수 있습니다.
     }
     @GetMapping("/index")
-    public String index() {
-        return "index";
+    public String list(Model model) {
+        model.addAttribute("categories", LargeCategory.values());
+        return "/supply/dashboard";
     }
+
+    @PostMapping("/data/{largeCategory}")
+    @ResponseBody
+    public Map<String, Long> getCategoryData(@PathVariable LargeCategory largeCategory) {
+        List<SupplyResponseDto> supplyDtos = supplyResponseDtoService.getSuppliesAsDtos(String.valueOf(largeCategory));
+        return supplyResponseDtoService.getStatusCountsFromDtos(supplyDtos);
+    }
+
+
+
+
+
+
+
 }
