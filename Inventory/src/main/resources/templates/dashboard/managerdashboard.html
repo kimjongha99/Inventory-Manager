@@ -28,7 +28,7 @@
         <a href="/board/list">더보기</a>
     </div>
 
-
+<!--매니저보드용 비품리스트-->
     <form th:action="@{/managerdashboard}" method="get" class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="text" name="keyword" placeholder="검색어를 입력하세요">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
@@ -103,6 +103,7 @@
             </li>
         </ul>
     </div>
+    <!--비품리스트 끝-->
 </div>
 <script layout:fragment="script" th:inline="javascript">
     $(document).ready(function () {
