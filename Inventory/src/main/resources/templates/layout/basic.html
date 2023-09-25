@@ -35,89 +35,61 @@
         <div class="list-group list-group-flush">
           <a
             class="list-group-item list-group-item-action list-group-item-light p-3"
-            href="http://localhost:8080/board/dashboard">대시보드</a>
+            href="/board/dashboard">대시보드</a>
 
+          <a
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+                  href="/supply/stock"
+          >재고보기</a
+          >
 
           <a class="list-group-item list-group-item-action list-group-item-light p-3"
-                  href="http://localhost:8080/board/list">비품구매 요청</a>
+             href="/board/list">비품구매 요청</a>
+
           <a class="list-group-item list-group-item-action list-group-item-light p-3"
-             href="http://localhost:8080/board/list">비품수리 요청</a>
-          <!--
-          매니저 로그인 메뉴
-          <a href="">요청 현황</a>
-          <a href="">비품 관리</a>
-          <a href="">비품 등록</a>
-           -->
+             href="/board/list">비품수리 요청</a>
 
-          <!--
-          마스터 권한 위임 페이지
-          <a>일꾼 생성</a>
-           -->
+          <!-- user -->
 
-          <!--
-          유저 - 요청 메뉴
-          <a>요청하기</a>
-          <a>요청내역</a>
-          -->
+          <a sec:authorize="hasRole('USER')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+             href="/request-user/rental">대여 신청</a>
 
+          <a sec:authorize="hasRole('USER')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+             href="/request-user/return">반납 신청</a>
 
+          <a sec:authorize="hasRole('USER')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+             href="/request-user/history">요청 내역</a>
 
+          <!-- manager -->
 
-
-          <!-- 유저 재고조회 -->
-          <!--          <a-->
-          <!--            class="list-group-item list-group-item-action list-group-item-light p-3"-->
-          <!--            href="http://localhost:8080/supply/stock"-->
-          <!--            >재고보기</a-->
-          <!--          >-->
-
-          <!-- 어드민 재고조회 -->
-<!--          <a-->
-<!--            class="list-group-item list-group-item-action list-group-item-light p-3"-->
-<!--            href="http://localhost:8080/supply/list"-->
-<!--            >재고보기</a-->
-<!--          >-->
-
-
-
-
-          <!--          매니저 로그인 메뉴-->
-          <!--          <a href="">요청 현황</a>-->
           <a
-            class="list-group-item list-group-item-action list-group-item-light p-3"
-            href="http://localhost:8080/supply/list"
-            >비품관리</a
-          >
-          <a
-            class="list-group-item list-group-item-action list-group-item-light p-3"
-            href="http://localhost:8080/supply/create"
-            >비품등록</a
+                  sec:authorize="hasRole('MANAGER')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+                  href="/supply/list"
+          >비품관리</a
           >
 
-          <!--
-          마스터 권한 위임 페이지
-          <a>일꾼 생성</a>
-           -->
-
-          <!--
-          유저 - 요청 메뉴
-          <a>요청하기</a>
-          <a>요청내역</a>
-          -->
-
-          <!-- 유저 재고조회 -->
-          <a
-            class="list-group-item list-group-item-action list-group-item-light p-3"
-            href="http://localhost:8080/supply/stock"
-            >재고보기</a
+          <a sec:authorize="hasRole('MANAGER')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+                  href="/supply/create"
+          >비품등록</a
           >
 
-          <!-- 어드민 재고조회 -->
-          <!--          <a-->
-          <!--            class="list-group-item list-group-item-action list-group-item-light p-3"-->
-          <!--            href="http://localhost:8080/supply/list"-->
-          <!--            >재고보기</a-->
-          <!--          >-->
+          <a sec:authorize="hasRole('MANAGER')"
+             class="list-group-item list-group-item-action list-group-item-light p-3"
+             href="/admin-requestlist/rental"
+          >대여 신청 현황</a
+          >
+
+          <a sec:authorize="hasRole('MANAGER')"
+             class="list-group-item list-group-item-action list-group-item-light p-3"
+             href="/admin-requestlist/return"
+          >반납 신청 현황</a
+          >
+
         </div>
       </div>
       <!-- Page content wrapper-->

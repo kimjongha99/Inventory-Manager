@@ -11,6 +11,6 @@ public class DashController {
 
     @GetMapping("/dashboard")
     public String dash(){
-        return "~~~/";
+        return "/dashboard/maindashboard";
     }
 }

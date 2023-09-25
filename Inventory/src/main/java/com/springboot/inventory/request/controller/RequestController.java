@@ -77,7 +77,7 @@ public class RequestController {
     /* ========================================================================= */
 
     // 관리자 메인 페이지
-    @GetMapping(value = "/admin-requestInfo")
+    @GetMapping(value = "/admin-requestinfo")
     public String requestListPage(Model model) {
 
         int rentalCount = requestService.getRequestUnhandled(RequestTypeEnum.RENTAL).getData().size();
