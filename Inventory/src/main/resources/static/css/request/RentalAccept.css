@@ -1,0 +1,25 @@
+.page-header {
+    margin-bottom: 2rem;
+    box-sizing: content-box;
+}
+
+.header_div1 {
+    display: flex;
+    align-content: center;
+    margin: 2rem 0 2rem 0;
+}
+
+.header_div1 button {
+    margin-left: 2rem;
+}
+
+.header_div1 h4 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+}
+
+.page-body {
+    padding: 0 2rem 0 2rem;
+    justify-content: flex-start;
+}

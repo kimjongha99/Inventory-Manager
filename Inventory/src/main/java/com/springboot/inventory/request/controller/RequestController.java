@@ -44,7 +44,6 @@ public class RequestController {
         Page<?> requestHistory =
                 requestService.getUserRequestHistory(userDetails.getUser(), page).getData();
 
-
         model.addAttribute("requestHistory", requestHistory.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", requestHistory.getTotalPages());
@@ -78,7 +77,7 @@ public class RequestController {
     /* ========================================================================= */
 
     // 관리자 메인 페이지
-    @GetMapping(value = "/admin-main")
+    @GetMapping(value = "/admin-requestInfo")
     public String requestListPage(Model model) {
 
         int rentalCount = requestService.getRequestUnhandled(RequestTypeEnum.RENTAL).getData().size();
@@ -90,7 +89,7 @@ public class RequestController {
         model.addAttribute("return", returnCount);
 
 
-        return "requests/AdminMainPage";
+        return "requests/RequestInfo";
     }
 
     // 대여 요청 목록
