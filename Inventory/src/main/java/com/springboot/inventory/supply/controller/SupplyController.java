@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -92,19 +93,18 @@ public class SupplyController {
         supplyResponseDtoService.deleteSupply(supplyId);
         return "redirect:/supply/list"; // 삭제 후 공급품 목록 페이지로 리다이렉트합니다. 실제 리다이렉트 경로는 상황에 따라 변경될 수 있습니다.
     }
-//    @GetMapping("/index")
-//    public String list(Model model) {
-//        model.addAttribute("categories", LargeCategory.values());
-//        return "/supply/dashboard";
-//    }
-//
-//    @PostMapping("/data/{largeCategory}")
-//    @ResponseBody
-//    public Map<String, Long> getCategoryData(@PathVariable LargeCategory largeCategory) {
-//        List<SupplyResponseDto> supplyDtos = supplyResponseDtoService.getSuppliesAsDtos(String.valueOf(largeCategory));
-//        return supplyResponseDtoService.getStatusCountsFromDtos(supplyDtos);
-//    }
-//
+    @GetMapping("/index")
+    public String list(Model model) {
+        model.addAttribute("categories", LargeCategory.values());
+        return "/supply/dashboard";
+    }
+
+    @PostMapping("/data/{largeCategory}")
+    @ResponseBody
+    public Map<String, Long> getCategoryData(@PathVariable LargeCategory largeCategory) {
+        List<SupplyResponseDto> supplyDtos = supplyResponseDtoService.getSuppliesAsDtos(String.valueOf(largeCategory));
+        return supplyResponseDtoService.getStatusCountsFromDtos(supplyDtos);
+    }
 
 
 
