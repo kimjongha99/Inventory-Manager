@@ -18,7 +18,7 @@
     </thead>
     <tbody>
     <tr>
-        <td><span th:text="${supply.createdAt}"></span></td>
+        <td><span th:text="${#temporals.format(supply.createdAt, 'yyyy-MM-dd')}"></span></td>
         <td><span th:text="${supply.modelName}"></span></td>
         <td><span th:text="${supply.serialNum}"></span></td>
         <td><span th:text="${supply.categoryName}"></span></td>
