@@ -125,8 +125,4 @@ public class BoardController {
         boardService.changeStatus(bno, PostStatus.valueOf(status.replace("\"", ""))); // remove quotes from the status string before converting it to enum
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
-    @GetMapping("/dashboard")
-    public String dash(){
-        return "dashboard/maindashboard";
-    }
 }
