@@ -20,11 +20,18 @@ import java.util.Optional;
 
 @Repository
 public interface SupplyRepository extends JpaRepository<Supply, Long> {
-
     Page<Supply> findAllByDeletedFalse(Pageable pageable);
+    List<Supply> findAllByDeletedFalse();
+
+    @Query("SELECT s " +
+            "FROM Supply s " +
+            "LEFT JOIN FETCH s.category c " +
+            "WHERE s.supplyId = :supplyId")
+    Optional<Supply> findSupplyWithCategoryNameById(@Param("supplyId") Long supplyId);
 
     Page<Supply> findDistinctByStatusAndDeletedFalse(@Param("status") SupplyStatusEnum status, Pageable pageable);
-
+    @Query("SELECT s FROM Supply s LEFT JOIN s.category c WHERE c.categoryName = :categoryName AND s.deleted = false")
+    List<Supply> findAllByCategoryNameAndDeletedFalse(@Param("categoryName") String categoryName);
     @Query("SELECT s FROM Supply s " +
             "LEFT JOIN s.category c " +
             "LEFT JOIN s.user u " +
@@ -60,6 +67,9 @@ public interface SupplyRepository extends JpaRepository<Supply, Long> {
 
     Optional<Supply> findBySupplyId(Long supId);
 
+    boolean existsBySerialNum(String serialNumber);
+
+    List<Supply> findByStatusAndDeletedFalse(SupplyStatusEnum status) ;
 }
 
 

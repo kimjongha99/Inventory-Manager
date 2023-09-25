@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layout/basic.html}">
 
 <head>
@@ -12,24 +12,34 @@
     <div class="col">
       <div class="card">
         <div class="card-header">
-          Board Register
+          비품 요청 글쓰기
         </div>
         <div class="card-body">
-          <form action="/board/register" method="post">
+          <form action="/board/repair/register" method="post">
             <div class="input-group mb-3">
-              <span class="input-group-text">Title</span>
-              <input type="text" name="title" class="form-control" placeholder="Title">
+              <span class="input-group-text">제목</span>
+              <input type="text" name="title" class="form-control" placeholder="글제목">
             </div>
 
             <div class="input-group mb-3">
-              <span class="input-group-text">Content</span>
-              <textarea class="form-control col-sm-5" rows="5" name="content"></textarea>
+              <span class="input-group-text">내용</span>
+              <textarea class="form-control col-sm-5" rows="5" name="content" placeholder="글내용"></textarea>
             </div>
 
             <div class="input-group mb-3">
-              <span class="input-group-text">Writer</span>
+              <span class="input-group-text">작성자</span>
               <input type="text" name="writer" class="form-control" placeholder="Writer"
-                     th:value="${#authentication.principal.username}" readonly>
+                     th:value="${#authentication.principal.user.username}" readonly>
+            </div>
+
+
+
+            <!-- 공지사항 체크박스 추가 -->
+            <div sec:authorize="hasAnyRole('MANAGER')">
+            <div class='my-4'>
+              <input type='checkbox' id='isNotice' name='isNotice' value='true'>
+              <label for='isNotice'>공지사항</label>
+            </div>
             </div>
 
             <div class="my-4">

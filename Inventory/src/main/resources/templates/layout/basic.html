@@ -19,7 +19,14 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link th:href="@{/css/styles.css}" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   </head>
+
+
+
+
+
+
   <body>
     <div class="d-flex" id="wrapper">
       <!-- Sidebar-->
@@ -28,41 +35,64 @@
         <div class="list-group list-group-flush">
           <a
             class="list-group-item list-group-item-action list-group-item-light p-3"
-            href="http://localhost:8080/main/dashboard"
-            >대시보드</a
+            href="/managerdashboard">매니저대시보드</a>
+          <a
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+                  href="/dashboard">유저대시보드</a>
+
+          <a
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+                  href="/supply/stock"
+          >재고보기</a
           >
 
-          <!--
-          매니저 로그인 메뉴
-          <a href="">요청 현황</a>
-          <a href="">비품 관리</a>
-          <a href="">비품 등록</a>
-           -->
+          <a class="list-group-item list-group-item-action list-group-item-light p-3"
+             href="/board/list">비품구매 요청</a>
 
-          <!--
-          마스터 권한 위임 페이지
-          <a>일꾼 생성</a>
-           -->
+          <a class="list-group-item list-group-item-action list-group-item-light p-3"
+             href="/board/list">비품수리 요청</a>
 
-          <!--
-          유저 - 요청 메뉴
-          <a>요청하기</a>
-          <a>요청내역</a>
-          -->
+          <!-- user -->
 
-          <!-- 유저 재고조회 -->
-          <!--          <a-->
-          <!--            class="list-group-item list-group-item-action list-group-item-light p-3"-->
-          <!--            href="http://localhost:8080/supply/stock"-->
-          <!--            >재고보기</a-->
-          <!--          >-->
+          <a sec:authorize="hasRole('USER')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+             href="/request-user/rental">대여 신청</a>
 
-          <!-- 어드민 재고조회 -->
-<!--          <a-->
-<!--            class="list-group-item list-group-item-action list-group-item-light p-3"-->
-<!--            href="http://localhost:8080/supply/list"-->
-<!--            >재고보기</a-->
-<!--          >-->
+          <a sec:authorize="hasRole('USER')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+             href="/request-user/return">반납 신청</a>
+
+          <a sec:authorize="hasRole('USER')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+             href="/request-user/history">요청 내역</a>
+
+          <!-- manager -->
+
+          <a
+                  sec:authorize="hasRole('MANAGER')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+                  href="/supply/list"
+          >비품관리</a
+          >
+
+          <a sec:authorize="hasRole('MANAGER')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+                  href="/supply/create"
+          >비품등록</a
+          >
+
+          <a sec:authorize="hasRole('MANAGER')"
+             class="list-group-item list-group-item-action list-group-item-light p-3"
+             href="/admin-requestlist/rental"
+          >대여 신청 현황</a
+          >
+
+          <a sec:authorize="hasRole('MANAGER')"
+             class="list-group-item list-group-item-action list-group-item-light p-3"
+             href="/admin-requestlist/return"
+          >반납 신청 현황</a
+          >
+
         </div>
       </div>
       <!-- Page content wrapper-->
@@ -89,14 +119,14 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                 <li class="nav-item active">
-                  <a class="nav-link" href="/index">Home</a>
+                  <a class="nav-link" href="/dashboard">Home</a>
                 </li>
 
                 <li
                   class="nav-item"
                   th:if="${#authorization.expression('isAnonymous()')}"
                 >
-                  <a class="nav-link" href="/LoginPage">로그인</a>
+                  <a class="nav-link" href="/index">로그인</a>
                 </li>
                 <li
                   class="nav-item"
@@ -104,12 +134,29 @@
                 >
                   <a class="nav-link" href="/signUpPage">회원가입</a>
                 </li>
-
+                <!--매니저 관리 페이지 -->
                 <li
                   class="nav-item"
                   th:if="${#authorization.expression('isAuthenticated()')}"
                 >
-                  <a class="nav-link" href="/ManagerPage">관리 페이지</a>
+                  <a
+                    sec:authorize="hasRole('MANAGER')"
+                    class="nav-link"
+                    href="/ManagerPage"
+                    >관리 페이지</a
+                  >
+                </li>
+                <!-- 어드민 관리 페이지 -->
+                <li
+                  class="nav-item"
+                  th:if="${#authorization.expression('isAuthenticated()')}"
+                >
+                  <a
+                    sec:authorize="hasRole('ADMIN')"
+                    class="nav-link"
+                    href="/AdminPage"
+                    >관리 페이지</a
+                  >
                 </li>
 
                 <li
@@ -135,7 +182,13 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="/user/logout">로그아웃</a>
                     <a
-                      sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"
+                      sec:authorize="hasRole('ADMIN')"
+                      class="dropdown-item"
+                      href="/AdminPage"
+                      >관리 페이지</a
+                    >
+                    <a
+                      sec:authorize="hasRole('MANAGER')"
                       class="dropdown-item"
                       href="/ManagerPage"
                       >관리 페이지</a

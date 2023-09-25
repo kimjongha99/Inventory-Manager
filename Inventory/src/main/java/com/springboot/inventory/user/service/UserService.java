@@ -14,8 +14,8 @@ import java.util.Optional;
 public interface UserService {
 
 
-    SignUpResultDto signUp(String email, String password, String name, String tel, String team);
-    SignInResultDto signIn(String email, String password, HttpServletRequest request, HttpServletResponse response) throws RuntimeException, UnsupportedEncodingException;
+    SignUpResultDto signUp(SignUpRequestDto signUpRequestDto);
+    SignInResultDto signIn(String email, String password) throws RuntimeException;
     void logOut(String email, HttpServletRequest request, HttpServletResponse response);
     ResponseEntity<String> grantRole(String email, UserRoleEnum roles);
     List<UserInfoDto> findAllUser(); // 전체 목록 조회 (MANAGER)
