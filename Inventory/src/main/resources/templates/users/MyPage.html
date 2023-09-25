@@ -5,28 +5,27 @@
 
 <head>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <title>맴버 </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <title>맴버</title>
 </head>
+
 <body>
-<div layout:fragment="content">
+<div layout:fragment="content" class="container mt-5">
 
-
-    <h1>User Information</h1>
-    <div id="userInfo">
-        <p>Email: <span id="userEmail"></span></p>
-        <p>Username: <input type="text" id="userName" autocomplete="username"></p>
-        <p>Password: <input type="password" id="userPassword"></p>
-        <p>Tel: <input type="text" id="userTel"></p>
+    <h1 class="mb-4">사용자 정보</h1>
+    <div id="userInfo" class="mb-4">
+        <p>이메일: <span id="userEmail"></span></p>
+        <p>사용자 이름: <input type="text" id="userName" class="form-control" autocomplete="username"></p>
+        <p>비밀번호: <input type="password" id="userPassword" class="form-control"></p>
+        <p>전화번호: <input type="text" id="userTel" class="form-control"></p>
     </div>
-    <button id="changePasswordButton"> 비밀번호 수정 </button>
-    <button id="updateUserButton"> 회원 정보 수정 </button>
-    <button id="passwordSaveButton" style="display: none;"> 비밀번호 저장 </button>
-    <button id="userSaveButton" style="display: none"> 유저 정보 저장 </button>
-    <button id="deleteUserButton"> 회원 탈퇴 </button>
-
+    <button id="changePasswordButton" class="btn btn-primary">비밀번호 수정</button>
+    <button id="updateUserButton" class="btn btn-primary">회원 정보 수정</button>
+    <button id="passwordSaveButton" class="btn btn-success" style="display: none;">비밀번호 저장</button>
+    <button id="userSaveButton" class="btn btn-success" style="display: none;">유저 정보 저장</button>
+    <button id="deleteUserButton" class="btn btn-danger">회원 탈퇴</button>
 
 </div>
-
 
 <script layout:fragment="script" th:inline="javascript">
     // Axios를 사용하여 JSON 데이터 가져오기
@@ -140,5 +139,6 @@
             console.error('Error fetching user data:', error);
         });
 </script>
+
 </body>
 </html>
