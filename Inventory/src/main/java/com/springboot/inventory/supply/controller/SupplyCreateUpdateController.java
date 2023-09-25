@@ -114,7 +114,7 @@ public class SupplyCreateUpdateController {
 
          supplyService.updateSupply(supplyId, supplyDto);
 
-        return "redirect:/supply/details/{supplyId}" ;
+        return "redirect:/supply/list" ;
     }
 
     @GetMapping("/checkDuplicateSerialNumber")
