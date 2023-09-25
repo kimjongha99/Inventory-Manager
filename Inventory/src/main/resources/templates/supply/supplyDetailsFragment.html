@@ -1,17 +1,8 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
 <div class="container">
     <div class="entity">
         <h2 th:text="${supply.categoryName}"></h2>
         <p th:text="${supply.modelName}"></p>
-        <img th:src="${supply.imagePath}" alt="이미지 설명">
+        <img id="dynamicImage" th:src="${supply.imagePath}" alt="이미지">
     </div>
 </div>
 <table>
@@ -51,10 +42,3 @@
         }
     }
 </script>
-</body>
-</html>
-
-
-
-
-

@@ -47,8 +47,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // supply
                 .antMatchers("/supply/mySupply", "/supply/stock").hasRole("USER")
-                .antMatchers("/supply/supplyList", "/supply/supplyDetails",
-                        "/supply/supplyCreate", "/supply/supplyUpdate").hasRole(
+                .antMatchers("/supply/supplyList", "/supply/supplydetails",
+                        "/supply/supplyCreate",
+                        "/supply/supplyUpdate").hasRole(
                         "MANAGER")
 
                 // request

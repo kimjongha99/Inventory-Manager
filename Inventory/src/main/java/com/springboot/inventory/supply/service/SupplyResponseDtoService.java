@@ -11,7 +11,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SupplyResponseDtoService {
@@ -28,7 +31,10 @@ public class SupplyResponseDtoService {
         Page<Supply> supplies = supplyRepository.findAllByDeletedFalse(pageable);
         return convertToDtoPage(supplies);
     }
-
+    public List<SupplyResponseDto> findAllByDeletedFalse() {
+        List<Supply> supplies = supplyRepository.findAllByDeletedFalse();
+        return convertToDtoPage(supplies);
+    }
     @Transactional
     public Page<SupplyResponseDto> findDistinctByStatusAndDeletedFalse(SupplyStatusEnum status, Pageable pageable) {
         Page<Supply> supplies = supplyRepository.findDistinctByStatusAndDeletedFalse(status, pageable);
@@ -43,7 +49,7 @@ public class SupplyResponseDtoService {
 
     @Transactional
     public Optional<SupplyDetailsDto> getSupplyById(Long supplyId) {
-        return supplyRepository.findById(supplyId).map(SupplyDetailsDto::fromSupplyDetails);
+        return supplyRepository.findSupplyWithCategoryNameById(supplyId).map(SupplyDetailsDto::fromSupplyDetails);
     }
 
     @Transactional
@@ -59,5 +65,20 @@ public class SupplyResponseDtoService {
 
     private Page<SupplyResponseDto> convertToDtoPage(Page<Supply> supplies) {
         return supplies.map(SupplyResponseDto::fromSupply);
+    }
+
+    private List<SupplyResponseDto> convertToDtoPage(List<Supply> supplies) {
+        return supplies.stream()
+                .map(SupplyResponseDto::fromSupply)
+                .collect(Collectors.toList());
+    }
+    public List<SupplyResponseDto> getSuppliesAsDtos(String categoryName) {
+        List<Supply> supplies = supplyRepository.findAllByCategoryNameAndDeletedFalse(categoryName);
+        return convertToDtoPage(supplies);
+    }
+
+    public Map<String, Long> getStatusCountsFromDtos(List<SupplyResponseDto> supplyDtos) {
+        return supplyDtos.stream()
+                .collect(Collectors.groupingBy(SupplyResponseDto::getStatus, Collectors.counting()));
     }
 }
