@@ -94,7 +94,7 @@
     }
 
     function revokeRole(email) {
-        fetch(`/user/roles/${email}`, { method: 'DELETE' })
+        fetch(`/user/roles/${email}`, { method: 'PUT' })
             .then(function (response) {
                 // alert("권한 뺏기에 성공하였습니다.");
                 window.location.href = '/AdminPage';
