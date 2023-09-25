@@ -16,5 +16,7 @@ public interface BoardRepository extends JpaRepository<Board, Long>, BoardSearch
     // Refactor to find by writer and board type.
     List<Board> findByWriterAndBoardType(String username, BoardType boardType);
 
-    Optional<Board> findByIdAndBoardType(Long bno, BoardType boardType);
+    Optional<Board> findByBnoAndBoardType(Long bno, BoardType boardType);
+
+    List<Board> findByIsNoticeTrue();
 }

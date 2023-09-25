@@ -28,8 +28,12 @@ public interface BoardService {
     // Add BoardType parameter to list method.
     PageResponseDTO<BoardDTO> list(BoardType boardtype, PageRequestDTO pageRequestDTO);
 
-    void changeStatus(Long bno, PostStatus status);
 
+    void changeStatus(BoardType boardType, Long bno, PostStatus status);
 
-    List<BoardPreviewDTO> getTop10Boards();
+    List<BoardDTO> listNotices(BoardType boardType);
+
+    List<BoardPreviewDTO> getTop10BoardsPurchase();
+    List<BoardPreviewDTO> getTop10BoardsRepair();
+
 }

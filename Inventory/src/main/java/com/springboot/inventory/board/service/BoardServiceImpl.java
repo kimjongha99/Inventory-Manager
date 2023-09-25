@@ -36,32 +36,37 @@ public class BoardServiceImpl implements BoardService{
     private final ReplyService replyService;  // ReplyService 추가
 
     @Override
-    public Long register(BoardType boardType, BoardDTO boardDTO) {
+    public Long register(BoardType boardType, BoardDTO boardDto) {
+        Board board = dtoToEntity(boardDto); // Convert DTO to entity
 
-        Board board = new Board();
-        board.setTitle(boardDTO.getTitle());
-        board.setContent(boardDTO.getContent());
-        board.setWriter(boardDTO.getWriter());
-        board.changeStatus(PostStatus.PENDING);
+        // Set the board type and default status.
         board.setBoardType(boardType);
+        board.changeStatus(PostStatus.PENDING);
 
         // If isNotice is null, set it to false
-        if (boardDTO.getIsNotice() == null) {
+        if (board.getIsNotice() == null) {
             board.setIsNotice(false);
-        } else {
-            board.setIsNotice(boardDTO.getIsNotice());
         }
 
         Long bno = boardRepository.save(board).getBno();
 
         return bno;
     }
+    private Board dtoToEntity(BoardDTO dto) {
+        Board entity = new Board();
 
+        entity.setTitle(dto.getTitle());
+        entity.setContent(dto.getContent());
+        entity.setWriter(dto.getWriter());
+        entity.setIsNotice(dto.getIsNotice());
+
+        return entity;
+    }
     @Override
     public BoardDTO readOne(BoardType boardType, Long bno) {
 
         // Find by both id and type.
-        Optional<Board> result = boardRepository.findByIdAndBoardType(bno, boardType);
+        Optional<Board> result = boardRepository.findByBnoAndBoardType(bno, boardType);
 
         Board board = result.orElseThrow(() -> new IllegalArgumentException("No such post exists."));
 
@@ -71,35 +76,43 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public void modify(BoardDTO boardDTO) {
+    public void modify(BoardType boardType, BoardDTO boardDTO) {
 
-        Optional<Board> result = boardRepository.findById(boardDTO.getBno());
+        // Find by both id and type.
+        Optional<Board> result = boardRepository.findByBnoAndBoardType(boardDTO.getBno(), boardType);
 
-        Board board = result.orElseThrow();
+        Board board = result.orElseThrow(() -> new IllegalArgumentException("No such post exists."));
 
+        // Change the title and content of the found post.
         board.change(boardDTO.getTitle(), boardDTO.getContent());
 
+        // Save the changes.
         boardRepository.save(board);
-
-    }
-
-    @Override
-    public void remove(Long bno) {
-
-        boardRepository.deleteById(bno);
-
     }
 
 
+    @Override
+    public void remove(BoardType boardType, Long bno) {
+
+        // Find by both id and type.
+        Optional<Board> result = boardRepository.findByBnoAndBoardType(bno, boardType);
+
+        Board board = result.orElseThrow(() -> new IllegalArgumentException("No such post exists."));
+
+        // Delete the found post.
+        boardRepository.delete(board);
+    }
+
 
     @Override
-    public PageResponseDTO<BoardDTO> list(PageRequestDTO pageRequestDTO) {
+    public PageResponseDTO<BoardDTO> list(BoardType boardType, PageRequestDTO pageRequestDTO) {
 
         String[] types = pageRequestDTO.getTypes();
         String keyword = pageRequestDTO.getKeyword();
         Pageable pageable = pageRequestDTO.getPageable("bno");
 
-        Page<Board> result = boardRepository.searchAll(types, keyword, pageable);
+        // Add the board type to the search parameters.
+        Page<Board> result = boardRepository.searchAll(boardType, types, keyword, pageable);
 
         List<BoardDTO> dtoList = result.getContent().stream()
                 .map(board -> {
@@ -119,22 +132,23 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public void changeStatus(Long bno, PostStatus status) {
-            // 먼저 bno에 해당하는 Board 객체를 찾습니다.
-            Board board = boardRepository.findById(bno)
-                    .orElseThrow(() -> new IllegalArgumentException("No board found with bno: " + bno));
+    public void changeStatus(BoardType boardType, Long bno, PostStatus status) {
+        // Find by both id and type.
+        Optional<Board> result = boardRepository.findByBnoAndBoardType(bno, boardType);
 
-            // Board 객체의 상태를 바꿉니다.
-            board.changeStatus(status);
+        Board board = result.orElseThrow(() -> new IllegalArgumentException("No such post exists."));
 
-            // 바뀐 상태를 저장합니다.
-            boardRepository.save(board);
-        }
+        // Change the status of the found post.
+        board.changeStatus(status);
+
+        // Save the changes.
+        boardRepository.save(board);
+    }
 
 
     @Override
-    public List<BoardDTO> listNotices() {
-        List<Board> result = boardRepository.findByIsNoticeTrue();
+    public List<BoardDTO> listNotices(BoardType boardType) {
+        List<Board> result = boardRepository.findByIsNoticeTrueAndBoardType(boardType);
 
         List<BoardDTO> dtoList = result.stream()
                 .map(board -> {
@@ -155,10 +169,19 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public List<BoardPreviewDTO> getTop10Boards() {
-        return boardRepository.findAll(PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC,"bno")))
+    public List<BoardPreviewDTO> getTop10BoardsPurchase() {
+        return boardRepository.findAll(PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "bno")))
                 .stream()
                 .map(board -> new BoardPreviewDTO(board.getTitle(), board.getWriter()))
                 .collect(Collectors.toList());
     }
+
+
+        @Override
+        public List<BoardPreviewDTO> getTop10BoardsRepair() {
+            return boardRepository.findAll(PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC,"bno")))
+                    .stream()
+                    .map(board -> new BoardPreviewDTO(board.getTitle(), board.getWriter()))
+                    .collect(Collectors.toList());
+        }
 }
