@@ -17,7 +17,7 @@ function onApproveRentalHandler(event) {
         contentType: 'application/json'
     }).done((res) => {
         alert(res)
-        window.location.replace("/admin-main");
+        window.location.replace("/admin-requestinfo");
     }).fail(() => {
         alert("요청 실패");
     })
@@ -44,7 +44,7 @@ function onApproveReturnHandler(event) {
         contentType: 'application/json'
     }).done((res) => {
         alert(res);
-        window.location.replace("/admin-main");
+        window.location.replace("/admin-requestinfo");
     }).fail(() => {
         alert("처리 실패");
     })

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-
+import java.util.List;
 @Controller
 @RequestMapping("/board")
 @Log4j2
@@ -29,8 +29,14 @@ public class BoardController {
     @GetMapping("/list")
     public void list(PageRequestDTO pageRequestDTO, Model model) {
         PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
+        List<BoardDTO> notices = boardService.listNotices();  // 공지사항 목록 가져오기
+
         log.info(responseDTO);
+        log.info(notices);
+
         model.addAttribute("responseDTO", responseDTO);
+        model.addAttribute("notices", notices);  // 모델에 공지사항 목록 추가
+
     }
 
 
@@ -114,11 +120,13 @@ public class BoardController {
         return "redirect:/board/list";
 
     }
-
     @PutMapping("/status/{bno}")
-    public ResponseEntity<String> changeStatus(@PathVariable Long bno, @RequestBody PostStatus status) {
-        boardService.changeStatus(bno, status);
+    public ResponseEntity<String> changeStatus(@PathVariable Long bno, @RequestBody String status) {
+        boardService.changeStatus(bno, PostStatus.valueOf(status.replace("\"", ""))); // remove quotes from the status string before converting it to enum
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
-
+    @GetMapping("/dashboard")
+    public String dash(){
+        return "dashboard/maindashboard";
+    }
 }

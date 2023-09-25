@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Table(name = "request")
 @Getter
 @Setter
-public class Request extends TimeStamp implements Serializable {
+public class Request extends Timestamped implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -2,9 +2,12 @@ package com.springboot.inventory.common.config;
 
 import com.springboot.inventory.common.jwt.JwtAuthFilter;
 import com.springboot.inventory.common.jwt.JwtProvider;
+import com.springboot.inventory.common.util.redis.RedisRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,11 +16,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtProvider jwtProvider;
+    @Autowired
+    private RedisRepository redisRepository;
     @Autowired
     public WebSecurityConfig(JwtProvider jwtProvider) {
         this.jwtProvider = jwtProvider;
@@ -25,6 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
+
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -36,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // board
                 .antMatchers("/board/**","/replies/**").hasAnyRole("MANAGER","USER")
-
+                .antMatchers("/image/**").permitAll()
                 // users
                 .antMatchers( "/index", "/LoginPage", "/logout", "/signUpPage").permitAll()
                 .antMatchers("/ManagerPage").hasRole("MANAGER")
@@ -47,27 +54,34 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // supply
                 .antMatchers("/supply/mySupply", "/supply/stock").hasRole("USER")
-                .antMatchers("/supply/supplyList", "/supply/supplyDetails",
-                        "/supply/supplyCreate", "/supply/supplyUpdate").hasRole(
+                .antMatchers("/supply/supplyList", "/supply/supply-details",
+                        "/supply/supplyCreate",
+                        "/supply/supplyUpdate/**","/supply/supplyDetailsFragment").hasRole(
                         "MANAGER")
 
                 // request
                 .antMatchers("/category-api/**", "/request-api/**").permitAll()
                 .antMatchers("/request-user/**").hasRole("USER")
-                .antMatchers("/admin-requestlist/**", "/admin-request-accept/rental").hasRole("MANAGER")
+                .antMatchers("/admin-requestlist/**", "/admin-request-accept/rental", "/admin-requestInfo").hasRole(
+                        "MANAGER")
 
                 // resources
                 .antMatchers("/", "/resources/**", "/static/**", "/js/**",  "/css/**", "/scripts" +
                         "/**", "/fonts/**", "/plugin/**").permitAll()
 
-                .anyRequest().authenticated()
+//                .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(new JwtAuthFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
     public void configure(WebSecurity webSecurity) {
         webSecurity.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html",
-                "/swagger-ui/*","/webjars/**", "/swagger/**", "/resources/**", "/static/**", "/static/css/**", "/js/**", "/imgs/**");
+                "/swagger-ui/*","/webjars/**", "/swagger/**", "/resources/**", "/static/**", "/static/css/**", "/js/**", "/imgs/**","/img/**", "/image/**");
+    }
+
+    @Bean
+    public JwtAuthFilter jwtAuthFilter() {
+        return new JwtAuthFilter(jwtProvider, redisRepository);
     }
 }

@@ -31,10 +31,10 @@ public class ReplyDTO {
     private String replyer;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @JsonIgnore
-    private LocalDateTime updated_at;
+    private LocalDateTime modifiedAt;
 
 
 }
