@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
 <head>
   <meta charset="UTF-8">
   <title>비품 수정</title>
@@ -72,6 +74,7 @@
   </script>
 </head>
 <body>
+<div layout:fragment="content">
 <h1>비품 수정</h1>
 <form th:action="@{'/supply/update/' + ${supplyId}}" method="post" th:object="${supplyDto}" enctype="multipart/form-data">
   <!-- supplyId는 수정할 Supply의 고유 ID입니다. 폼의 액션 URL에 해당 ID를 포함하여 전송합니다. -->
@@ -185,5 +188,6 @@
     alert("수정되었습니다!");
   }
 </script>
+</div>
 </body>
 </html>

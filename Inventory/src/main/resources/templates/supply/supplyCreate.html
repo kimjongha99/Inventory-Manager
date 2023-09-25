@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
 <head>
     <meta charset="UTF-8">
     <title>비품 등록</title>
@@ -72,6 +74,7 @@
     </script>
 </head>
 <body>
+<div layout:fragment="content">
 <h1>비품 등록</h1>
 <form th:action="@{/supply/create}" method="post" th:object="${supplyDto}" enctype="multipart/form-data">
     <div>
@@ -182,6 +185,6 @@
         alert("등록되었습니다!");
     }
 </script>
-
+</div>
 </body>
 </html>

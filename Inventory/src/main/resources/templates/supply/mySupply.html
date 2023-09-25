@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
 <head>
     <meta charset="UTF-8">
     <title>나의 비품목록</title>
@@ -59,6 +61,7 @@
     </style>
 </head>
 <body>
+<div layout:fragment="content">
 <h1>사용중인 비품 목록</h1>
 
 <!-- 드롭다운 메뉴 추가 -->
@@ -115,5 +118,6 @@
         });
     }
 </script>
+</div>
 </body>
 </html>
