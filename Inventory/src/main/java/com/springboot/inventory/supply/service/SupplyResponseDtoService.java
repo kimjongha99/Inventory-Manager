@@ -3,6 +3,7 @@ package com.springboot.inventory.supply.service;
 import com.springboot.inventory.common.entity.Supply;
 import com.springboot.inventory.common.enums.SupplyStatusEnum;
 import com.springboot.inventory.supply.dto.SupplyDetailsDto;
+import com.springboot.inventory.supply.dto.SupplyDto;
 import com.springboot.inventory.supply.dto.SupplyResponseDto;
 import com.springboot.inventory.supply.repository.SupplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,4 +82,7 @@ public class SupplyResponseDtoService {
         return supplyDtos.stream()
                 .collect(Collectors.groupingBy(SupplyResponseDto::getStatus, Collectors.counting()));
     }
+
+
+
 }
