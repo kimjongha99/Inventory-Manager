@@ -16,44 +16,44 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    Board Read
+                    비품 요청 글 읽기
                 </div>
                 <div class="card-body">
                     <div class="input-group mb-3">
-                        <span class="input-group-text">Bno</span>
+                        <span class="input-group-text">글번호</span>
                         <input type="text" class="form-control" th:value="${dto.bno}" readonly>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text">Title</span>
+                        <span class="input-group-text">제목</span>
                         <input type="text" class="form-control" th:value="${dto.title}" readonly>
                     </div>
 
                     <div class="input-group mb-3">
-                        <span class="input-group-text">Content</span>
+                        <span class="input-group-text">내용</span>
                         <textarea class="form-control col-sm-5" rows="5" readonly>[[${dto.content}]]</textarea>
                     </div>
 
                     <div class="input-group mb-3">
-                        <span class="input-group-text">Writer</span>
+                        <span class="input-group-text">작성자</span>
                         <input type="text" class="form-control" th:value="${dto.writer}" readonly>
                     </div>
 
                     <div class="input-group mb-3">
-                        <span class="input-group-text">RegDate</span>
-                        <input type="text" class="form-control" th:value="${#temporals.format(dto.created_at, 'yyyy-MM-dd HH:mm:ss')}" readonly>
+                        <span class="input-group-text">등록일시</span>
+                        <input type="text" class="form-control" th:value="${#temporals.format(dto.createdAt, 'yyyy-MM-dd HH:mm:ss')}" readonly>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text">ModDate</span>
-                        <input type="text" class="form-control" th:value="${#temporals.format(dto.updated_at, 'yyyy-MM-dd HH:mm:ss')}" readonly>
+                        <span class="input-group-text">수정일시</span>
+                        <input type="text" class="form-control" th:value="${#temporals.format(dto.modifiedAt, 'yyyy-MM-dd HH:mm:ss')}" readonly>
                     </div>
 
                     <div class="my-4" th:with="user=${#authentication.principal}">
                         <div class="float-end" th:with="link = ${pageRequestDTO.getLink()}">
-                            <a th:href="|@{/board/list}?${link}|" class="text-decoration-none">
-                                <button type="button" class="btn btn-primary">List</button>
+                            <a th:href="|@{/board/purchase/list}?${link}|" class="text-decoration-none">
+                                <button type="button" class="btn btn-primary">리스트</button>
                             </a>
-                            <a th:if="${user != null && user.username == dto.writer}" th:href="|@{/board/modify(bno=${dto.bno})}&${link}|" class="text-decoration-none">
-                                <button type="button" class="btn btn-secondary">Modify</button>
+                            <a th:if="${user != null && user.user.username == dto.writer}" th:href="|@{/board/purchase/modify(bno=${dto.bno})}&${link}|" class="text-decoration-none">
+                                <button type="button" class="btn btn-secondary">수정하기</button>
                             </a>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
     <div class="row mt-3">
         <div class="col-md-12">
             <div class="my-4 ">
-                <button class="btn btn-info  addReplyBtn">ADD REPLY</button>
+                <button class="btn btn-info  addReplyBtn">댓글 작성하기</button>
             </div>
             <ul class="list-group replyList">
             </ul>
@@ -85,22 +85,22 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Register Reply</h5>
+                    <h5 class="modal-title">댓글 창</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="input-group mb-3">
-                        <span class="input-group-text">Reply Text</span>
+                        <span class="input-group-text">댓글</span>
                         <input type="text" class="form-control replyText" >
                     </div>
                     <div class="input-group mb-3"  th:with="user=${#authentication.principal}">
-                        <span class="input-group-text">Replyer</span>
-                        <input type="text" class="form-control replyer" th:value="${user.username}"  readonly>
+                        <span class="input-group-text">작성자</span>
+                        <input type="text" class="form-control replyer" th:value="${user.user.username}"  readonly>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary registerBtn">Register</button>
-                    <button type="button" class="btn btn-outline-dark closeRegisterBtn" >Close</button>
+                    <button type="button" class="btn btn-primary registerBtn">등록</button>
+                    <button type="button" class="btn btn-outline-dark closeRegisterBtn" >닫기</button>
                 </div>
             </div>
         </div>
@@ -116,15 +116,15 @@
                 </div>
                 <div class="modal-body">
                     <div class="input-group mb-3">
-                        <span class="input-group-text">Reply Text</span>
+                        <span class="input-group-text">댓글 창</span>
                         <input type="text" class="form-control modifyText" >
                     </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-info modifyBtn">Modify</button>
-                    <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                    <button type="button" class="btn btn-outline-dark closeModifyBtn">Close</button>
+                    <button type="button" class="btn btn-info modifyBtn">댓글 수정</button>
+                    <button type="button" class="btn btn-danger removeBtn">댓글 삭제</button>
+                    <button type="button" class="btn btn-outline-dark closeModifyBtn">닫기</button>
                 </div>
             </div>
         </div>
@@ -155,7 +155,7 @@
                       <span class="col-2">${dto.rno}</span>
                       <span class="col-6" data-rno="${dto.rno}">${dto.replyText}</span>
                       <span class="col-2">${dto.replyer}</span>
-                      <span class="col-2">${dto.created_at} </span>
+                      <span class="col-2">${dto.createdAt} </span>
                     </li>`
             }
         }

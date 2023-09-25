@@ -49,7 +49,7 @@
     axios.post("/user/custom-login", credentials)
             .then(function (res) {
                       alert(res.data);
-                      window.location.replace("/index");
+                      window.location.replace("/dashboard");
                     }
             )
             .catch(function (error) {

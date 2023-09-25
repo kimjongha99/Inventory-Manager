@@ -9,12 +9,15 @@ import org.hibernate.annotations.SQLDelete;
 import javax.persistence.*;
 import java.io.Serializable;
 
+import java.util.Date;
+
+
 @Entity(name = "users")
 @NoArgsConstructor
 @Getter
 @SQLDelete(sql = "UPDATE users SET deleted = true, tel = null, username = CONCAT('탈퇴한 유저#', " +
         "user_id) WHERE user_id = ?")
-public class User implements Serializable {
+public class User extends Timestamped implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,8 +42,8 @@ public class User implements Serializable {
     @Column(nullable = true)
     private String team;
 
-    @Column(nullable = true)
-    private Boolean deleted;
+    @Column(nullable = false)
+    private Boolean deleted = false;
 
     @Builder
     public User(String email, String password, String username, String tel,

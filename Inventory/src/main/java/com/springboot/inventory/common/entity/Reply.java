@@ -15,7 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @ToString(exclude = "board")
 //@ToString
-public class Reply extends TimeStamp {
+public class Reply extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

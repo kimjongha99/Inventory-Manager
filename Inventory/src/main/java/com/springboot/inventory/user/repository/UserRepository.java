@@ -6,6 +6,8 @@ import com.springboot.inventory.user.dto.UserInfoDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
@@ -17,11 +19,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User getByEmail(String email);
     void deleteByEmail(String email);
 
-    List<User> findByRoles(UserRoleEnum role);
+    List<User> findByRolesAndDeletedFalse(UserRoleEnum roles);
 
-    List<User> findByDeletedFalse();
+    List<User> findByRoles(UserRoleEnum roles);
+    List<User> findByRolesAndDeleted(UserRoleEnum role, boolean deleted);
 
-
+    List<User> findAllByDeletedIsFalse();
     Optional<User> findById(Long userId);
-
 }
