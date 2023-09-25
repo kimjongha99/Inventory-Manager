@@ -38,26 +38,20 @@ public class UserRestController {
 
     @PostMapping("/custom-login")
     @ResponseBody
-    public ResponseEntity<String> signIn(@RequestBody SigninRequestDTO signinRequestDTO, HttpServletResponse response) throws UnsupportedEncodingException {
+    public ResponseEntity<SignInResultDto> signIn(@RequestBody SigninRequestDTO signinRequestDTO, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         LOGGER.info("[UserRestController - signIn]");
 
         String email = signinRequestDTO.getUsername();
 
         String password = signinRequestDTO.getPassword();
 
+        SignInResultDto signInResultDto = userService.signIn(email, password, request, response);
 
-        SignInResultDto signInResultDto = userService.signIn(email, password);
-
-        String token = signInResultDto.getToken();
-
-        Cookie cookie = new Cookie("Authorization", token);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        response.addCookie(cookie);
-
-        System.out.println(response);
-
-        return ResponseEntity.ok("로그인 성공");
+        if (signInResultDto.isSuccess()) {
+            return ResponseEntity.ok(signInResultDto);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(signInResultDto);
+        }
     }
 
 
@@ -117,8 +111,8 @@ public class UserRestController {
 
     // 모든 회원
     @GetMapping("/allUserlist")
-    public ResponseEntity<List<UserInfoDto>> findAllUser() {
-        List<UserInfoDto> userList = userService.findAllUser();
+    public ResponseEntity<List<User>> findByDeletedFalse() {
+        List<User> userList = userService.findByDeletedFalse();
         return ResponseEntity.status(HttpStatus.OK).body(userList);
     }
     // 팀 수정하기

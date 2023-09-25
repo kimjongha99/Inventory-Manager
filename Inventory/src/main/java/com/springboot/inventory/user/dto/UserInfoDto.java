@@ -17,6 +17,7 @@ public class UserInfoDto {
     private UserRoleEnum roles;
     private String tel;
     private String team;
+    private boolean deleted;
 
     public static UserInfoDto toDto(User user) {
         UserInfoDto userInfoDto = new UserInfoDto();

@@ -81,8 +81,13 @@
     deleteButton.className = 'btn btn-danger';
     deleteButton.textContent = '회원 삭제';
     deleteButton.addEventListener('click', () => {
-    // 클릭 시 해당 사용자 삭제 요청
-    deleteUser(user.email, row);
+        const confirmation = confirm("회원 삭제를 진행하시겠습니까?");
+
+        if(confirmation) {
+            deleteUser(user.email, row);
+        } else {
+            alert("회원 삭제가 취소되었습니다.");
+        }
 });
 
     // 변경: "회원 삭제" 버튼을 가장 마지막에 추가

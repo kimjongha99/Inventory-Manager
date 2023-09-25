@@ -23,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -77,22 +79,18 @@ public class UserServiceImpl implements UserService {
     // 로그인
     @Transactional
     @Override
-    public SignInResultDto signIn(String email, String password) throws RuntimeException {
+    public SignInResultDto signIn(String email, String password, HttpServletRequest request, HttpServletResponse response) throws RuntimeException, UnsupportedEncodingException {
         LOGGER.info("[UserServiceImpl - signIn]");
         User user = userRepository.getByEmail(email);
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException();
-        }       // 로그인 실패 시
+            throw new RuntimeException();   // 로그인 실패 시
+        }
 
-        getRefreshToken(user);
+        getAccessToken(user, response);
+        getRefreshToken(user, request, response);
 
-        String accessToken = jwtProvider.createToken(user.getEmail(), user.getRoles(), TokenType.ACCESS);
-
-        SignInResultDto signInResultDto = SignInResultDto.builder()
-                .token(accessToken)
-                .build();
-
+        SignInResultDto signInResultDto = SignInResultDto.builder().build();
         setSuccessResult(signInResultDto);
 
         return signInResultDto;
@@ -142,13 +140,16 @@ public class UserServiceImpl implements UserService {
         System.out.println("repository " + user.getRoles());
         return user;
     }
+
     @Transactional
     public List<UserInfoDto> findAllUser() { // 모든 USER를 보여준다.(MANAGER,ADMIN)
         List<User> userList = getUsersByUserRole();
         List<UserInfoDto> userDtoList = new ArrayList<>();
 
         for (User user : userList) {
-            userDtoList.add(UserInfoDto.toDto(user));
+            if (!user.isDeleted()) { // deleted가 false인 사용자만 처리
+                userDtoList.add(UserInfoDto.toDto(user));
+            }
         }
 
         return userDtoList;
@@ -207,12 +208,10 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
-
     // 전체 유저 조회(ADMIN용)
     @Override
     public List<UserInfoDto> findAllUserForAdmin(String adminEmail) {
-        List<User> userList = userRepository.findAll();
+        List<User> userList = userRepository.findByDeletedFalse();
         List<UserInfoDto> userDtoList = new ArrayList<>();
 
         for (User user : userList) {
@@ -253,6 +252,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public List<User> findByDeletedFalse() {
+        return userRepository.findByDeletedFalse();
+    }
+
     private void deleteRefreshToken(String email) {
         Optional<RefreshToken> refreshToken =redisRepository.findById(email);
         if(refreshToken.isPresent()){
@@ -290,8 +294,32 @@ public class UserServiceImpl implements UserService {
         result.setMsg(ResponseEnum.FAIL.getMsg());
     }
 
-    private void getRefreshToken(User user) {
+    private  void getAccessToken(User user, HttpServletResponse response) throws UnsupportedEncodingException {
+        String createdAccessToken = jwtProvider.createToken(user.getEmail(), user.getRoles(), TokenType.ACCESS);
+
+        ResponseCookie cookie = ResponseCookie.from(
+                JwtProvider.AUTHORIZATION_HEADER,
+                URLEncoder.encode(createdAccessToken, "UTF-8"))
+                .path("/")
+                .httpOnly(true)
+                .sameSite("None")
+                .secure(true)
+                .maxAge(JwtProvider.ACCESS_TOKEN_TIME)
+                .build();
+        response.addHeader("Set-Cookie", cookie.toString());
+    }
+
+    private void getRefreshToken(User user, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws UnsupportedEncodingException {
         String createdRefreshToken = jwtProvider.createToken(user.getEmail(), user.getRoles(), TokenType.REFRESH);
+
+        ResponseCookie cookie = ResponseCookie.from(JwtProvider.REFRESH_HEADER, URLEncoder.encode(createdRefreshToken, "UTF-8"))
+                .path("/")
+                .httpOnly(true)
+                .secure(true)
+                .maxAge(JwtProvider.REFRESH_TOKEN_TIME)
+                .build();
+        httpServletResponse.addHeader("Set-Cookie", cookie.toString());
+
         Optional<RefreshToken> refreshToken = redisRepository.findById(user.getEmail());
         long expiration = jwtProvider.REFRESH_TOKEN_TIME;
 
