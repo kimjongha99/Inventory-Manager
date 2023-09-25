@@ -21,7 +21,7 @@
         if(e.target.tagName === 'BUTTON') {
             let category = e.target.getAttribute('data-category');
 
-            fetch(`/data/${category}`, {
+            fetch(`/supply/data/${category}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

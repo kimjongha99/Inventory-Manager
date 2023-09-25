@@ -11,7 +11,7 @@
         <div class="entity">
             <h2 th:text="${supply.categoryName}"></h2>
             <p th:text="${supply.modelName}"></p>
-            <img id="yourImageId" th:src="${supply.imagePath}" alt="이미지">
+            <img id="yourImageId" th:src="${supply.imagePath}"   alt="이미지">
         </div>
         <div class="uploadResult" th:if="${supply.image} != null">
             <div th:each="image : ${supply.image}">
