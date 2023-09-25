@@ -33,6 +33,12 @@
         });
     });
 </script>
+    <style>
+        table {
+            border-spacing: 1rem;
+            border-collapse: separate;
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -57,12 +63,12 @@
     <table class="table table-striped table-bordered table-hover">
         <thead>
         <tr>
-            <th>Category Name</th>
-            <th>Model Name</th>
-            <th>Serial Number</th>
-            <th>Username</th>
-            <th>Created At</th>
-            <th>Status</th>
+            <th>소분류</th>
+            <th>제품명</th>
+            <th>시리얼 넘버</th>
+            <th>유저이름</th>
+            <th>등록날짜</th>
+            <th>상태</th>
         </tr>
         </thead>
         <tbody>
@@ -72,7 +78,7 @@
             <td><span th:text="${dto.modelName}"></span></td>
             <td><span th:text="${dto.serialNum}"></span></td>
             <td><span th:text="${dto.username}"></span></td>
-            <td><span th:text="${dto.createdAt}"></span></td>
+            <td><span th:text="${#temporals.format(dto.createdAt, 'yyyy-MM-dd')}"></span></td>
             <td><span th:text="${dto.status}"></span></td>
         </tr>
         </tbody>
@@ -137,11 +143,6 @@
         </div>
     </div>
 </div>
-<script>
-
-
-
-</script>
 </body>
 
 </html>
