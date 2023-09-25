@@ -29,12 +29,12 @@
     </div>
 
 
-    <form th:action="@{/dashboard}" method="get" class="form-inline my-2 my-lg-0">
+    <form th:action="@{/managerdashboard}" method="get" class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="text" name="keyword" placeholder="검색어를 입력하세요">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
     </form>
 
-    <form id="myForm" th:action="@{/dashboard}" method="get">
+    <form id="myForm" th:action="@{/managerdashboard}" method="get">
         <select name="selectedStatus" id="selectedStatus">
             <option value="all" th:selected="${selectedStatus == 'all'}">전체 보기</option>
             <option th:each="c : ${statusList}" th:value="${c}" th:text="${c.korean}"
@@ -70,20 +70,20 @@
             <!-- 이전 페이지 화살표 -->
             <li class="page-item">
                 <a th:if="${page > 0}"
-                   th:href="@{/dashboard(page=0, size=${size}, keyword=${keyword}, selectedStatus=${selectedStatus})}"
+                   th:href="@{/managerdashboard(page=0, size=${size}, keyword=${keyword}, selectedStatus=${selectedStatus})}"
                    class="page-link">First</a>
                 <span th:unless="${page > 0}" class="page-link">First</span>
             </li>
             <li class="page-item">
                 <a th:if="${page > 0}"
-                   th:href="@{'/dashboard?page=' + (${page - 1}) + '&size=' + ${size} + '&keyword=' + ${keyword} + '&selectedStatus=' + ${selectedStatus}}"
+                   th:href="@{'/managerdashboard?page=' + (${page - 1}) + '&size=' + ${size} + '&keyword=' + ${keyword} + '&selectedStatus=' + ${selectedStatus}}"
                    class="page-link">Previous</a>
                 <span th:unless="${page > 0}" class="page-link">Previous</span>
             </li>
 
             <!-- 페이지 번호-->
             <li th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}" class="page-item">
-                <a th:href="@{/dashboard(page=${pageNum},size=${size}, keyword=${keyword}, selectedStatus=${selectedStatus})}"
+                <a th:href="@{/managerdashboard(page=${pageNum},size=${size}, keyword=${keyword}, selectedStatus=${selectedStatus})}"
                    th:text="${pageNum + 1}"
                    th:class="${pageNum == page ? 'page-link active' : 'page-link'}"></a>
             </li>
@@ -91,13 +91,13 @@
             <!-- 다음 페이지 화살표 -->
             <li class="page-item">
                 <a th:if="${page < totalPages - 1}"
-                   th:href="@{/dashboard(page=${page + 1}, size=${size}, keyword=${keyword}, selectedStatus=${selectedStatus})}"
+                   th:href="@{/managerdashboard(page=${page + 1}, size=${size}, keyword=${keyword}, selectedStatus=${selectedStatus})}"
                    class="page-link">Next</a>
                 <span th:unless="${page < totalPages - 1}" class="page-link">Next</span>
             </li>
             <li class="page-item">
                 <a th:if="${page < totalPages - 1}"
-                   th:href="@{'/dashboard?page=' + (${totalPages - 1}) + '&size=' + ${size} + '&keyword=' + ${keyword} + '&selectedStatus=' + ${selectedStatus}}"
+                   th:href="@{'/managerdashboard?page=' + (${totalPages - 1}) + '&size=' + ${size} + '&keyword=' + ${keyword} + '&selectedStatus=' + ${selectedStatus}}"
                    class="page-link">Last</a>
                 <span th:unless="${page < totalPages - 1}" class="page-link">Last</span>
             </li>

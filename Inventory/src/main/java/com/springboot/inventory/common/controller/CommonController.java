@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class CommonController {
     private final SupplyResponseDtoService supplyResponseDtoService;
-    private static final String SUPPLY_LIST_VIEW = "/dashboard/maindashboard";
+    private static final String SUPPLY_LIST_VIEW = "/dashboard/managerdashboard";
 
     @Autowired
     public CommonController(SupplyResponseDtoService supplyResponseDtoService) {
         this.supplyResponseDtoService = supplyResponseDtoService;
     }
 
-    @GetMapping("/dashboard")
+    @GetMapping("/managerdashboard")
     public String dashBoard(
             @RequestParam(required = false, defaultValue = "all") String selectedStatus,
             @RequestParam(defaultValue = "0") int page,
