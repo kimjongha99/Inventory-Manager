@@ -38,14 +38,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/board/**","/replies/**").hasAnyRole("MANAGER","USER")
 
                 // users
-                .antMatchers( "/index", "/LoginPage", "/logout", "/signUpPage").permitAll()
+                .antMatchers( "/index", "/LoginPage", "/logout", "/signUpPage","/supply/dashboard").permitAll()
                 .antMatchers("/ManagerPage").hasAnyRole("MANAGER", "ADMIN")
                 .antMatchers("/user/**/**").permitAll()
 
                 // supply
                 .antMatchers("/supply/mySupply", "/supply/stock").hasRole("USER")
                 .antMatchers("/supply/supplyList", "/supply/supplydetails",
-                        "/supply/supplyCreate", "/supply/supplyUpdate").hasRole(
+                        "/supply/supplyCreate",
+                        "/supply/supplyUpdate").hasRole(
                         "MANAGER")
 
                 // request
