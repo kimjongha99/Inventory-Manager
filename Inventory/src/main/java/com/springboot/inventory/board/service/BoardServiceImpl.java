@@ -7,6 +7,7 @@ import com.springboot.inventory.board.dto.PageRequestDTO;
 import com.springboot.inventory.board.dto.PageResponseDTO;
 import com.springboot.inventory.board.repository.BoardRepository;
 import com.springboot.inventory.common.entity.Board;
+import com.springboot.inventory.common.enums.BoardType;
 import com.springboot.inventory.common.enums.PostStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -35,13 +36,14 @@ public class BoardServiceImpl implements BoardService{
     private final ReplyService replyService;  // ReplyService 추가
 
     @Override
-    public Long register(BoardDTO boardDTO) {
+    public Long register(BoardType boardType, BoardDTO boardDTO) {
 
         Board board = new Board();
         board.setTitle(boardDTO.getTitle());
         board.setContent(boardDTO.getContent());
         board.setWriter(boardDTO.getWriter());
         board.changeStatus(PostStatus.PENDING);
+        board.setBoardType(boardType);
 
         // If isNotice is null, set it to false
         if (boardDTO.getIsNotice() == null) {
@@ -56,11 +58,12 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public BoardDTO readOne(Long bno) {
+    public BoardDTO readOne(BoardType boardType, Long bno) {
 
-        Optional<Board> result = boardRepository.findById(bno);
+        // Find by both id and type.
+        Optional<Board> result = boardRepository.findByIdAndBoardType(bno, boardType);
 
-        Board board = result.orElseThrow();
+        Board board = result.orElseThrow(() -> new IllegalArgumentException("No such post exists."));
 
         BoardDTO boardDTO = modelMapper.map(board, BoardDTO.class);
 

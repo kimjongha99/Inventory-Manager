@@ -6,6 +6,7 @@ import com.springboot.inventory.common.enums.BoardType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board, Long>, BoardSearch {
 
@@ -15,4 +16,5 @@ public interface BoardRepository extends JpaRepository<Board, Long>, BoardSearch
     // Refactor to find by writer and board type.
     List<Board> findByWriterAndBoardType(String username, BoardType boardType);
 
+    Optional<Board> findByIdAndBoardType(Long bno, BoardType boardType);
 }
