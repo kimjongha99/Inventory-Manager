@@ -15,7 +15,7 @@
                     글 수정하기
                 </div>
                 <div class="card-body">
-                    <form th:action="@{/board/modify}" method="post" id="f1">
+                    <form th:action="@{/board/purchase/modify}" method="post" id="f1">
                         <div class="input-group mb-3">
                             <span class="input-group-text">글번호</span>
                             <input type="text" class="form-control" th:value="${dto.bno}" name="bno" readonly>
@@ -83,7 +83,7 @@
         e.preventDefault()
         e.stopPropagation()
 
-        formObj.action = `/board/modify?${link}`
+        formObj.action = `/board/repair/modify?${link}`
         formObj.method ='post'
         formObj.submit()
 
@@ -95,7 +95,7 @@
         e.preventDefault()
         e.stopPropagation()
 
-        formObj.action = `/board/remove`
+        formObj.action = `/board/repair/remove`
         formObj.method ='post'
         formObj.submit()
     }, false)
@@ -105,7 +105,7 @@
         e.stopPropagation()
 
         formObj.reset()
-        self.location =`/board/list?${link}`
+        self.location =`/board/repair/list?${link}`
 
     }, false)
 

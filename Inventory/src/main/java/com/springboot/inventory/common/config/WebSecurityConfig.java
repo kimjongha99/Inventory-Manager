@@ -2,7 +2,6 @@ package com.springboot.inventory.common.config;
 
 import com.springboot.inventory.common.jwt.JwtAuthFilter;
 import com.springboot.inventory.common.jwt.JwtProvider;
-import com.springboot.inventory.common.util.redis.RedisRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -23,8 +22,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtProvider jwtProvider;
     @Autowired
-    private RedisRepository redisRepository;
-    @Autowired
     public WebSecurityConfig(JwtProvider jwtProvider) {
         this.jwtProvider = jwtProvider;
     }
@@ -42,10 +39,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
 
                 // board
-                .antMatchers("/board/**","/replies/**").hasAnyRole("MANAGER","USER")
-                .antMatchers("/image/**").permitAll()
+                .antMatchers("/board/**","/replies/**","/board/purchase/**").hasAnyRole("MANAGER","USER")
+
                 // users
-                .antMatchers( "/index", "/LoginPage", "/logout", "/signUpPage").permitAll()
+                    .antMatchers( "/index", "/LoginPage", "/logout", "/signUpPage").permitAll()
                 .antMatchers("/ManagerPage").hasRole("MANAGER")
                 .antMatchers("/AdminPage").hasRole("ADMIN")
                 .antMatchers("/user/sign-up", "/user/sign-in", "/user/**/**").permitAll()
@@ -71,17 +68,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 //                .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
     public void configure(WebSecurity webSecurity) {
         webSecurity.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html",
                 "/swagger-ui/*","/webjars/**", "/swagger/**", "/resources/**", "/static/**", "/static/css/**", "/js/**", "/imgs/**","/img/**", "/image/**");
-    }
-
-    @Bean
-    public JwtAuthFilter jwtAuthFilter() {
-        return new JwtAuthFilter(jwtProvider, redisRepository);
     }
 }

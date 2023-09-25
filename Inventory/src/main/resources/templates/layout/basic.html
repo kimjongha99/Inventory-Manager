@@ -33,23 +33,26 @@
       <div class="border-end bg-white" id="sidebar-wrapper">
         <div class="sidebar-heading border-bottom bg-light">INVENTORY</div>
         <div class="list-group list-group-flush">
-          <a
-            class="list-group-item list-group-item-action list-group-item-light p-3"
-            href="/board/dashboard">대시보드</a>
 
-          <a
+          <!-- user -->
+
+          <a sec:authorize="hasRole('USER')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+                  href="/dashboard">유저대시보드</a>
+
+          <a  sec:authorize="hasRole('USER')"
                   class="list-group-item list-group-item-action list-group-item-light p-3"
                   href="/supply/stock"
           >재고보기</a
           >
 
-          <a class="list-group-item list-group-item-action list-group-item-light p-3"
+          <a  sec:authorize="hasRole('USER')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
              href="/board/list">비품구매 요청</a>
 
-          <a class="list-group-item list-group-item-action list-group-item-light p-3"
+          <a sec:authorize="hasRole('USER')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
              href="/board/list">비품수리 요청</a>
-
-          <!-- user -->
 
           <a sec:authorize="hasRole('USER')"
                   class="list-group-item list-group-item-action list-group-item-light p-3"
@@ -64,6 +67,9 @@
              href="/request-user/history">요청 내역</a>
 
           <!-- manager -->
+          <a  sec:authorize="hasRole('MANAGER')"
+              class="list-group-item list-group-item-action list-group-item-light p-3"
+              href="/managerdashboard">매니저대시보드</a>
 
           <a
                   sec:authorize="hasRole('MANAGER')"
@@ -88,6 +94,14 @@
              class="list-group-item list-group-item-action list-group-item-light p-3"
              href="/admin-requestlist/return"
           >반납 신청 현황</a
+          >
+
+          <!-- Admin -->
+          <a
+                  sec:authorize="hasRole('ADMIN')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+                  href="/AdminPage"
+          >관리 페이지</a
           >
 
         </div>

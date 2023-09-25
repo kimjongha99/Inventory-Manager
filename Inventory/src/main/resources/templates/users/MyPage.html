@@ -6,6 +6,7 @@
 <head>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>맴버</title>
 </head>
 
@@ -19,11 +20,11 @@
         <p>비밀번호: <input type="password" id="userPassword" class="form-control"></p>
         <p>전화번호: <input type="text" id="userTel" class="form-control"></p>
     </div>
-    <button id="changePasswordButton" class="btn btn-primary">비밀번호 수정</button>
-    <button id="updateUserButton" class="btn btn-primary">회원 정보 수정</button>
-    <button id="passwordSaveButton" class="btn btn-success" style="display: none;">비밀번호 저장</button>
-    <button id="userSaveButton" class="btn btn-success" style="display: none;">유저 정보 저장</button>
-    <button id="deleteUserButton" class="btn btn-danger">회원 탈퇴</button>
+    <button id="changePasswordButton" class="btn btn-primary"><i class="fas fa-key"></i> 비밀번호 수정</button>
+    <button id="updateUserButton" class="btn btn-success"><i class="fas fa-user-edit"></i> 회원 정보 수정</button>
+    <button id="passwordSaveButton" class="btn btn-info" style="display: none;"><i class="fas fa-save"></i> 비밀번호 저장</button>
+    <button id="userSaveButton" class="btn btn-warning" style="display: none;"><i class="fas fa-save"></i> 유저 정보 저장</button>
+    <button id="deleteUserButton" class="btn btn-danger"><i class="fas fa-trash-alt"></i> 회원 탈퇴</button>
 
 </div>
 
@@ -57,7 +58,7 @@
 
             // 비밀번호 수정 버튼 클릭
             changePasswordButton.addEventListener("click", function () {
-                p3.style.display = "block"  // 패스워드 필드 표시
+                p3.style.display = "block";  // 패스워드 필드 표시
                 passwordSaveButton.style.display = "block";
                 changePasswordButton.style.display = "none";
                 updateUserButton.style.display = "none";
@@ -104,7 +105,7 @@
                     .then(function (response) {
                         alert("회원 정보 수정이 완료되었습니다.");
                         // 회원 정보 수정 성공 시 메인페이지로
-                        window.location.href = '/index';
+                        window.location.href = '/MyPage';
                     })
                     .catch(function (error) {
                         var errorMsg = new Error('회원정보 수정 중 오류가 발생했습니다.');

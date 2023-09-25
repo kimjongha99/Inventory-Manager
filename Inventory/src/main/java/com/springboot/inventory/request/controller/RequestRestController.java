@@ -10,9 +10,12 @@ import com.springboot.inventory.request.service.RequestService;
 //
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/request-api")
@@ -52,6 +55,24 @@ public class RequestRestController {
     /* ================================= ADMIN ================================= */
     /* ========================================================================= */
 
+
+    @GetMapping(value = "/admin-requestinfo")
+    public ResponseEntity<?> requestListCount() {
+
+        Map<String, String> requestCount = new HashMap<>();
+
+        int rentalCount =
+                requestService.getRequestUnhandled(RequestTypeEnum.RENTAL).getData().size();
+
+        int returnCount =
+                requestService.getRequestUnhandled(RequestTypeEnum.RETURN).getData().size();
+
+        requestCount.put("rentalCount", Integer.toString(rentalCount));
+        requestCount.put("returnCount", Integer.toString(returnCount));
+
+
+        return ResponseEntity.ok(requestCount);
+    }
 
     @GetMapping(value = "/admin-request/count")
     public ResponseEntity<?> getRequestList(@RequestBody String type) {

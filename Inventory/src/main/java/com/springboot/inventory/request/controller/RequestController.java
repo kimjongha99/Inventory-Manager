@@ -76,21 +76,6 @@ public class RequestController {
     /* ================================= ADMIN ================================= */
     /* ========================================================================= */
 
-    // 관리자 메인 페이지
-    @GetMapping(value = "/admin-requestinfo")
-    public String requestListPage(Model model) {
-
-        int rentalCount = requestService.getRequestUnhandled(RequestTypeEnum.RENTAL).getData().size();
-
-        int returnCount =
-                requestService.getRequestUnhandled(RequestTypeEnum.RETURN).getData().size();
-
-        model.addAttribute("rental", rentalCount);
-        model.addAttribute("return", returnCount);
-
-
-        return "requests/RequestInfo";
-    }
 
     // 대여 요청 목록
     @GetMapping(value = "/admin-requestlist/rental")
