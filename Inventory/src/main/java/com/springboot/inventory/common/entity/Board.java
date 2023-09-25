@@ -1,5 +1,6 @@
 package com.springboot.inventory.common.entity;
 
+import com.springboot.inventory.common.enums.BoardType;
 import com.springboot.inventory.common.enums.PostStatus;
 import lombok.*;
 
@@ -31,6 +32,9 @@ public class Board extends Timestamped{
     @Column(nullable = false) // 공지사항 여부. 필요에 따라서 null 허용 여부를 변경하세요.
     private Boolean isNotice ;
 
+    // Add board type.
+    @Enumerated(EnumType.STRING)
+    private BoardType boardType;
 
     public void change(String title, String content){
         this.title = title;
@@ -60,4 +64,8 @@ public class Board extends Timestamped{
     }
 
 
+    // Add setter for the new field.
+    public void setBoardType(BoardType boardType){
+        this.boardType=boardType;
+    }
 }
