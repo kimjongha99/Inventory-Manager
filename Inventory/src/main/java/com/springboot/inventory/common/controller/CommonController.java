@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class CommonController {
 
-    @GetMapping("/main/dashboard")
+    @GetMapping("/dashboard")
     public String dashBoard() {
         return "/dashboard/maindashboard";
     }
