@@ -12,8 +12,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 @PropertySource("classpath:/application.properties")
 public class CustomServletConfig implements WebMvcConfigurer {
-    @Value("${file.add}")
-    private String potoAdd;
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/js/**")
