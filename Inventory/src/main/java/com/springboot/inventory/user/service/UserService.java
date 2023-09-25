@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +15,7 @@ public interface UserService {
 
 
     SignUpResultDto signUp(String email, String password, String name, String tel, String team);
-    SignInResultDto signIn(String email, String password) throws RuntimeException;
+    SignInResultDto signIn(String email, String password, HttpServletRequest request, HttpServletResponse response) throws RuntimeException, UnsupportedEncodingException;
     void logOut(String email, HttpServletRequest request, HttpServletResponse response);
     ResponseEntity<String> grantRole(String email, UserRoleEnum roles);
     List<UserInfoDto> findAllUser(); // 전체 목록 조회 (MANAGER)
@@ -31,4 +32,6 @@ public interface UserService {
     ResponseEntity<String> updateUser(UpdateUserDto updateUserDto, User user);
     void updateTeam(String email, String team);  // 팀 업데이트 (MANAGER,ADMIN)
     ResponseEntity<String> checkPassword(String email, String password);
+
+    List<User> findByDeletedFalse();
 }
