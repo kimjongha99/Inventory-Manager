@@ -1,54 +1,79 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
 <head>
     <meta charset="UTF-8">
     <title>요청 상세</title>
+
+    <!-- scirpts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script th:src="@{/js/accept.js}" ></script>
+    <script th:src="@{/js/request/accept.js}" ></script>
+    <script layout:fragment="script" th:inline="javascript"></script>
+
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/request/Common.css" />
+    <link rel="stylesheet" href="/css/request/ReturnRequestList.css" />
+
 </head>
 
 <body>
-<h1>관리자 - 반납 요청 목록</h1>
 
-<table>
+    <div class="page-overlay" layout:fragment="content">
 
-    <thead>
-    <tr>
-        <th>요청 ID</th>
-        <th>요청 타입</th>
-        <th>카테고리</th>
-        <th>요청 품목</th>
-        <th></th>
-    </tr>
-    </thead>
+        <div class="page-header">
 
-    <tbody>
-    <tr th:each="info : ${requestList}">
+            <h1>관리자 - 반납 요청 목록</h1>
+            <div>
+                <a th:href="@{/admin-requestInfo}">
+                    <button class="btn btn-outline-secondary" >메인 페이지</button>
+                </a>
+            </div>
 
-        <td class="requestId" th:text="${info.requestId}">Request ID</td>
+        </div>
 
-        <td th:text="${info.requestType}">Request Type</td>
+        <div class="page-body">
 
-        <td th:text="${info.category.categoryName}">Supply</td>
+            <table class="table align-middle" >
 
-        <td class="supplyId" th:value="${info.supply.supplyId}"
-            th:text="${info.supply.getModelName()}"></td>
+                <thead>
+                <tr>
+                    <th>요청 ID</th>
+                    <th>요청 타입</th>
+                    <th>카테고리</th>
+                    <th>요청 품목</th>
+                    <th></th>
+                </tr>
+                </thead>
 
-        <td>
-            <button onclick="onApproveReturnHandler(event)">수령 처리</button>
-        </td>
+                <tbody class="table-group-divider" >
+                <tr th:each="info : ${requestList}">
 
-    </tr>
-    </tbody>
+                    <td class="requestId" th:text="${info.requestId}">Request ID</td>
 
-</table>
+                    <td th:text="${info.requestType}">Request Type</td>
 
+                    <td th:text="${info.category.categoryName}">Supply</td>
 
-<div>
-    <a th:href="@{/admin-main}"><button>메인 페이지</button></a>
-</div>
+                    <td class="supplyId" th:value="${info.supply.supplyId}"
+                        th:text="${info.supply.getModelName()}"></td>
 
+                    <td>
+                        <button class="btn btn-outline-primary" onclick="onApproveReturnHandler(event)">수령 처리</button>
+                    </td>
+
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+    <div>
+
+    </div>
+    </div>
 </body>
 
 </html>

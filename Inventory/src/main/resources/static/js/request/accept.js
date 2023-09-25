@@ -17,7 +17,7 @@ function onApproveRentalHandler(event) {
         contentType: 'application/json'
     }).done((res) => {
         alert(res)
-        window.location.replace("/admin-main");
+        window.location.replace("/admin-requestInfo");
     }).fail(() => {
         alert("요청 실패");
     })

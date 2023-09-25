@@ -28,17 +28,17 @@ public class RequestRestController {
     /* ================================== USER ================================= */
     /* ========================================================================= */
 
-    @PostMapping(value = "/user-rental")
+    @PostMapping(value = "/user-rental", produces = "application/text; charset=utf8")
     public ResponseEntity<?> rentalRequest(@RequestBody RentalRequestDTO requestDTO,
                                               @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         User user = userDetails.getUser();
         requestService.registerRentalRequest(requestDTO, user);
 
-        return ResponseEntity.ok("요청 완료");
+        return ResponseEntity.ok("대여 신청 완료");
     }
 
-    @PostMapping(value = "/user-return")
+    @PostMapping(value = "/user-return", produces = "application/text; charset=utf8")
     public ResponseEntity<?> returnRequest(@RequestBody ReturnRequestDTO returnRequestDTO,
                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
@@ -63,7 +63,7 @@ public class RequestRestController {
         return ResponseEntity.ok(requestList);
     }
 
-    @PostMapping(value = "/admin-request/rental-request-approve")
+    @PostMapping(value = "/admin-request/rental-request-approve", produces = "application/text; charset=utf8")
     public ResponseEntity<?> approveRentalRequest(@RequestBody ApproveDTO approveDTO) {
 
         requestService.approveRequest(approveDTO, RequestTypeEnum.RENTAL);
@@ -71,7 +71,7 @@ public class RequestRestController {
         return ResponseEntity.ok("승인되었습니다.");
     }
 
-    @PostMapping(value = "/admin-request/rental-request-reject")
+    @PostMapping(value = "/admin-request/rental-request-reject", produces = "application/text; charset=utf8")
     public ResponseEntity<?> rejectRentalRequest(@RequestBody RentalRejectDTO rentalRejectDTO) {
 
         requestService.rejectRequest(rentalRejectDTO);
@@ -79,14 +79,12 @@ public class RequestRestController {
         return ResponseEntity.ok("승인 거부되었습니다.");
     }
 
-    @PostMapping(value = "/admin-request/return-request-approve")
+    @PostMapping(value = "/admin-request/return-request-approve", produces = "application/text; charset=utf8")
     public ResponseEntity<?> approveReturnRequest(@RequestBody ApproveDTO approveDTO) {
 
         requestService.approveRequest(approveDTO, RequestTypeEnum.RETURN);
 
         return ResponseEntity.ok("반납 처리 완료");
     }
-
-
 
 }

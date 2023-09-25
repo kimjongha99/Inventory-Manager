@@ -55,7 +55,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // request
                 .antMatchers("/category-api/**", "/request-api/**").permitAll()
                 .antMatchers("/request-user/**").hasRole("USER")
-                .antMatchers("/admin-requestlist/**", "/admin-request-accept/rental").hasRole("MANAGER")
+                .antMatchers("/admin-requestlist/**", "/admin-request-accept/rental", "/admin-requestInfo").hasRole(
+                        "MANAGER")
 
                 // resources
                 .antMatchers("/", "/resources/**", "/static/**", "/js/**",  "/css/**", "/scripts" +
