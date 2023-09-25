@@ -28,16 +28,22 @@
         <div class="list-group list-group-flush">
           <a
             class="list-group-item list-group-item-action list-group-item-light p-3"
-            href="/dashboard"
+            href="http://localhost:8080/main/dashboard"
             >대시보드</a
           >
 
-          <!--
-          매니저 로그인 메뉴
-          <a href="">요청 현황</a>
-          <a href="">비품 관리</a>
-          <a href="">비품 등록</a>
-           -->
+          <!--          매니저 로그인 메뉴-->
+          <!--          <a href="">요청 현황</a>-->
+          <a
+            class="list-group-item list-group-item-action list-group-item-light p-3"
+            href="http://localhost:8080/supply/list"
+            >비품관리</a
+          >
+          <a
+            class="list-group-item list-group-item-action list-group-item-light p-3"
+            href="http://localhost:8080/supply/create"
+            >비품등록</a
+          >
 
           <!--
           마스터 권한 위임 페이지
@@ -51,18 +57,18 @@
           -->
 
           <!-- 유저 재고조회 -->
-          <!--          <a-->
-          <!--            class="list-group-item list-group-item-action list-group-item-light p-3"-->
-          <!--            href="http://localhost:8080/supply/stock"-->
-          <!--            >재고보기</a-->
-          <!--          >-->
+          <a
+            class="list-group-item list-group-item-action list-group-item-light p-3"
+            href="http://localhost:8080/supply/stock"
+            >재고보기</a
+          >
 
           <!-- 어드민 재고조회 -->
-<!--          <a-->
-<!--            class="list-group-item list-group-item-action list-group-item-light p-3"-->
-<!--            href="http://localhost:8080/supply/list"-->
-<!--            >재고보기</a-->
-<!--          >-->
+          <!--          <a-->
+          <!--            class="list-group-item list-group-item-action list-group-item-light p-3"-->
+          <!--            href="http://localhost:8080/supply/list"-->
+          <!--            >재고보기</a-->
+          <!--          >-->
         </div>
       </div>
       <!-- Page content wrapper-->
@@ -109,16 +115,24 @@
                   class="nav-item"
                   th:if="${#authorization.expression('isAuthenticated()')}"
                 >
-                  <a      sec:authorize="hasRole('MANAGER')"
-                          class="nav-link" href="/ManagerPage">관리 페이지</a>
+                  <a
+                    sec:authorize="hasRole('MANAGER')"
+                    class="nav-link"
+                    href="/ManagerPage"
+                    >관리 페이지</a
+                  >
                 </li>
                 <!-- 어드민 관리 페이지 -->
                 <li
-                        class="nav-item"
-                        th:if="${#authorization.expression('isAuthenticated()')}"
+                  class="nav-item"
+                  th:if="${#authorization.expression('isAuthenticated()')}"
                 >
-                  <a      sec:authorize="hasRole('ADMIN')"
-                          class="nav-link" href="/AdminPage">관리 페이지</a>
+                  <a
+                    sec:authorize="hasRole('ADMIN')"
+                    class="nav-link"
+                    href="/AdminPage"
+                    >관리 페이지</a
+                  >
                 </li>
 
                 <li
@@ -150,10 +164,10 @@
                       >관리 페이지</a
                     >
                     <a
-                            sec:authorize="hasRole('MANAGER')"
-                            class="dropdown-item"
-                            href="/ManagerPage"
-                    >관리 페이지</a
+                      sec:authorize="hasRole('MANAGER')"
+                      class="dropdown-item"
+                      href="/ManagerPage"
+                      >관리 페이지</a
                     >
                   </div>
                 </li>

@@ -1,6 +1,7 @@
 package com.springboot.inventory.supply.service;
 
 import com.springboot.inventory.common.entity.User;
+import com.springboot.inventory.common.enums.UserRoleEnum;
 import com.springboot.inventory.supply.dto.SupplyDto;
 import com.springboot.inventory.supply.repository.SupplyRepository;
 import com.springboot.inventory.category.repository.CategoryRepository;
@@ -45,7 +46,7 @@ public class SupplyService {
 
         String image = null;
         String imagePath = null;
-        if(!multipartFile.isEmpty()) {
+        if (!multipartFile.isEmpty()) {
             String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\image"; //경로설정
             UUID uuid = UUID.randomUUID(); // 식별자 랜덤설정
             String imageName = uuid + "_" + multipartFile.getOriginalFilename();
@@ -104,6 +105,7 @@ public class SupplyService {
 
         return supplyRepository.save(supply); // 저장 후 그 supply를 리턴
     }
+
     // 비품 업데이트를 위해 supply 가져오기
     public Supply getSupply(Long supplyId) {
         return supplyRepository.findById(supplyId).orElseThrow();
@@ -114,24 +116,24 @@ public class SupplyService {
 
         Supply supply = getSupply(supplyId);
 
-        if(!supplyDto.getSerialNum().equals("")) {
+        if (!supplyDto.getSerialNum().equals("")) {
             supply.setSerialNum(supplyDto.getSerialNum());
         }
 
-        if(!supplyDto.getModelName().equals("")) {
+        if (!supplyDto.getModelName().equals("")) {
             supply.setModelName(supplyDto.getModelName());
         }
 
-        if(!supplyDto.getModelContent().equals("")) {
+        if (!supplyDto.getModelContent().equals("")) {
             supply.setModelContent(supplyDto.getModelContent());
         }
 
-        if(supplyDto.getStatus() != null) {
+        if (supplyDto.getStatus() != null) {
             supply.setStatus(supplyDto.getStatus());
         }
 
         //image 처리
-        if(!supplyDto.getMultipartFile().isEmpty()) {
+        if (!supplyDto.getMultipartFile().isEmpty()) {
             MultipartFile multipartFile = supplyDto.getMultipartFile();
 
             String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\image"; //경로설정
@@ -146,24 +148,20 @@ public class SupplyService {
             supply.setImagePath(supplyDto.getImagePath());
         }
         //user 사용자 설정
-        if(supplyDto.getUserId() != null) {
-            System.out.println(supplyDto.getUserId());
-
-            User user = userRepository.findByUserId(supplyDto.getUserId()).orElseThrow(()-> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
-
-            System.out.println(user.getUsername());
-
+        if (supplyDto.getUserId() != null) {
+            User user = userRepository.findByUserId(supplyDto.getUserId()).orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
             supply.setUser(user);
+        } else {
+            supply.setUser(null);
         }
         //카테고리 업데이트 (소분류 중복문제 발생)
-
         LargeCategory largeCategory = supplyDto.getLargeCategory();
         String categoryName = supplyDto.getCategoryName();
 
-        if(largeCategory == null) {
+        if (largeCategory == null) {
             largeCategory = supply.getCategory().getLargeCategory();
         }
-        if(categoryName.equals("")) {
+        if (categoryName.equals("")) {
             categoryName = supply.getCategory().getCategoryName();
         }
 
@@ -185,7 +183,7 @@ public class SupplyService {
             supply.setCategory(existingCategory);
         }
 
-         supplyRepository.save(supply);
+        supplyRepository.save(supply);
         return supply;
     }
 
@@ -221,23 +219,26 @@ public class SupplyService {
     // 비품 재고 현황
     @Transactional
     public Map<LargeCategory, List<SupplyDto>> getStockList() {
-        List<Supply> all = supplyRepository.findAll();
+        List<Supply> all = supplyRepository.findByStatusAndDeletedFalse(SupplyStatusEnum.STOCK);
         Map<LargeCategory, List<SupplyDto>> supplyStockMap = new HashMap<>();
 
         for (Supply supply : all) {
 
-            if (supply.getStatus() == SupplyStatusEnum.STOCK) {
+            if (supply.getStatus() == SupplyStatusEnum.STOCK ) {
                 LargeCategory largeCategory = supply.getCategory().getLargeCategory();
                 SupplyDto supplyDto = new SupplyDto();
                 supplyDto.setModelName(supply.getModelName());
                 supplyDto.setCategoryName(supply.getCategory().getCategoryName());
                 supplyDto.setImagePath(supply.getImagePath());
-                supplyDto.setAmount(supply.getAmount());
 
                 supplyStockMap.computeIfAbsent(largeCategory, k -> new ArrayList<>()).add(supplyDto);
             }
         }
         return supplyStockMap;
 
+    }
+
+    public boolean isSerialNumberDuplicate(String serialNumber) {
+        return supplyRepository.existsBySerialNum(serialNumber);
     }
 }
