@@ -21,5 +21,11 @@ public class CustomServletConfig implements WebMvcConfigurer {
                 addResourceLocations("classpath:/static/assets/");
         registry.addResourceHandler("/static/imgs/").
                 addResourceLocations("classpath:/imgs/**");
+
+        //오강석추가
+        registry.addResourceHandler("/image/**").
+                addResourceLocations("classpath:/static/image/").setCachePeriod(60 * 60 * 24 * 365);
+        registry.addResourceHandler("/resources/**").
+                addResourceLocations("/resources/");
     }
 }
