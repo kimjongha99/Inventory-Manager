@@ -170,16 +170,14 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public List<BoardPreviewDTO> getTop10BoardsPurchase() {
-        return boardRepository.findAll(PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "bno")))
+        return boardRepository.findAllByBoardTypeAndStatusOrderByBnoDesc(BoardType.PURCHASE, PostStatus.PENDING, PageRequest.of(0, 10))
                 .stream()
                 .map(board -> new BoardPreviewDTO(board.getTitle(), board.getWriter()))
                 .collect(Collectors.toList());
     }
-
-
         @Override
         public List<BoardPreviewDTO> getTop10BoardsRepair() {
-            return boardRepository.findAll(PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC,"bno")))
+            return boardRepository.findAllByBoardTypeAndStatusOrderByBnoDesc(BoardType.REPAIR, PostStatus.PENDING, PageRequest.of(0, 10))
                     .stream()
                     .map(board -> new BoardPreviewDTO(board.getTitle(), board.getWriter()))
                     .collect(Collectors.toList());
