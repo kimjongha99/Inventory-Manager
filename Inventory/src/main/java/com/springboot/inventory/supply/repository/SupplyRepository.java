@@ -60,10 +60,9 @@ public interface SupplyRepository extends JpaRepository<Supply, Long> {
 
     /* ====================================Request========================================*/
 
-    @Query("SELECT s FROM Supply s WHERE s.category = :category AND (s.state IS NULL OR s.state " +
-            "<> :requestType)")
-    ArrayList<Supply> findAllByCategoryAndStateIsNot(@Param("category")Category category, @Param(
-            "requestType")RequestTypeEnum requestTypeEnum);
+    @Query("SELECT s FROM Supply s WHERE s.category = :category AND s.status = :supplyStatusEnum")
+    ArrayList<Supply> findAllByCategoryAndStatus(@Param("category")Category category, @Param(
+            "supplyStatusEnum") SupplyStatusEnum supplyStatusEnum);
 
     Optional<Supply> findBySupplyId(Long supId);
 

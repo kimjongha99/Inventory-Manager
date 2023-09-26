@@ -75,4 +75,7 @@ public class User extends Timestamped implements Serializable {
         // 부여하는 권한을 가지고 있는 경우, 권한을 취소할 수 있음
         this.roles = this.roles == roles ? UserRoleEnum.USER : roles;
     }
+
+    public boolean isDeleted() { return deleted;
+    }
 }
