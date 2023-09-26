@@ -46,13 +46,7 @@
           >재고보기</a
           >
 
-          <a  sec:authorize="hasRole('USER')"
-                  class="list-group-item list-group-item-action list-group-item-light p-3"
-             href="/board/purchase/list">비품구매 요청</a>
 
-          <a sec:authorize="hasRole('USER')"
-                  class="list-group-item list-group-item-action list-group-item-light p-3"
-             href="/board/repair/list">비품수리 요청</a>
 
           <a sec:authorize="hasRole('USER')"
                   class="list-group-item list-group-item-action list-group-item-light p-3"
@@ -92,7 +86,13 @@
              href="/admin-requestlist/return"
           >반납 신청 현황</a
           >
+          <a  th:if="${#authorization.expression('isAuthenticated()')}"
+              class="list-group-item list-group-item-action list-group-item-light p-3"
+              href="/board/purchase/list">비품구매 요청</a>
 
+          <a class="list-group-item list-group-item-action list-group-item-light p-3"
+             th:if="${#authorization.expression('isAuthenticated()')}"
+             href="/board/repair/list">비품수리 요청</a>
           <!-- Admin -->
           <a
                   sec:authorize="hasRole('ADMIN')"
