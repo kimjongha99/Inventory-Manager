@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/basic.html}"
+>
+  <head>
+    <meta charset="UTF-8">
+
+    <!-- scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/request/rentalRequest.js}"></script>
+
+    <!-- style -->
+    <link rel="stylesheet" href="/css/request/Common.css">
+    <link rel="stylesheet" href="/css/request/RequestSupplies.css" />
+
+    <!-- title -->
+    <title>유저 - 비품 요청 페이지</title>
+  </head>
+
+  <body>
+
+    <div class="page-overlay" layout:fragment="content">
+
+        <div class="page-header">
+        <h1 id="header" th:value="rental">유저 - 비품 요청 페이지</h1>
+        </div>
+
+        <div class="page-body">
+          <form id="request_form" onsubmit="onSubmitRentalRequest(event);">
+
+            <div class="form_div1">
+              <label for="category">대상 품목</label>
+              <select id="category" ></select>
+            </div>
+
+            <div class="form_div2">
+              <label for="content">요청 내용</label>
+              <textarea class="form-control" id="content" maxlength="50"></textarea>
+            </div>
+
+            <div class="form_div3">
+              <button class="btn btn-primary" type="submit">대여 신청</button>
+            </div>
+
+          </form>
+        </div>
+
+        <div class="page-footer">
+          <a th:href="@{/dashboard}"><button class="btn btn-outline-secondary" >메인 페이지</button></a>
+        </div>
+
+      </div>
+
+    <script layout:fragment="script" th:inline="javascript"></script>
+
+  </body>
+</html>

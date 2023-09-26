@@ -1,0 +1,13 @@
+.page-header {
+    margin-bottom: 2rem;
+    box-sizing: content-box;
+}
+
+.page-body {
+    padding: 0 2rem 0 2rem;
+    justify-content: flex-start;
+}
+
+.table-body :nth-child(3) {
+    width: 20%;
+}

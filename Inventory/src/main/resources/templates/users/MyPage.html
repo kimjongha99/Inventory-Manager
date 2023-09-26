@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>맴버</title>
+</head>
+
+<body>
+<div layout:fragment="content" class="container mt-5">
+
+    <h1 class="mb-4">사용자 정보</h1>
+    <div id="userInfo" class="mb-4">
+        <p>이메일: <span id="userEmail"></span></p>
+        <p>사용자 이름: <input type="text" id="userName" class="form-control" autocomplete="username"></p>
+        <p>비밀번호: <input type="password" id="userPassword" class="form-control"></p>
+        <p>전화번호: <input type="text" id="userTel" class="form-control"></p>
+    </div>
+    <button id="changePasswordButton" class="btn btn-primary"><i class="fas fa-key"></i> 비밀번호 수정</button>
+    <button id="updateUserButton" class="btn btn-success"><i class="fas fa-user-edit"></i> 회원 정보 수정</button>
+    <button id="passwordSaveButton" class="btn btn-info" style="display: none;"><i class="fas fa-save"></i> 비밀번호 저장</button>
+    <button id="userSaveButton" class="btn btn-warning" style="display: none;"><i class="fas fa-save"></i> 유저 정보 저장</button>
+    <button id="deleteUserButton" class="btn btn-danger"><i class="fas fa-trash-alt"></i> 회원 탈퇴</button>
+
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+    // Axios를 사용하여 JSON 데이터 가져오기
+
+    axios.get('/user/MyPage')
+        .then(function(response) {
+
+            var user = response.data;
+
+            const p1 = document.getElementById("userEmail");
+            const p2 = document.getElementById("userName");
+            const p3 = document.getElementById("userPassword");
+            const p4 = document.getElementById("userTel");
+
+            p1.innerText = user.email;
+            p2.value = user.username;
+            p4.value = user.tel;
+
+            // 수정 버튼, 수정 가능한 필드 표시
+            const changePasswordButton = document.getElementById("changePasswordButton");
+            const updateUserButton = document.getElementById("updateUserButton");
+            const passwordSaveButton = document.getElementById("passwordSaveButton");
+            const userSaveButton = document.getElementById("userSaveButton");
+
+            changePasswordButton.style.display = "block";
+            updateUserButton.style.display = "block";
+
+            p3.style.display = "none";  // 패스워드 필드 숨김
+
+            // 비밀번호 수정 버튼 클릭
+            changePasswordButton.addEventListener("click", function () {
+                p3.style.display = "block";  // 패스워드 필드 표시
+                passwordSaveButton.style.display = "block";
+                changePasswordButton.style.display = "none";
+                updateUserButton.style.display = "none";
+                userSaveButton.style.display = "none";
+            });
+
+            // 회원정보 수정 버튼 클릭
+            updateUserButton.addEventListener("click", function () {
+                p2.style.display = "block";
+                p4.style.display = "block";
+                userSaveButton.style.display = "block";
+                changePasswordButton.style.display = "none";
+                updateUserButton.style.display = "none";
+            });
+
+            // 비밀번호 저장 버튼 클릭 이벤트
+            passwordSaveButton.addEventListener("click", function () {
+                var newPassword = document.getElementById("userPassword").value;
+                axios.put('/user/MyPage/changePassword', { password: newPassword })
+                    .then(function (response) {
+                        alert("비밀번호 수정에 성공하였습니다. 다시 로그인 해주세요.");
+                        // 로그아웃을 호출하고, 성공할 경우 다시 로그인 화면으로 이동
+
+                        axios.get('/user/logout')
+
+                            .then(function (logoutResponse) {
+                                window.location.href = '/index'; // 로그인 페이지로 이동
+                            })
+                            .catch(function (error) {
+                                console.error('Error logging out:', error);
+                            });
+                    })
+                    .catch(function (error) {
+                        var errorMsg = new Error('비밀번호 수정 중 오류가 발생했습니다.');
+                        alert(errorMsg.message);
+                    });
+            });
+
+            userSaveButton.addEventListener("click", function () {
+                var newUsername = document.getElementById("userName").value;
+                var newTel = document.getElementById("userTel").value;
+                // 회원정보 수정 요청
+                axios.put('user/MyPage/updateUser', { username : newUsername, tel : newTel})
+                    .then(function (response) {
+                        alert("회원 정보 수정이 완료되었습니다.");
+                        // 회원 정보 수정 성공 시 메인페이지로
+                        window.location.href = '/MyPage';
+                    })
+                    .catch(function (error) {
+                        var errorMsg = new Error('회원정보 수정 중 오류가 발생했습니다.');
+                        alert(errorMsg.message);
+                    });
+            });
+
+            // 회원 탈퇴 버튼
+            const deleteUserButton = document.getElementById("deleteUserButton");
+            deleteUserButton.addEventListener("click", function () {
+                const confirmation = confirm("회원탈퇴를 진행하시겠습니까?");
+
+                if (confirmation) {
+                    // 사용자가 "확인"을 클릭한 경우
+                    axios.delete('/user/MyPage/delete')
+                        .then(function (response) {
+                            alert("회원탈퇴에 성공하였습니다.");
+                            // 회원 탈퇴 성공 시 메인페이지로
+                            window.location.href = '/index';
+                        })
+                        .catch(function (error) {
+                            var errorMsg = new Error('회원 탈퇴 중 오류가 발생했습니다.');
+                            alert(errorMsg.message);
+                        });
+                } else {
+                    // 사용자가 "취소"를 클릭한 경우
+                    alert("회원탈퇴가 취소되었습니다.");
+                }
+            });
+        })
+        .catch(function(error) {
+            console.error('Error fetching user data:', error);
+        });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <!-- scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/request/accept.js}"></script>
+
+    <!-- styles -->
+    <link rel="stylesheet"  th:href="@{/css/modal-window.css}" />
+    <link rel="stylesheet" href="/css/request/Common.css" />
+    <link rel="stylesheet" href="/css/request/RentalAccept.css" />
+
+</head>
+<body>
+    <div class="page-overlay" layout:fragment="content">
+
+        <div class="page-header">
+
+            <h1>관리자 - 대여 품목 선택</h1>
+
+            <div class="header_div1">
+                <h4>요청 ID : </h4>
+                <h4 id="requestId" th:text="${requestId}">
+                </h4>
+
+                <button class="btn btn-outline-danger" onclick="onRejectBtnClickHandler();">거절
+                </button>
+            </div>
+
+            <div>
+                <a th:href="@{/managerdashboard}"><button class="btn btn-outline-secondary">메인
+                    페이지</button></a>
+            </div>
+
+        </div>
+
+
+        <div class="modal-overlay">
+            <div class="modal-window">
+
+                <div class="modal-window_header">
+                    <button onclick="onCloseBtnClickHandler();"
+                            class="btn modal-window_btn-close btn-secondary">X
+                    </button>
+                </div>
+
+                <form class="modal-window_body">
+                    <label for="comment">거절 사유</label>
+                    <textarea id="comment"></textarea>
+                    <button onclick="onRejectRentalHandler(event);"
+                            class="modal-window_btn-submit btn btn-secondary">전송
+                    </button>
+                </form>
+
+            </div>
+        </div>
+
+        <div class="page-body">
+
+            <table class="table align-middle">
+
+                <thead>
+                    <tr>
+                        <th>비품 ID</th>
+                        <th>카테고리</th>
+                        <th>모델명</th>
+                        <th>처리</th>
+                    </tr>
+                </thead>
+
+                <tbody class="table-group-divider">
+                    <tr th:each="info : ${supplyList}">
+
+                        <td class="supplyId" th:text="${info.supplyId}">Supply ID</td>
+
+                        <td th:text="${info.category.categoryName}">Category</td>
+
+                        <td th:text="${info.modelName}">Model name</td>
+
+                        <td>
+                            <button class="btn btn-outline-primary"
+                                    onclick="onApproveRentalHandler(event);">승인</button>
+                        </td>
+
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

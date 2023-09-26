@@ -1,0 +1,5 @@
+security:
+  ignored:
+    - /image/**
+  basic:
+    enabled: false

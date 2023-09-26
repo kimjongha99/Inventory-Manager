@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>요청 상세</title>
+
+    <!-- scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script th:src="@{/js/request/rentalRequest.js}"></script>
+    <script layout:fragment="script" th:inline="javascript"></script>
+
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/request/Common.css" />
+    <link rel="stylesheet" href="/css/request/RentalRequestList.css" />
+</head>
+
+<body th:object="${category}">
+
+    <div class="page-overlay" layout:fragment="content">
+
+        <div class="page-header">
+
+            <h1>관리자 - 대여 요청 목록</h1>
+
+
+            <a th:href="@{/managerdashboard}">
+                <button class="btn btn-outline-secondary" >메인 페이지</button>
+            </a>
+
+        </div>
+
+
+        <div class="page-body">
+
+            <div class="list_div1">
+                <div class="list_div1-category">
+                    <label for="category">카테고리</label>
+                    <select id="category" onchange="onCategoryChangeHandler(event);">
+                        <option>-</option>
+                        <option value="">전체</option>
+                    </select>
+                </div>
+                <div class="list_div1-pagination">
+                    <div th:replace="~{/fragments/searching_pagination-fragment :: pagination}"></div>
+                </div>
+            </div>
+
+            <div class="list_div2">
+                <table class="table align-middle">
+
+                    <thead>
+                    <tr>
+                        <th>요청 ID</th>
+                        <th>요청 품목</th>
+                        <th>내용</th>
+                        <th>상세</th>
+                    </tr>
+                    </thead>
+
+                    <tbody class="table-group-divider">
+                    <tr th:each="info : ${requestList}">
+
+                        <td th:text="${info.requestId}">Request ID</td>
+
+                        <td th:text="${info.category.categoryName}">Supply</td>
+
+                        <td th:text="${info.content}">Content</td>
+
+                        <td>
+                            <a
+                                    th:href="@{/admin-request-accept/rental(requestId=${info.requestId})}"><button class="btn btn-outline-primary" >상세
+                            </button></a>
+                        </td>
+
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.w3.org/1999/xhtml"
+>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Simple Sidebar - Start Bootstrap Template</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" th:href="@{/assets/favicon.ico}" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  </head>
+
+
+
+
+
+
+  <body>
+    <div class="d-flex" id="wrapper">
+      <!-- Sidebar-->
+      <div class="border-end bg-white" id="sidebar-wrapper">
+        <div class="sidebar-heading border-bottom bg-light">INVENTORY</div>
+        <div class="list-group list-group-flush">
+
+          <!-- user -->
+
+          <a sec:authorize="hasRole('USER')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+                  href="/dashboard">유저대시보드</a>
+
+          <a  sec:authorize="hasRole('USER')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+                  href="/supply/stock"
+          >재고보기</a
+          >
+
+
+
+          <a sec:authorize="hasRole('USER')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+             href="/request-user/rental">대여 신청</a>
+
+          <a sec:authorize="hasRole('USER')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+             href="/request-user/return">반납 신청</a>
+
+          <a sec:authorize="hasRole('USER')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+             href="/request-user/history">요청 내역</a>
+
+          <!-- manager -->
+          <a  sec:authorize="hasRole('MANAGER')"
+              class="list-group-item list-group-item-action list-group-item-light p-3"
+              href="/managerdashboard">매니저대시보드</a>
+
+          <a sec:authorize="hasRole('MANAGER')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+                  href="/supply/list">비품관리</a>
+
+          <a sec:authorize="hasRole('MANAGER')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+                  href="/supply/create"
+          >비품등록</a
+          >
+
+          <a sec:authorize="hasRole('MANAGER')"
+             class="list-group-item list-group-item-action list-group-item-light p-3"
+             href="/admin-requestlist/rental"
+          >대여 신청 현황</a
+          >
+
+          <a sec:authorize="hasRole('MANAGER')"
+             class="list-group-item list-group-item-action list-group-item-light p-3"
+             href="/admin-requestlist/return"
+          >반납 신청 현황</a
+          >
+          <a  th:if="${#authorization.expression('isAuthenticated()')}"
+              class="list-group-item list-group-item-action list-group-item-light p-3"
+              href="/board/purchase/list">비품구매 요청</a>
+
+          <a class="list-group-item list-group-item-action list-group-item-light p-3"
+             th:if="${#authorization.expression('isAuthenticated()')}"
+             href="/board/repair/list">비품수리 요청</a>
+          <!-- Admin -->
+          <a
+                  sec:authorize="hasRole('ADMIN')"
+                  class="list-group-item list-group-item-action list-group-item-light p-3"
+                  href="/AdminPage"
+          >관리 페이지</a
+          >
+
+        </div>
+      </div>
+      <!-- Page content wrapper-->
+      <div id="page-content-wrapper">
+        <!-- Top navigation-->
+        <nav
+          class="navbar navbar-expand-lg navbar-light bg-light border-bottom"
+        >
+          <div class="container-fluid">
+            <button class="btn btn-primary" id="sidebarToggle">
+              Toggle Menu
+            </button>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                <li class="nav-item active">
+                  <a class="nav-link" href="/dashboard">Home</a>
+                </li>
+
+                <li
+                  class="nav-item"
+                  th:if="${#authorization.expression('isAnonymous()')}"
+                >
+                  <a class="nav-link" href="/index">로그인</a>
+                </li>
+                <li
+                  class="nav-item"
+                  th:if="${#authorization.expression('isAnonymous()')}"
+                >
+                  <a class="nav-link" href="/signUpPage">회원가입</a>
+                </li>
+                <!--매니저 관리 페이지 -->
+                <li
+                  class="nav-item"
+                  th:if="${#authorization.expression('isAuthenticated()')}"
+                >
+                  <a
+                    sec:authorize="hasRole('MANAGER')"
+                    class="nav-link"
+                    href="/ManagerPage"
+                    >관리 페이지</a
+                  >
+                </li>
+                <!-- 어드민 관리 페이지 -->
+                <li
+                  class="nav-item"
+                  th:if="${#authorization.expression('isAuthenticated()')}"
+                >
+                  <a
+                    sec:authorize="hasRole('ADMIN')"
+                    class="nav-link"
+                    href="/AdminPage"
+                    >관리 페이지</a
+                  >
+                </li>
+
+                <li
+                  class="nav-item dropdown"
+                  th:if="${#authorization.expression('isAuthenticated()')}"
+                >
+                  <a
+                    class="nav-link dropdown-toggle"
+                    id="navbarDropdown"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    th:text="${#authentication.name}"
+                    >Dropdown</a
+                  >
+                  <div
+                    class="dropdown-menu dropdown-menu-end"
+                    aria-labelledby="navbarDropdown"
+                  >
+                    <a class="dropdown-item" href="/checkPassword">내 정보</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/user/logout">로그아웃</a>
+                    <a
+                      sec:authorize="hasRole('ADMIN')"
+                      class="dropdown-item"
+                      href="/AdminPage"
+                      >관리 페이지</a
+                    >
+                    <a
+                      sec:authorize="hasRole('MANAGER')"
+                      class="dropdown-item"
+                      href="/ManagerPage"
+                      >관리 페이지</a
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <!-- Page content-->
+        <div class="container-fluid" layout:fragment="content">
+          <h1 class="mt-4">Simple Sidebar</h1>
+          <p>
+            The starting state of the menu will appear collapsed on smaller
+            screens, and will appear non-collapsed on larger screens. When
+            toggled using the button below, the menu will change.
+          </p>
+          <p>
+            Make sure to keep all page content within the
+            <code>#page-content-wrapper</code>
+            . The top navbar is optional, and just for demonstration. Just
+            create an element with the
+            <code>#sidebarToggle</code>
+            ID which will toggle the menu when clicked.
+          </p>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script th:src="@{/js/scripts.js}"></script>
+    <th:block layout:fragment="script"> </th:block>
+  </body>
+</html>

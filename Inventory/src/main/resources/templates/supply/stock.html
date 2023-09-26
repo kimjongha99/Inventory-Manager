@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+<head>
+  <meta charset="UTF-8">
+  <title>재고 목록</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 10px; /* 20px에서 10px로 줄임 */
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px; /* 20px에서 10px로 줄임 */
+    }
+
+    select {
+      margin: 5px 0; /* 10px에서 5px로 줄임 */
+    }
+
+    .category-section {
+      margin-top: 10px; /* 20px에서 10px로 줄임 */
+    }
+
+    table {
+      width: 80%;
+      margin: 0 auto;
+      border-collapse: collapse;
+      background-color: #fff;
+      box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 조정 */
+      border-radius: 10px; /* 테이블 모서리 둥글게 */
+    }
+
+    table th, table td {
+      padding: 10px; /* 12px에서 10px로 줄임 */
+      text-align: center;
+    }
+
+    table th {
+      background-color: #333;
+      color: #fff;
+    }
+
+    table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    table tr:hover {
+      background-color: #ddd;
+    }
+
+    img {
+      max-width: 40px; /* 50px에서 40px로 줄임 */
+      max-height: 40px; /* 50px에서 40px로 줄임 */
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+<div layout:fragment="content">
+<h1>재고 목록</h1>
+
+<!-- 드롭다운 메뉴 추가 -->
+<div>
+  <label for="largeCategorySelect">대분류:</label>
+  <select id="largeCategorySelect">
+    <option value="all">전체보기</option>
+    <option th:each="largeCategory : ${largeCategories}" th:value="${largeCategory}" th:text="${largeCategory.getKorean()}"></option>
+  </select>
+</div>
+
+<!-- 비품 목록 -->
+<div th:each="entry : ${supplyByCategoryMap}" class="category-section">
+  <h2 th:text="${entry.key}"></h2>
+  <table>
+    <thead>
+    <tr>
+      <th>소분류</th>
+      <th>제품명</th>
+      <th>이미지</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- 해당 LargeCategory에 속하는 SupplyDTO 목록 표시 -->
+    <tr th:each="supply : ${entry.value}">
+      <td th:text="${supply.categoryName}">소분류</td>
+      <td th:text="${supply.modelName}">제품명</td>
+      <td>
+        <img th:src="${supply.imagePath}">
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- JavaScript 추가 -->
+<script>
+  const largeCategorySelect = document.getElementById("largeCategorySelect");
+  largeCategorySelect.addEventListener("change", filterByLargeCategory);
+
+  function filterByLargeCategory() {
+    const selectedCategory = largeCategorySelect.value;
+    const categorySections = document.querySelectorAll(".category-section");
+
+    categorySections.forEach(section => {
+      const sectionTitle = section.querySelector("h2").textContent;
+      if (selectedCategory === "all" || sectionTitle === selectedCategory) {
+        section.style.display = "block";
+      } else {
+        section.style.display = "none";
+      }
+    });
+  }
+</script>
+</div>
+</body>
+</html>

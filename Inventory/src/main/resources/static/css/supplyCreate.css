@@ -1,0 +1,56 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 10px; /* 20px에서 10px로 줄임 */
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 10px; /* 20px에서 10px로 줄임 */
+}
+
+form {
+    width: 45%; /* 50%에서 45%로 줄임 */
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 15px; /* 20px에서 15px로 줄임 */
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 조정 */
+}
+
+label {
+    font-weight: bold;
+}
+
+div {
+    margin-bottom: 10px; /* 15px에서 10px로 줄임 */
+}
+
+select, input {
+    width: 100%;
+    padding: 8px; /* 10px에서 8px로 줄임 */
+    border: 1px solid #ccc;
+    border-radius: 8px; /* 5px에서 8px로 늘림 */
+    font-size: 14px; /* 16px에서 14px로 줄임 */
+}
+
+input[type="file"] {
+    border: none;
+}
+
+button[type="submit"] {
+    background-color: #333;
+    color: #fff;
+    padding: 8px 16px; /* 10px 20px에서 8px 16px로 줄임 */
+    border: none;
+    border-radius: 8px; /* 5px에서 8px로 늘림 */
+    font-size: 16px; /* 18px에서 16px로 줄임 */
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #555;
+}
+
+.direct-input {
+    display: none;
+}

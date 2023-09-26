@@ -1,0 +1,22 @@
+<!-- Paging Fragments -->
+
+<!DOCTYPE html>
+
+
+    <div th:fragment="pagination" th:if="${totalPages > 1}" class="float-end">
+        <ul class="pagination flex-wrap">
+            <li class="page-item" th:if="${currentPage != 0}">
+                <a  class="page-link"
+                        th:href="@{'?page=' + ${(currentPage - 1)} + '&category=' + ${category}}">Previous
+                </a>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:if="${currentPage != i}">
+                <a  class="page-link" th:href="@{'?page=' + ${i} + '&category=' + ${category}}"
+                   th:text="${i + 1}"></a>
+            </li>
+            <li class="page-item" th:if="${currentPage < totalPages - 1}" >
+                <a class="page-link"  th:href="@{'?page=' + ${(currentPage + 1)} + '&category=' + ${category}}">Next
+                </a>
+            </li>
+        </ul>
+    </div>

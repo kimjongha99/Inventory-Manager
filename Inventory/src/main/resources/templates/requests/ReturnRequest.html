@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/basic.html}"
+>
+<head>
+    <meta charset="UTF-8">
+
+    <!-- scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/request/returnRequest.js}"></script>
+
+    <!-- style -->
+    <link rel="stylesheet" href="/css/request/Common.css">
+    <link rel="stylesheet" href="/css/request/ReturnRequest.css">
+
+    <!-- title -->
+    <title>유저 - 반납 요청 페이지</title>
+</head>
+<body>
+<div class="page-overlay" layout:fragment="content">
+
+    <div class="page-header">
+        <h1 id="header" th:value="return">유저 - 반납 요청 페이지</h1>
+
+
+        <a th:href="@{/dashboard}"><button class="btn btn-outline-secondary" >메인 페이지</button></a>
+
+    </div>
+
+    <div class="page-body">
+        <table class="table align-middle">
+            <thead>
+            <tr>
+                <th>카테고리</th>
+                <th>상품명</th>
+                <th>대여 일시</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider" >
+            <tr class="requestId" th:each="rentalList : ${rentalRequestList}"
+                th:value="${rentalList.requestId}">
+
+                <td class="category" th:text="${rentalList.category.categoryName}"></td>
+
+                <td class="supplyId" th:value="${rentalList.supply.getSupplyId()}"
+                    th:text="${rentalList.supply.getModelName()}"></td>
+
+                <td th:text="${#temporals.format(rentalList.modifiedAt, 'yyyy-MM-dd')}"></td>
+
+                <td><button class="btn btn-outline-primary"
+                            th:text="${rentalList.returnAvailable == true ? '반납 대기' : '반납 신청'}"
+                            th:disabled="${rentalList.returnAvailable == true}"
+                            onclick="onReturnRequestHandler(event)">
+                </button></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script layout:fragment="script" th:inline="javascript"></script>
+</body>
+</html>

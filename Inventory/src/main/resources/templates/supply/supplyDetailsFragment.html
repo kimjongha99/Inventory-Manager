@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="entity">
+        <h2 th:text="${supply.categoryName}"></h2>
+        <p th:text="${supply.modelName}"></p>
+        <img id="dynamicImage" th:src="@{${supply.imagePath}}"  style="width:100%; height:auto;" alt="이미지">
+
+    </div>
+</div>
+<table>
+    <thead>
+    <tr>
+        <th>등록일자</th>
+        <th>제품명</th>
+        <th>시리얼 넘버</th>
+        <th>비품 종류</th>
+        <th>사용자</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><span th:text="${#temporals.format(supply.createdAt, 'yyyy-MM-dd')}"></span></td>
+        <td><span th:text="${supply.modelName}"></span></td>
+        <td><span th:text="${supply.serialNum}"></span></td>
+        <td><span th:text="${supply.categoryName}"></span></td>
+        <td><span th:text="${supply.username}"></span></td>
+    </tr>
+    </tbody>
+</table>
+<form  th:action="@{/supply/delete/{supplyId}(supplyId=${supply.supplyId})}" method="POST" id="deleteForm">
+    <button class="btn btn-outline-secondary" type="button" onclick="confirmDelete()">삭제</button>
+</form>
+<a th:href="@{'/supply/update/' + ${supply.supplyId}}">
+    <button class="btn btn-outline-secondary" >수정</button>
+</a>
+
+<script>
+    function confirmDelete() {
+        if (confirm("정말로 삭제하시겠습니까?")) {
+            // "확인"을 클릭한 경우 폼 제출
+            document.getElementById("deleteForm").submit();
+        } else {
+            // "취소"를 클릭한 경우 아무 작업도 수행하지 않음
+        }
+    }
+</script>

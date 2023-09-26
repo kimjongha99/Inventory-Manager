@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/basic.html}"
+>
+<head>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link th:href="@{/css/board-dash.css}" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="/css/board-dash.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/sb-admin-2.min.css"/>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+    <title>메인 대시보드</title>
+    <style>
+        #using-1 tbody td {
+            text-align: center;
+            align-content: center;
+            justify-content: center;
+        }
+    </style>
+
+
+</head>
+<body>
+<div layout:fragment="content">
+    <div id="wrapper">
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid mt-lg-5">
+
+            <div class="container">
+                <div class="row">
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="card border-left-primary shadow-lg h-100 py-3">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-lg-8">
+
+
+                                        <h3 class="text-sm font-weight-bold text-primary text-uppercase mb-1">대여
+                                        </h3>
+                                        <div class="h4 mb-0 font-weight-bold text-gray-800">
+                                            <a href="/request-user/rental" style="text-decoration: none; color: inherit;">
+                                                요청하기
+                                            </a>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="col-lg-4 text-center">
+                                        <i class="fas fa-calendar fa-4x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Earnings (Annual) Card Example -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="card border-left-success shadow-lg h-100 py-3">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-lg-8">
+
+                                        <h3 class="text-sm font-weight-bold text-success text-uppercase mb-1">반납
+                                        </h3>
+                                        <div class="h4 mb-0 font-weight-bold text-gray-800">
+                                            <a href="/request-user/return" style="text-decoration: none; color: inherit;">
+                                                요청하기
+                                            </a>
+                                        </div>
+
+
+
+                                    </div>
+                                    <div class="col-lg-4 text-center">
+                                        <i class="fas fa-dollar-sign fa-4x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Tasks Card Example -->
+                    <div class="col-lg-6 mb-1" style="height: 480px;">
+                        <div class="card border-left-info shadow-lg h-100 py-3">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-lg-8">
+
+                                        <div class="text-xm font-weight-bold text-info text-uppercase mb-1 custom-font-size" style="font-size: x-large;"> 비품 구매 요청</div>
+
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="board-dash">
+                                                <h6 class="fw-bold">상위 10개의 게시물</h6>
+                                                <ul id="board-list"></ul>
+                                                <a href="/board/purchase/list">더보기</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-lg-4 text-center">
+                                        <i class="fas fa-clipboard-list fa-4x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pending Requests Card Example -->
+                    <div class="col-lg-6 mb-1" style="height: 480px;">
+                        <div class="card border-left-warning shadow-lg h-100 py-3">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-lg-8">
+                                        <div class="text-xm font-weight-bold text-warning text-uppercase mb-1 custom-font-size" style="font-size: x-large; "> 비품 수리 요청</div>
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="board-dash">
+                                                <h6 class="fw-bold">상위 10개의 게시물</h6>
+                                                <ul id="board-list2"></ul>
+                                                <a href="/board/repair/list">더보기</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 text-center">
+                                        <i class="fas fa-comments fa-4x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-lg-5">
+
+            </div>
+            <!-- Content Row -->
+
+            <div class="row">
+                <!-- Area Chart -->
+                <div class="col-xl-8 col-lg-7">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">List of supplies in use</h6>
+                            <div class="dropdown no-arrow">
+                            </div>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+
+
+                            <div class="container mt-5">
+                                <h2>내가 사용중인 비품 목록</h2>
+                                <!-- 드롭다운 메뉴 추가 -->
+                                <div class="mb-3">
+                                    <label for="largeCategorySelect" class="form-label">대분류:</label>
+                                    <select id="largeCategorySelect" class="form-select">
+                                        <option value="all">전체보기</option>
+                                        <!-- Thymeleaf 루프를 그대로 사용 -->
+                                        <option th:each="largeCategory : ${largeCategories}" th:value="${largeCategory}" th:text="${largeCategory.getKorean()}"></option>
+                                    </select>
+                                </div>
+                                <!-- 비품 목록 -->
+                                <div th:each="entry : ${supplyByCategoryMap}" class="category-section mb-5">
+                                    <h2 th:text="${entry.key}"></h2>
+                                    <table id="using-1" class="table align-middle">
+                                        <thead>
+                                        <tr>
+                                            <th>소분류</th>
+                                            <th>제품명</th>
+                                            <th>상태</th>
+                                            <th>이미지</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <!-- 해당 LargeCategory에 속하는 SupplyDTO 목록 표시 -->
+
+                                        <tr th:each="supply : ${entry.value}">
+                                            <td th:text="${supply.categoryName}">소분류</td>
+                                            <td th:text="${supply.modelName}">제품명</td>
+                                            <td th:text="${supply.status.getKorean()}">상태</td>
+                                            <td>
+                                                <img th:src="${supply.imagePath}" class="img-fluid" alt="이미지" style="width:100px; height: 100px">
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                            <!-- End of my Supply -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pie Chart -->
+                <div class="col-xl-4 col-lg-5">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+                            <div class="dropdown no-arrow">
+                            </div>
+                        </div>
+                        <!-- Custom Content -->
+                        <div class="card-body">
+                            <dotlottie-player src="https://lottie.host/cdf50dc8-9905-4e90-b9e2-d1d10e88692e/Ed0ga1fGvp.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+        </div>
+</div>
+</body>
+<script layout:fragment="script" th:inline="javascript">
+    $(document).ready(function () {
+        $.ajax({
+            url: "/boards/purchase/top10",
+            type: "GET",
+            success: function (data) {
+                var boardList = $("#board-list");
+                data.forEach(function (board) {
+                    boardList.append(
+                        "<li>" + board.title + " - " + board.writer + "</li>"
+                    );
+                });
+            },
+            error: function (error) {
+                console.error("Error:", error);
+            },
+        });
+    });
+
+
+    $(document).ready(function () {
+        $.ajax({
+            url: "/boards/repair/top10",
+            type: "GET",
+            success: function (data) {
+                var boardList = $("#board-list2");
+                data.forEach(function (board) {
+                    boardList.append(
+                        "<li>" + board.title + " - " + board.writer + "</li>"
+                    );
+                });
+            },
+            error: function (error) {
+                console.error("Error:", error);
+            },
+        });
+    });
+
+
+
+
+    // mySupply
+    const largeCategorySelect = document.getElementById("largeCategorySelect");
+    largeCategorySelect.addEventListener("change", filterByLargeCategory);
+
+    function filterByLargeCategory() {
+        const selectedCategory = largeCategorySelect.value;
+        const categorySections = document.querySelectorAll(".category-section");
+
+        categorySections.forEach(section => {
+            const sectionTitle = section.querySelector("h2").textContent;
+            if (selectedCategory === "all" || sectionTitle === selectedCategory) {
+                section.style.display = "block";
+            } else {
+                section.style.display = "none";
+            }
+        });
+    }
+
+</script>
+</html>
+

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/basic.html}">
+<head>
+    <title>맴버 </title>
+    <link th:href="@{/css/list.css}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="/css/list.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+<div layout:fragment="content">
+
+
+    <div class="row mt-3">
+        <form action="/board/purchase/list" method="get">
+            <div class="col">
+                <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <select class="form-select" name="type">
+                            <option value="">---</option>
+                            <option value="t" th:selected="${pageRequestDTO.type =='t'}">제목</option>
+                            <option value="c" th:selected="${pageRequestDTO.type =='c'}">내용</option>
+                            <option value="w" th:selected="${pageRequestDTO.type =='w'}">작성자</option>
+                            <option value="tc" th:selected="${pageRequestDTO.type =='tc'}">제목 내용</option>
+                            <option value="tcw" th:selected="${pageRequestDTO.type =='tcw'}">제목 내용 작성자</option>
+                        </select>
+                    </div>
+                    <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary searchBtn" type="submit">Search</button>
+                        <button class="btn btn-outline-secondary clearBtn" type="button">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="row mt-3">
+        <div class="col">
+
+            <div class="card">
+                <div class="card-header" style="text-align: center;">
+                    <strong>비품 구매 요청 하기</strong>
+                </div>
+
+            </div>
+
+            <div class="card-body">
+                <h5 class="card-title">비품 구매 요청 </h5>
+                <h5 class="card-title">
+                    <a href="/board/purchase/register" class="btn btn-info">글 작성</a>
+
+                </h5>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">글 번호</th>
+                        <th scope="col">제목</th>
+                        <th scope="col">작성자</th>
+                        <th scope="col">등록 일시</th>
+                        <th scope="col">처리 상태</th>
+
+                    </tr>
+                    </thead>
+
+                    <tbody th:with="link = ${pageRequestDTO.getLink()}">
+                    <!-- Notice 표시 -->
+
+                    <!-- 공지사항 내용 반복 -->
+                    <tr th:each="notice:${notices}">
+                        <td><strong><span>공지사항</span></strong></td>
+
+                        <!-- Title 출력 (Notice라는 표시 추가) -->
+                        <td>
+                            <a th:href="@{/board/purchase/read(bno=${notice.bno})}" class="text-decoration-none">
+                                <strong><span th:text="${notice.title}"></span></strong>
+                            </a>
+                        </td>
+
+                        <!-- Writer 출력 -->
+                        <td><strong><span th:text="${notice.writer}"></span></strong></td>
+
+                        <!-- RegDate 출력 (날짜 형식 지정)-->
+                        <td><strong><span th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}"></span></strong></td>
+                    </tr>
+
+                    <tr th:each="dto:${responseDTO.dtoList}" >
+                        <th scope="row"><span th:text="${dto.bno}"></span></th>
+                        <td>
+                            <a th:href="|@{/board/purchase/read(bno=${dto.bno})}&${link}|" class="text-decoration-none">
+                                <span th:text="${dto.title}"></span>
+                            </a>
+                            <span class="badge progress-bar-success" style="background-color: #0a53be"
+                                  th:text="${dto.replyCount}"></span>
+                        </td>
+                        <td><span th:text="${dto.writer}"></span></td>
+
+                        <td><span th:text="${#temporals.format(dto.createdAt, 'yyyy-MM-dd')}"></span></td>
+
+                        <td>
+                            <div class="status-ps">
+                                <span class="status"
+                                      th:with="statusClass=${dto.status.label == '승인'} ? 'APPROVED' : (${dto.status.label == '대기'} ? 'PENDING' : 'REJECTED')"
+                                      th:classappend="${statusClass}"
+                                      th:text="${dto.status.label}">
+                                </span>
+
+                                <div sec:authorize="hasAnyRole('MANAGER')" class="button-group">
+                                    <button class="btn btn-success changeStatusBtn" th:data-bno="${dto.bno}" data-status="APPROVED">승인</button>
+                                    <button class="btn btn-danger changeStatusBtn" th:data-bno="${dto.bno}" data-status="REJECTED">거절</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                </table>
+
+                <div class="float-end">
+                    <ul class="pagination flex-wrap">
+
+                        <li class="page-item" th:if="${responseDTO.prev}">
+                            <a class="page-link" th:data-num="${responseDTO.start -1}">Previous</a>
+                        </li>
+
+                        <th:block th:each="i: ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                            <li th:class="${responseDTO.page == i}?'page-item active':'page-item'">
+                                <a class="page-link" th:data-num="${i}">[[${i}]]</a>
+                            </li>
+                        </th:block>
+
+                        <li class="page-item" th:if="${responseDTO.next}">
+                            <a class="page-link" th:data-num="${responseDTO.end + 1}">Next</a>
+                        </li>
+                    </ul>
+                </div>
+
+
+            </div><!--end card body-->
+        </div><!--end card-->
+    </div><!-- end col-->
+</div><!-- end row-->
+
+
+<div class="modal" id="statusModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">상태 처리</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <select id="newStatusSelect" class=form-select>
+                    <option value="">--- 상태 처리 ---</option>
+                    <option value='APPROVED'>승인</option>
+                    <option value='REJECTED'>거부</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type=button id='saveChangesBtn' data-bs-dismiss=modal>Save changes</button>
+                <!-- 위의 button 태그에 있는 data-bs-dismiss 속성은 버튼 클릭 시 모달 창이 닫히게 합니다. -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+</body>
+
+<script layout:fragment="script" th:inline="javascript">
+
+    document.querySelector(".pagination").addEventListener("click", function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        const target = e.target
+
+        if (target.tagName !== 'A') {
+            return
+        }
+
+        const num = target.getAttribute("data-num")
+
+        const formObj = document.querySelector("form")
+
+        formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`
+
+        formObj.submit();
+
+    }, false)
+
+    document.querySelector(".clearBtn").addEventListener("click", function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        self.location = '/board/purchase/list'
+    }, false)
+
+
+
+    document.querySelectorAll(".changeStatusBtn").forEach(function(btn) {
+        btn.addEventListener("click", function(e) {
+            e.preventDefault();
+
+            // Get bno and new status from the button's data attributes
+            var bno = this.getAttribute("data-bno");
+            var newStatus = this.getAttribute("data-status");
+
+            // Send PUT request to the server using AJAX (using Fetch API here)
+            fetch("/board/purchase/status/" + bno, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newStatus) // PostStatus 객체가 아니라 그냥 문자열로 변환
+            })
+                .then(function(response) {
+                    if(response.ok) { // If the response status is 200 OK, reload the page.
+                        location.reload();
+                    } else {
+                        console.error('Error:', response.status, response.statusText);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+
+</script>
+
+</html>

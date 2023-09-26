@@ -1,0 +1,34 @@
+package com.springboot.inventory.common.util.redis;
+
+import lombok.Builder;
+import lombok.Getter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.TimeToLive;
+
+@Getter
+@RedisHash
+public class RefreshToken {
+
+    @Id
+    private String email;
+    private String refreshToken;
+    private String ip;
+
+    @TimeToLive
+    private Long expiration;
+
+    @Builder
+    public RefreshToken(String email, String refreshToken, String ip, Long expiration) {
+        this.email = email;
+        this.refreshToken = refreshToken;
+        this.ip = ip;
+        this.expiration = expiration;
+    }
+
+    public RefreshToken updateToken(String refreshToken, Long expiration) {
+        this.refreshToken = refreshToken;
+        this.expiration = expiration;
+        return this;
+    }
+}
