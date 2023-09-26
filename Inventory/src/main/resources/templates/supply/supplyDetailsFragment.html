@@ -26,11 +26,11 @@
     </tr>
     </tbody>
 </table>
-<form th:action="@{/supply/delete/{supplyId}(supplyId=${supply.supplyId})}" method="POST" id="deleteForm">
-    <button type="button" onclick="confirmDelete()">삭제</button>
+<form  th:action="@{/supply/delete/{supplyId}(supplyId=${supply.supplyId})}" method="POST" id="deleteForm">
+    <button class="btn btn-outline-secondary" type="button" onclick="confirmDelete()">삭제</button>
 </form>
 <a th:href="@{'/supply/update/' + ${supply.supplyId}}">
-    <button>수정</button>
+    <button class="btn btn-outline-secondary" >수정</button>
 </a>
 
 <script>
