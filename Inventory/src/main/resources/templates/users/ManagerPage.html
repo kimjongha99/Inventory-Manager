@@ -32,7 +32,6 @@
               <th>권한</th>
               <th>팀</th>
               <th>팀 설정</th>
-              <th>정보 보기</th>
               <!-- 추가: 정보 보기 칸 -->
               <th>회원 삭제</th>
               <!-- 변경: 회원 삭제를 마지막으로 이동 -->
@@ -68,7 +67,6 @@
             const cell5 = row.insertCell(4);
             const cell6 = row.insertCell(5);
             const cell7 = row.insertCell(6);
-            const cell8 = row.insertCell(7); // 추가: 정보 보기 칸
 
             cell1.innerHTML = user.username; // 유저이름
             cell2.innerHTML = user.email; // 이메일
@@ -136,13 +134,7 @@
             });
 
             // 변경: "회원 삭제" 버튼을 가장 마지막에 추가
-            cell8.appendChild(deleteButton);
-
-            // 변경: "정보 보기" 링크 생성
-            const infoLink = document.createElement("a");
-            infoLink.href = `/user/manager/userinfo?email=${user.email}`;
-            infoLink.textContent = "정보 보기";
-            cell7.appendChild(infoLink);
+            cell7.appendChild(deleteButton);
           });
 
           // 테이블 표시
