@@ -35,7 +35,7 @@ public class CommonController {
     public String dashBoard(
             @RequestParam(required = false, defaultValue = "all") String selectedStatus,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "3") int size,
             @RequestParam(required = false) String keyword,
             Model model) {
 

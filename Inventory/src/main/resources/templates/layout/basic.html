@@ -71,12 +71,9 @@
               class="list-group-item list-group-item-action list-group-item-light p-3"
               href="/managerdashboard">매니저대시보드</a>
 
-          <a
-                  sec:authorize="hasRole('MANAGER')"
+          <a sec:authorize="hasRole('MANAGER')"
                   class="list-group-item list-group-item-action list-group-item-light p-3"
-                  href="/supply/list"
-          >비품관리</a
-          >
+                  href="/supply/list">비품관리</a>
 
           <a sec:authorize="hasRole('MANAGER')"
                   class="list-group-item list-group-item-action list-group-item-light p-3"
