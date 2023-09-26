@@ -252,10 +252,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public List<User> findByDeletedFalse() {
-        return userRepository.findByDeletedFalse();
-    }
 
     private void deleteRefreshToken(String email) {
         Optional<RefreshToken> refreshToken =redisRepository.findById(email);

@@ -15,7 +15,7 @@ public interface UserService {
 
 
     SignUpResultDto signUp(SignUpRequestDto signUpRequestDto);
-    SignInResultDto signIn(String email, String password) throws RuntimeException;
+    SignInResultDto signIn(String email, String password, HttpServletRequest request, HttpServletResponse response) throws RuntimeException, UnsupportedEncodingException;
     void logOut(String email, HttpServletRequest request, HttpServletResponse response);
     ResponseEntity<String> grantRole(String email, UserRoleEnum roles);
     List<UserInfoDto> findAllUser(); // 전체 목록 조회 (MANAGER)
@@ -33,5 +33,4 @@ public interface UserService {
     void updateTeam(String email, String team);  // 팀 업데이트 (MANAGER,ADMIN)
     ResponseEntity<String> checkPassword(String email, String password);
 
-    List<User> findByDeletedFalse();
 }
