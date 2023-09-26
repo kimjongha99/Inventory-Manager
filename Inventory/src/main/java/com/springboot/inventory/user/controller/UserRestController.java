@@ -134,12 +134,13 @@ public class UserRestController {
         }
     }
 
-    // 모든 회원
+    // 모든회원
     @GetMapping("/allUserlist")
-    public ResponseEntity<List<User>> findByDeletedFalse() {
-        List<User> userList = userService.findByDeletedFalse();
+    public ResponseEntity<List<UserInfoDto>> findAllUser() {
+        List<UserInfoDto> userList = userService.findAllUser();
         return ResponseEntity.status(HttpStatus.OK).body(userList);
     }
+
     // 팀 수정하기
     @PostMapping("/updateteam")
     public ResponseEntity<String> updateTeam(@RequestBody Map<String, String> requestData) {
