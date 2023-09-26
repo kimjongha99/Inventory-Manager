@@ -55,6 +55,21 @@ public class UserRestController {
         }
     }
 
+    @GetMapping("/role")
+    public ResponseEntity<String> getUserRole(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        String email = userDetails.getUsername();
+        User user = userService.getUser(email);
+        UserRoleEnum role = user.getRoles();
+
+        if (role == UserRoleEnum.ADMIN) {
+            return ResponseEntity.ok("/AdminPage");
+        } else if (role == UserRoleEnum.MANAGER) {
+            return ResponseEntity.ok("/managerdashboard");
+        } else {
+            return ResponseEntity.ok("/dashboard");  // Change to the desired URL
+        }
+    }
+
 
     @PostMapping(value = "/sign-up")
     public SignUpResultDto signUp(@Valid @RequestBody SignUpRequestDto signUpRequestDto,

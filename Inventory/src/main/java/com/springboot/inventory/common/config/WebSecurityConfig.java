@@ -39,11 +39,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
 
                 // board
-                .antMatchers("/board/**","/replies/**","/board/purchase/**").hasAnyRole("MANAGER","USER")
+                .antMatchers("/board/**","/replies/**","/board/**/**").hasAnyRole("MANAGER","USER")
 
                 // users
                     .antMatchers( "/index", "/LoginPage", "/logout", "/signUpPage").permitAll()
-                .antMatchers("/ManagerPage").hasRole("MANAGER")
+                .antMatchers("/ManagerPage","/managerdashboard").hasRole("MANAGER")
                 .antMatchers("/AdminPage").hasRole("ADMIN")
                 .antMatchers("/user/sign-up", "/user/sign-in", "/user/**/**").permitAll()
 
