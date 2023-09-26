@@ -7,6 +7,7 @@ import com.springboot.inventory.common.entity.Request;
 import com.springboot.inventory.common.entity.Supply;
 import com.springboot.inventory.common.entity.User;
 import com.springboot.inventory.common.enums.RequestTypeEnum;
+import com.springboot.inventory.common.enums.SupplyStatusEnum;
 import com.springboot.inventory.request.dto.ApproveDTO;
 import com.springboot.inventory.request.dto.RentalRejectDTO;
 import com.springboot.inventory.request.dto.RentalRequestDTO;
@@ -186,16 +187,18 @@ public class RequestServiceImpl implements RequestService {
 
         User user = request.getUser();
 
-        supply.setState(requestTypeEnum);
+
         request.setSupply(supply);
         request.setAccept(true);
-
         supply.setUser(user);
+        supply.setState(requestTypeEnum);
+        supply.setStatus(SupplyStatusEnum.USING);
 
         if (requestTypeEnum == RequestTypeEnum.RETURN) {
             Request pastRequest =  request.getRequest();
 
             supply.setUser(null);
+            supply.setStatus(SupplyStatusEnum.STOCK);
 
             pastRequest.setReturnAvailable(false);
 
