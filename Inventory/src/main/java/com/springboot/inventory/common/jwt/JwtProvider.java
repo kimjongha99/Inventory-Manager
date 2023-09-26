@@ -7,6 +7,7 @@ import com.springboot.inventory.common.security.UserDetailsServiceImpl;
 import com.springboot.inventory.common.util.redis.RedisRepository;
 import com.springboot.inventory.common.util.redis.RefreshToken;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -85,7 +86,7 @@ public class JwtProvider {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken);
             return TokenState.VAILD;
-        } catch (Exception e) {
+        } catch (ExpiredJwtException e) {
             LOGGER.info("[JwtProvider - validateToken - Fail]");
             return TokenState.EXPIRED;
             // 현재는 EXPIRED라고 보는 것 x 검증 실패 o

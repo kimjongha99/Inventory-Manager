@@ -146,7 +146,7 @@ public class RequestServiceImpl implements RequestService {
         Category category = request.getCategory();
 
         ArrayList<Supply> supplyList =
-                supplyRepository.findAllByCategoryAndStateIsNot(category, RequestTypeEnum.RENTAL);
+                supplyRepository.findAllByCategoryAndStatus(category, SupplyStatusEnum.STOCK);
 
         Map<String, Object> data = new HashMap<>();
 
