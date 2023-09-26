@@ -140,7 +140,16 @@
           .then(function (res) {
             alert("로그인 성공!");
             console.log("API Response:", res.data);
-            window.location.href = "/dashboard";
+
+
+            axios.get("/user/role")
+                    .then(function (response) {
+                      var redirectUrl = response.data;
+                      window.location.href = redirectUrl;
+                    })
+                    .catch(function (error) {
+                      console.error("API Error:", error);
+                    });
           })
           .catch(function (error) {
             alert("로그인 실패!");
