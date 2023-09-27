@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>맴버</title>
+    <!-- 부트스트랩 CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 50px;
+      }
+      .card {
+        width: 50%;
+        margin: 0 auto;
+      }
+      .btn-register {
+        background-color: #28a745;
+        color: #fff;
+      }
+      .message {
+        color: red;
+        display: inline-block; /* Display inline */
+        margin-top: 5px;
+        margin-left: 10px; /* Add margin to separate from the button */
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="card">
+      <div class="card-body">
+        <h2 class="text-center">회원가입</h2>
+        <form id="signupForm">
+          <div class="form-group">
+            <label for="email">이메일:</label>
+            <div class="d-flex align-items-center">
+              <!-- Align items in a row -->
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                oninput="validateEmailInput()"
+                required
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+              />
+              <div>
+                <button
+                  type="button"
+                  onclick="checkEmailDuplication()"
+                  id="emailCheckBtn"
+                  class="btn btn-primary ml-2"
+                >
+                  중복 확인
+                </button>
+              </div>
+            </div>
+            <small id="emailValid" class="message"></small>
+            <div id="emailStatus" class="message"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">비밀번호:</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              oninput="validatePasswordInput()"
+              required
+              pattern="[a-zA-Z0-9!@#$%^&*()\-=_+[\]{}|;':,.<>/?]{4,20}$"
+            />
+            <small id="passwordValid" class="message"></small>
+          </div>
+
+          <div class="form-group">
+            <label for="tel">전화번호:</label>
+            <div class="phone-input d-flex">
+              <input
+                type="tel"
+                class="form-control phone-part"
+                id="tel"
+                maxlength="3"
+                placeholder="010"
+                pattern="[0-9]{3}"
+                oninput="moveToNext(this, 'phonePart2')"
+                required
+              />
+              <span> - </span>
+              <input
+                type="tel"
+                class="form-control phone-part"
+                id="phonePart2"
+                maxlength="4"
+                placeholder="1234"
+                pattern="[0-9]{4}"
+                oninput="moveToNext(this, 'phonePart3')"
+                required
+              />
+              <span> - </span>
+              <input
+                type="tel"
+                class="form-control phone-part"
+                id="phonePart3"
+                maxlength="4"
+                placeholder="5678"
+                pattern="[0-9]{4}"
+                oninput="checkPhoneNumberValidity()"
+                required
+              />
+            </div>
+            <small id="telValid" class="message"></small>
+          </div>
+
+          <input type="hidden" name="team" value="미정" />
+
+          <div class="form-group">
+            <label for="username">유저이름:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="username"
+              name="username"
+              required
+              pattern="^[a-zA-Z가-힣0-9]{1,20}$"
+              placeholder="Enter your username"
+              oninput="validateUsernameInput()"
+            />
+            <small id="usernameValid" class="message"></small>
+          </div>
+
+          <div class="form-group text-center">
+            <button
+              type="button"
+              onclick="submitForm()"
+              id="submitBtn"
+              disabled
+              class="btn btn-register"
+            >
+              회원가입
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      var emailChecked = false;
+
+      function validateEmail(email) {
+        var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailPattern.test(email);
+      }
+
+      function validatePassword(password) {
+        var passwordPattern =
+          /^[a-zcA-Z0-9!@#$%^&*()\-=_+[\]{}|;':",.<>/?]{4,20}$/;
+        return passwordPattern.test(password);
+      }
+
+      function validateTel(tel) {
+        var telPattern = /^[0-9]{10,11}$/;
+        return telPattern.test(tel);
+      }
+
+      function validateUsername(username) {
+        // 정규식을 사용하여 영어, 한글 모두 허용하고 최대 20글자로 제한
+        var regex = /^[a-zA-Z가-힣0-9]{1,20}$/;
+        return regex.test(username);
+      }
+
+      function validatePasswordInput() {
+        var password = document.getElementById("password").value;
+        var passwordValid = document.getElementById("passwordValid");
+        passwordValid.innerText = ""; // 초기화
+
+        if (validatePassword(password)) {
+          passwordValid.innerText = "비밀번호 형식이 올바릅니다.";
+          passwordValid.style.color = "green";
+        } else {
+          passwordValid.innerText =
+            "영문자 (대소문자 포함), 숫자 및 특수 문자를 4자에서 20자";
+          passwordValid.style.color = "red";
+        }
+
+        checkAllFieldsValidity();
+      }
+
+      function validateEmailInput() {
+        var email = document.getElementById("email").value;
+        var emailValid = document.getElementById("emailValid");
+        var emailStatus = document.getElementById("emailStatus"); // 수정: 이메일 상태 메시지 엘리먼트
+
+        emailValid.innerText = ""; // 초기화
+        emailStatus.innerText = "중복 확인을 해주세요."; // 중복 확인 메시지 초기화
+        emailStatus.style.color = "red"; // 중복 확인 메시지를 빨간색으로 설정
+        emailChecked = false; // 중복 확인 초기화
+
+        if (validateEmail(email)) {
+          emailValid.innerText = "이메일 형식이 올바릅니다.";
+          emailValid.style.color = "green";
+          toggleEmailCheckButton(); // 이메일 유효성 검사가 성공하면 중복 확인 버튼 상태 업데이트
+        } else {
+          emailValid.innerText = "올바른 이메일 형식이 아닙니다.";
+          emailValid.style.color = "red";
+          document.getElementById("emailCheckBtn").disabled = true; // 이메일 유효성 검사가 실패하면 중복 확인 버튼 비활성화
+        }
+
+        checkAllFieldsValidity();
+      }
+
+      function validateUsernameInput() {
+        var username = document.getElementById("username").value;
+        var usernameValid = document.getElementById("usernameValid");
+        usernameValid.innerText = ""; // 초기화
+
+        if (/^[a-zA-Z가-힣0-9]{1,20}$/.test(username)) {
+          usernameValid.innerText = "유저이름 형식이 올바릅니다.";
+          usernameValid.style.color = "green";
+        } else {
+          usernameValid.innerText =
+            "영어, 한글을 포함하여 최대 20글자로 입력하세요.";
+          usernameValid.style.color = "red";
+        }
+
+        checkAllFieldsValidity();
+      }
+
+      function toggleEmailCheckButton() {
+        var email = document.getElementById("email").value;
+        var emailCheckBtn = document.getElementById("emailCheckBtn");
+
+        emailCheckBtn.disabled = !validateEmail(email);
+      }
+
+      function checkEmailDuplication() {
+        var email = document.getElementById("email").value;
+        var emailValid = document.getElementById("emailStatus");
+        emailValid.innerText = ""; // 초기화
+
+        // Make an API call to check email duplication
+        axios
+          .get("/user/check-email", {
+            params: {
+              email: email,
+            },
+          })
+          .then(function (response) {
+            if (response.status === 200) {
+              emailValid.innerText = response.data;
+              emailValid.style.color = "blue";
+              emailChecked = true; // 중복 확인 완료 시 true 설정
+            } else {
+              emailChecked = false; // 중복 확인 실패 시 false 설정
+            }
+
+            toggleEmailCheckButton();
+            checkAllFieldsValidity();
+          })
+          .catch(function (error) {
+            console.error("Error checking email duplication:", error);
+            emailValid.innerText = "중복된 이메일 입니다.";
+            emailValid.style.color = "red";
+            emailChecked = false; // 중복 확인 실패 시 false 설정
+
+            toggleEmailCheckButton();
+            checkAllFieldsValidity();
+          });
+      }
+
+      function submitForm() {
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+        var telPart1 = document.getElementById("tel").value;
+        var telPart2 = document.getElementById("phonePart2").value;
+        var telPart3 = document.getElementById("phonePart3").value;
+        var username = document.getElementById("username").value;
+        var signUpData = {
+          email: email,
+          password: password,
+          tel: telPart1 + telPart2 + telPart3,
+          username: username,
+        };
+
+        axios
+          .post("/user/sign-up", signUpData, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+          .then(function (response) {
+            console.log("회원가입 성공:", response.data);
+            // 회원가입 성공 알람을 띄우고 로그인 페이지로 이동
+            alert("회원가입 성공! 로그인 페이지로 이동합니다.");
+            window.location.href = "/index"; // 로그인 페이지로 이동
+          })
+          .catch(function (error) {
+            console.error("회원가입 실패:", error);
+            // 여기에서 필요한 실패 시 처리 작업을 수행합니다.
+          });
+      }
+
+      function checkAllFieldsValidity() {
+        var emailValid = validateEmail(document.getElementById("email").value);
+        var passwordValid = validatePassword(
+          document.getElementById("password").value
+        );
+        var telPart1 = document.getElementById("tel").value; // 수정: 전화번호 첫 번째 부분 가져오기
+        var telPart2 = document.getElementById("phonePart2").value;
+        var telPart3 = document.getElementById("phonePart3").value;
+        var telValid = validateTel(telPart1 + telPart2 + telPart3); // 수정: 전화번호 전체를 넘겨줌
+        var usernameValid = validateUsername(
+          document.getElementById("username").value
+        );
+
+        var allFieldsValid =
+          emailValid &&
+          passwordValid &&
+          telValid &&
+          usernameValid &&
+          emailChecked;
+
+        document.getElementById("submitBtn").disabled = !allFieldsValid;
+      }
+
+      function moveToNext(input, nextFieldID) {
+        const maxLength = input.maxLength;
+        const currentLength = input.value.length;
+
+        if (currentLength === maxLength) {
+          document.getElementById(nextFieldID).focus();
+        }
+      }
+
+      function checkPhoneNumberValidity() {
+        const phonePart1 = document.getElementById("tel").value;
+        const phonePart2 = document.getElementById("phonePart2").value;
+        const phonePart3 = document.getElementById("phonePart3").value;
+        const phoneNumber = phonePart1 + phonePart2 + phonePart3;
+
+        const telValid = document.getElementById("telValid");
+        telValid.innerText = ""; // 초기화
+
+        const telPattern = /^[0-9]{11}$/;
+        if (telPattern.test(phoneNumber)) {
+          telValid.innerText = "전화번호 형식이 올바릅니다.";
+          telValid.style.color = "green";
+        } else {
+          telValid.innerText = "10~11자리의 숫자를 입력해 주세요.";
+          telValid.style.color = "red";
+        }
+
+        checkAllFieldsValidity(); // 수정: 유효성 검사 후 버튼 상태 업데이트
+      }
+    </script>
+  </body>
+</html>

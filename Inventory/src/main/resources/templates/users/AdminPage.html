@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Manager - 회원 목록</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/ManagerStyle.css">
+</head>
+
+<body>
+<div class="container">
+    <h1 class="my-4">회원 목록</h1>
+    <button class="btn btn-secondary back-button" onclick="goBack()">뒤로가기</button>
+    <div layout:fragment="content">
+        <!-- 테이블을 역할이 USER인 경우에만 표시 -->
+        <table id="userTable" class="table" style="display: none;">
+            <thead>
+            <tr>
+                <th>이름</th>
+                <th>이메일</th>
+                <th>전화번호</th>
+                <th>권한</th>
+                <th>권한 설정</th>
+            </tr>
+            </thead>
+            <tbody id="userTableBody">
+            <!-- 사용자 데이터가 여기에 동적으로 삽입될 것입니다. -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+
+    const table = document.getElementById('userTable');
+    const tableBody = document.getElementById('userTableBody');
+
+    async function fetchUserData() {
+        try {
+            const response = await axios.get('/user/allUserListForAdmin');
+            const users = response.data;
+
+            users.forEach(user => {
+                const row = tableBody.insertRow(-1);
+
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                const cell3 = row.insertCell(2);
+                const cell4 = row.insertCell(3);
+                const cell5 = row.insertCell(4);
+
+                cell1.innerHTML = user.username;
+                cell2.innerHTML = user.email;
+                cell3.innerHTML = user.tel;
+                cell4.innerHTML = user.roles;
+
+                const grantRoleButton = document.createElement('button');
+                if (user.roles === 'MANAGER') {
+                    grantRoleButton.textContent = '권한 수정';
+                    grantRoleButton.className = 'btn btn-danger';
+                } else {
+                    grantRoleButton.textContent = '권한 수정';
+                    grantRoleButton.className = 'btn btn-success';
+                }
+
+                grantRoleButton.addEventListener('click', () => {
+                    if (user.roles === 'MANAGER') {
+                        revokeRole(user.email);
+                    } else {
+                        grantRole(user.email);
+                    }
+                });
+
+                cell5.appendChild(grantRoleButton);
+            });
+
+            table.style.display = 'table';
+        } catch (error) {
+            console.error('사용자 데이터를 가져오는 중 오류 발생:', error);
+        }
+    }
+
+    function grantRole(email) {
+        fetch(`/user/roles/${email}`, { method: 'PUT' })
+            .then(function (response) {
+                // alert("권한 수정에 성공하였습니다.");
+                window.location.href = '/AdminPage';
+            })
+            .catch(error => console.error('권한 수정 중 오류 발생:', error));
+    }
+
+    function revokeRole(email) {
+        fetch(`/user/roles/${email}`, { method: 'PUT' })
+            .then(function (response) {
+                // alert("권한 뺏기에 성공하였습니다.");
+                window.location.href = '/AdminPage';
+            })
+            .catch(error => console.error('권한 뺏기 중 오류 발생:', error));
+    }
+
+    fetchUserData();
+</script>
+</body>
+
+</html>

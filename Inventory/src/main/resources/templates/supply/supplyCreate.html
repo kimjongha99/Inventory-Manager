@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>비품 등록</title>
+    <link rel="stylesheet" href="/css/supplyCreate.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script th:inline="javascript">
+        function loadSubcategories() {
+            var selectedLargeCategory = document.getElementById("largeCategory").value;
+
+            // 대분류 값을 서버로 전달하여 소분류를 가져오는 코드 추가
+            $.ajax({
+                url: "/supply/getSubcategories?largeCategory=" + selectedLargeCategory,
+                type: "GET",
+                //컨트롤러에서 소분류이름 받아옴 (리스트로)
+                success: function (data) {
+                    // 서버로부터 받은 데이터를 사용하여 동적으로 소분류 옵션을 추가하는 코드 작성
+                    var selectSubcategories = document.getElementById("categoryName");
+                    selectSubcategories.innerHTML = ""; // 이전 옵션 제거
+
+                    // "직접입력" 옵션을 추가
+                    var directInputOption = document.createElement("option");
+                    directInputOption.value = "직접입력";
+                    directInputOption.text = "직접입력";
+                    selectSubcategories.appendChild(directInputOption);
+
+                    // data를 이용하여 selectSubcategories에 옵션 추가
+                    for (var i = 0; i < data.length; i++) {
+                        var option = document.createElement("option");
+                        option.value = data[i];
+                        option.text = data[i];
+                        selectSubcategories.appendChild(option);
+                    }
+
+                    // 소분류 선택 상자가 변경됐을 때 직접 입력 상자를 표시 또는 숨김
+                    toggleDirectInput();
+                },
+                error: function (error) {
+                    console.error(error);
+                },
+            });
+        }
+
+        function toggleDirectInput() {
+            var categorySelect = document.getElementById("categoryName");
+            var directInput = document.getElementById("directInput");
+
+            if (categorySelect.value === "직접입력") {
+                directInput.style.display = "block";
+            } else {
+                directInput.style.display = "none";
+            }
+        }
+        // 다른 소분류 선택 상자를 누르면 직접 입력 상자 숨기기
+        document.getElementById("categoryName").addEventListener("change", function () {
+            if (this.value !== "직접입력") {
+                document.getElementById("directInput").style.display = "none";
+            }
+        });
+        //소분류 선택하면 직접입력인경우에만 입력박스나타내기
+        function toggleDirectInputAndInputField() {
+            var categorySelect = document.getElementById("categoryName");
+            var directInput = document.getElementById("directInput");
+
+            if (categorySelect.value === "직접입력") {
+                directInput.style.display = "block";
+            } else {
+                directInput.style.display = "none";
+            }
+        }
+    </script>
+</head>
+<body>
+<div layout:fragment="content">
+<h1>비품 등록</h1>
+<form th:action="@{/supply/create}" method="post" th:object="${supplyDto}" enctype="multipart/form-data">
+    <div>
+        <label for="largeCategory">대분류:</label>
+        <select id="largeCategory" name="largeCategory" th:field="*{largeCategory}" required  onchange="loadSubcategories()">
+            <option value="" selected>대분류</option>
+            <option value="COMPUTER">컴퓨터</option>
+            <option value="DIGITAL">디지털</option>
+            <option value="ELECTRONICS">가전제품</option>
+            <option value="FURNITURE">가구</option>
+            <option value="ETC">기타</option>
+        </select>
+    </div>
+    <div>
+        <label for="categoryName">소분류:</label>
+        <select id="categoryName" name="categoryName" required onchange="toggleDirectInputAndInputField()">
+            <option value="" selected>소분류</option>
+            <!-- 여기에 동적으로 소분류 옵션을 추가할 것입니다. -->
+        </select>
+        <input type="text" id="directInput" name="directCategoryName" placeholder="직접 입력하세요" class="direct-input">
+    </div>
+    <div>
+        <label for="serialNum">시리얼 넘버:</label>
+        <input type="text" id="serialNum" name="serialNum" th:field="*{serialNum}" placeholder="시리얼 넘버를 입력해주세요" required>
+    </div>
+    <div>
+        <label for="modelName">제품명:</label>
+        <input type="text" id="modelName" name="modelName" th:field="*{modelName}" placeholder="제품명을 입력해주세요" required>
+    </div>
+    <div>
+        <label for="modelContent">제품 설명:</label>
+        <input type="text" id="modelContent" name="modelContent" th:field="*{modelContent}">
+    </div>
+    <div>
+        <label for="multipartFile">이미지:</label>
+        <input type="file" id="multipartFile" name="multipartFile" accept="image/*">
+    </div>
+    <div>
+        <label for="userId">사용자:</label>
+        <select id="userId" name="userId" th:field="*{userId}">
+            <option value="">사용자 없음</option>
+            <option th:each="user : ${userList}" th:value="${user.userId}" th:text="${user.username}"></option>
+        </select>
+    </div>
+    <div>
+        <label for="status">상태:</label>
+        <select id="status" name="status" th:field="*{status}">
+            <option value="STOCK">재고</option>
+            <option value="USING">사용중</option>
+            <option value="REPAIRING">수리중</option>
+        </select>
+    </div>
+    <button type="submit" onclick="showSuccessMessage()">등록</button>
+</form>
+<script>
+    $(document).ready(function () {
+        $("#serialNum").on("blur", function () {
+            var serialNumber = $(this).val();
+
+            $.ajax({
+                url: "/supply/checkDuplicateSerialNumber?serialNumber=" + serialNumber,
+                type: "GET",
+                success: function (data) {
+                    if (data) {
+                        alert("중복된 시리얼 넘버입니다. 다른 시리얼 넘버를 입력하세요.");
+                        $("#serialNum").val(""); // 시리얼 넘버 입력란 비우기
+                    }
+                },
+                error: function (error) {
+                    console.error(error);
+                },
+            });
+        });
+    });
+    // 사용자 선택 상자의 변경 이벤트를 감지하고 상태 선택 상자를 변경하는 함수
+    function updateUserStatus() {
+        var userIdSelect = document.getElementById("userId");
+        var statusSelect = document.getElementById("status");
+
+        if (userIdSelect.value === "") {
+            // "사용자 없음"을 선택한 경우
+            statusSelect.value = "STOCK"; // "재고"로 설정
+        }  else {
+            // 사용자를 선택한 경우
+            statusSelect.value = "USING"; // "사용중"으로 설정
+        }
+    }
+
+    function updateStatusUser() {
+        var userIdSelect = document.getElementById("userId");
+        var statusSelect = document.getElementById("status");
+        if (statusSelect.value === "STOCK") {
+            userIdSelect.value = "";
+        } else if (statusSelect.value === "REPAIRING") {
+            userIdSelect.value = "";
+        }
+    }
+
+    // 사용자 선택 상자의 변경 이벤트를 감지하여 updateUserStatus 함수 호출
+    document.getElementById("userId").addEventListener("change", updateUserStatus);
+    // 초기화 시 상태 설정을 위해 updateUserStatus 함수 호출
+    updateUserStatus();
+    // 재고 선택 시 사용자 없음으로 , 수리중일시 사용자 없음으로
+    document.getElementById("status").addEventListener("change", updateStatusUser);
+    updateStatusUser();
+
+    function showSuccessMessage() {
+        alert("등록되었습니다!");
+    }
+</script>
+</div>
+</body>
+</html>

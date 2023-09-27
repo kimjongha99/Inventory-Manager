@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+<head>
+    <title>Board Modify</title>
+</head>
+
+<div layout:fragment="content">
+    <div class="row mt-3">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    글 수정하기
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/board/purchase/modify}" method="post" id="f1">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">글번호</span>
+                            <input type="text" class="form-control" th:value="${dto.bno}" name="bno" readonly>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">글제목</span>
+                            <input type="text" class="form-control" name="title" th:value="${dto.title}">
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">글내용</span>
+                            <textarea class="form-control col-sm-5" rows="5" name="content">[[${dto.content}]]</textarea>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">작성자</span>
+                            <input type="text" class="form-control" th:value="${dto.writer}" name="writer" readonly>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">등록일시</span>
+                            <input type="text" class="form-control" th:value="${#temporals.format(dto.createdAt, 'yyyy-MM-dd HH:mm:ss')}" readonly>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">수정일시</span>
+                            <input type="text" class="form-control" th:value="${#temporals.format(dto.modifiedAt, 'yyyy-MM-dd HH:mm:ss')}" readonly>
+                        </div>
+
+                        <div class="my-4">
+                            <div class="float-end">
+                                <button type="button" class="btn btn-primary listBtn">리스트</button>
+                                <button type="button" class="btn btn-secondary modBtn">수정하기</button>
+                                <button type="button" class="btn btn-danger removeBtn">삭제하기</button>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div><!--end card body-->
+            </div><!--end card-->
+        </div><!-- end col-->
+    </div><!-- end row-->
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+
+
+    const errors = [[${errors}]]
+    console.log(errors)
+
+    let errorMsg = ''
+
+    if(errors){
+        for (let i = 0; i < errors.length; i++) {
+            errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
+        }
+        history.replaceState({}, null, null)
+        alert(errorMsg)
+    }
+
+    const link = [[${pageRequestDTO.getLink()}]]
+    const formObj = document.querySelector("#f1")
+
+    document.querySelector(".modBtn").addEventListener("click", function(e){
+        e.preventDefault()
+        e.stopPropagation()
+
+        formObj.action = `/board/purchase/modify?${link}`
+        formObj.method ='post'
+        formObj.submit()
+
+
+    }, false)
+
+
+    document.querySelector(".removeBtn").addEventListener("click", function(e){
+        e.preventDefault()
+        e.stopPropagation()
+
+        formObj.action = `/board/purchase/remove`
+        formObj.method ='post'
+        formObj.submit()
+    }, false)
+
+    document.querySelector(".listBtn").addEventListener("click", function(e){
+        e.preventDefault()
+        e.stopPropagation()
+
+        formObj.reset()
+        self.location =`/board/purchase/list?${link}`
+
+    }, false)
+
+
+</script>
+

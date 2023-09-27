@@ -1,0 +1,29 @@
+.page-overlay {
+    width: 100%;
+    height: 90%;
+    background-color: whitesmoke;
+    padding: 3rem;
+    margin: 1rem;
+    border-radius: 3%;
+}
+
+.page-header {
+    width: 100%;
+    height: auto;
+}
+
+.page-body {
+    display: flex;
+    width: 100%;
+    height: 70%;
+    padding: 2rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 3rem;
+}
+
+.page-footer {
+    width: 100%;
+    height: 10%;
+}
