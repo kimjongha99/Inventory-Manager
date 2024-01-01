@@ -8,8 +8,6 @@
 2. 프로젝트 개요
 3. 기술 스택
 4. ERD
-5. 노션[노션 ](https://www.notion.so/4d2c1199613740e0a7d14cdbfa913dc5)
-
 
 
 ## 팀원 소개
@@ -55,10 +53,6 @@
 
 
 
-
-
-
-
 ##  기술 스택
 # 기술 스택
 
@@ -78,9 +72,9 @@
 - **버전**: 2.7.15
 - **설명**: Java 기반의 프레임워크
 
-## JPA
+## Thymeleaf
 - **버전**: 3.2.22
-- **설명**: Java Persistence API의  버전
+- **설명**: 웹 및 독립형 환경 모두를 위한 최신 서버 측 Java 템플릿 엔진
 
 ## JSP
 - **버전**: 3.0
@@ -95,7 +89,6 @@
 ## ERD
 
 ![Copy of Inventory](https://github.com/kimjongha99/Inventory-Manager/assets/95283879/598c3c09-7888-4839-9131-e9e54bffc7c3)
-
 
 
 
